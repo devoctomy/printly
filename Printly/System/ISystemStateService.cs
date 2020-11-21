@@ -6,6 +6,7 @@ namespace Printly.System
     {
         DateTime StartedAt { get; }
         TimeSpan Uptime { get; }
+        string[] SerialPorts { get; }
 
         void Reset();
     }
