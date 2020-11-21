@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Printly.Client", "Printly.C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{64A60399-013F-4597-977C-E9A4B096AEA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Printly.Client.UnitTests", "Printly.Client.UnitTests\Printly.Client.UnitTests.csproj", "{EF83FDAB-3CCB-49A6-8EFC-43835C28C5B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Printly.Client.UnitTests", "Printly.Client.UnitTests\Printly.Client.UnitTests.csproj", "{EF83FDAB-3CCB-49A6-8EFC-43835C28C5B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Printly.UnitTests", "Printly.UnitTests\Printly.UnitTests.csproj", "{9BDAC9A8-2AF9-43AD-A283-CABE04140FEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,12 +37,17 @@ Global
 		{EF83FDAB-3CCB-49A6-8EFC-43835C28C5B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF83FDAB-3CCB-49A6-8EFC-43835C28C5B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF83FDAB-3CCB-49A6-8EFC-43835C28C5B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BDAC9A8-2AF9-43AD-A283-CABE04140FEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BDAC9A8-2AF9-43AD-A283-CABE04140FEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BDAC9A8-2AF9-43AD-A283-CABE04140FEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BDAC9A8-2AF9-43AD-A283-CABE04140FEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EF83FDAB-3CCB-49A6-8EFC-43835C28C5B5} = {64A60399-013F-4597-977C-E9A4B096AEA7}
+		{9BDAC9A8-2AF9-43AD-A283-CABE04140FEF} = {64A60399-013F-4597-977C-E9A4B096AEA7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4640C1CA-C383-467E-B9D9-103808D444DC}
