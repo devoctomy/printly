@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Printly.Services;
+using Printly.Extensions;
 using Printly.System;
 
 namespace Printly
@@ -21,8 +21,7 @@ namespace Printly
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IDateTimeService, DateTimeService>();
-            services.AddSingleton<ISystemStateService, SystemStateService>();
+            services.AddPrintlyServices();
             services.AddMediatR(this.GetType().Assembly);
             services.AddControllers();
             services.AddSwaggerGen(c =>
