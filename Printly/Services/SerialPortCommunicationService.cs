@@ -46,7 +46,7 @@ namespace Printly.Services
             SerialDataReceivedEventArgs e)
         {
             DataReceived?.Invoke(
-                this,
+                _serialPort,
                 e);
         }
 

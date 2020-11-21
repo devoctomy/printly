@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace Printly.Services
 {
-    public interface ISerialPortDiscoveryService
+    public interface IDataStorageService
     {
-
-        string[] GetPorts();
+        bool Insert<T>(T value);
+        bool Update<T>(T value);
+        bool Delete<T>(T value);
     }
 }

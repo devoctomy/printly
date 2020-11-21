@@ -1,12 +1,17 @@
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Printly.Extensions;
+using Printly.Middleware;
 using Printly.System;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Printly
 {
@@ -49,6 +54,13 @@ namespace Printly
             {
                 endpoints.MapControllers();
             });
+
+            var webSocketOptions = new WebSocketOptions()
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(120)
+            };
+            app.UseWebSockets(webSocketOptions);
+            app.UseMiddleware<TerminalMiddleware>();
 
             var systemStateService = app.ApplicationServices.GetService<ISystemStateService>();
             systemStateService.Reset();

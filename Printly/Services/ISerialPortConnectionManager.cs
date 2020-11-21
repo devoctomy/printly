@@ -3,11 +3,11 @@ using System.IO.Ports;
 
 namespace Printly.Services
 {
-    public interface ISerialPortCommunicationService
+    public interface ISerialPortConnectionManager
     {
-        event EventHandler<SerialDataReceivedEventArgs> DataReceived;
+        ISerialPortCommunicationService Get(string portName);
 
-        bool Open(
+        ISerialPortCommunicationService GetOrOpen(
             string portName,
             int baudRate,
             Parity parity,
@@ -16,12 +16,5 @@ namespace Printly.Services
             Handshake handshake,
             TimeSpan readTimeout,
             TimeSpan writeTimeout);
-
-        void Close();
-
-        void Write(
-            byte[] buffer,
-            int offset,
-            int count);
     }
 }
