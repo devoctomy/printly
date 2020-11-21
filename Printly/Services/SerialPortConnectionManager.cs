@@ -39,7 +39,7 @@ namespace Printly.Services
             if(connection == null)
             {
                 var newConnection = new SerialPortCommunicationService();
-                newConnection.Open(
+                var isOpen = newConnection.Open(
                     portName,
                     baudRate,
                     parity,
@@ -48,6 +48,10 @@ namespace Printly.Services
                     handshake,
                     readTimeout,
                     writeTimeout);
+                if(!isOpen)
+                {
+                    throw new Exception("Failed to open connection");
+                }
                 connection = newConnection;
                 _connectionCache.Add(
                     portName,
@@ -55,6 +59,15 @@ namespace Printly.Services
             }
 
             return connection;
+        }
+
+        public void Close(string portName)
+        {
+            if (_connectionCache.ContainsKey(portName))
+            {
+                _connectionCache[portName].Close();
+                _connectionCache.Remove(portName);
+            }
         }
     }
 }

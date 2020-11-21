@@ -8,6 +8,9 @@ namespace Printly.Services
         public event EventHandler<SerialDataReceivedEventArgs> DataReceived;
 
         private SerialPort _serialPort;
+        private string _portName = string.Empty;
+
+        public string PortName => _portName;
 
         public bool Open(
             string portName,
@@ -30,6 +33,7 @@ namespace Printly.Services
             _serialPort.WriteTimeout = (int)writeTimeout.TotalMilliseconds;
             _serialPort.DataReceived += _serialPort_DataReceived;
             _serialPort.Open();
+            _portName = portName;
             return _serialPort.IsOpen;
         }
 

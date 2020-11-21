@@ -16,5 +16,7 @@ namespace Printly.Services
             Handshake handshake,
             TimeSpan readTimeout,
             TimeSpan writeTimeout);
+
+        void Close(string portName);
     }
 }

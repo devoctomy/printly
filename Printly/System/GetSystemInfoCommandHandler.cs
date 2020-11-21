@@ -23,7 +23,8 @@ namespace Printly.System
                 SystemInfo = new SystemInfo()
                 {
                     StartedAt = _systemStateService.StartedAt,
-                    Uptime = _systemStateService.Uptime
+                    Uptime = _systemStateService.Uptime,
+                    SerialPorts = _systemStateService.SerialPorts
                 }
             });
         }

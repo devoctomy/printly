@@ -81,7 +81,7 @@ namespace Printly.Middleware
         {
             var buffer = new byte[1024 * 4];
 
-            serialPortCommunicationService.DataReceived += async (object sender, SerialDataReceivedEventArgs e) =>
+            EventHandler<SerialDataReceivedEventArgs> dataReceivedHandler = async (object sender, SerialDataReceivedEventArgs e) =>
             {
                 switch(e.EventType)
                 {
@@ -96,13 +96,16 @@ namespace Printly.Middleware
                 }
             };
 
+            serialPortCommunicationService.DataReceived += dataReceivedHandler;
             WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             while (!result.CloseStatus.HasValue)
             {
-                serialPortCommunicationService.Write(buffer, 0, result.Count); 
+                //serialPortCommunicationService.Write(buffer, 0, result.Count); 
                 result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             }
             await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+            serialPortCommunicationService.DataReceived -= dataReceivedHandler;
+            _serialPortConnectionManager.Close(serialPortCommunicationService.PortName);
         }
     }
 }
