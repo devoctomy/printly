@@ -22,7 +22,7 @@ namespace Printly.System
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("Info")]
         public async Task<SystemInfo> GetSystemInfo()
         {
             _logger.LogInformation("GetSystemInfo...");

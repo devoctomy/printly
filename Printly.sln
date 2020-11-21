@@ -13,7 +13,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Printly.Client.UnitTests", "Printly.Client.UnitTests\Printly.Client.UnitTests.csproj", "{EF83FDAB-3CCB-49A6-8EFC-43835C28C5B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Printly.UnitTests", "Printly.UnitTests\Printly.UnitTests.csproj", "{9BDAC9A8-2AF9-43AD-A283-CABE04140FEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Printly.UnitTests", "Printly.UnitTests\Printly.UnitTests.csproj", "{9BDAC9A8-2AF9-43AD-A283-CABE04140FEF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{E177A6BF-33BC-4BF5-9C44-654479A7CBA8}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
