@@ -12,15 +12,19 @@ namespace Printly
 {
     public class Startup
     {
+        private readonly AppSettings _appSettings;
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            _appSettings = new AppSettings();
+            Configuration.Bind(_appSettings);
         }
-
-        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<AppSettings>(_appSettings);
             services.AddPrintlyServices();
             services.AddMediatR(this.GetType().Assembly);
             services.AddControllers();

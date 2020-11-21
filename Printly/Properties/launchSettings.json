@@ -14,6 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
+        "PRINTLY_ServiceId": "2E910612-CB54-4436-BCD7-890698BC4B2E",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
@@ -22,6 +23,7 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
+        "PRINTLY_ServiceId": "2E910612-CB54-4436-BCD7-890698BC4B2E",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": "true",
@@ -32,7 +34,10 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "publishAllPorts": true,
-      "useSSL": true
+      "useSSL": true,
+      "environmentVariables": {
+        "PRINTLY_ServiceId": "2E910612-CB54-4436-BCD7-890698BC4B2E"
+      }
     }
   }
 }
