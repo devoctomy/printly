@@ -26,19 +26,18 @@ namespace Printly.Middleware
         {
             if (httpContext.Request.Path.StartsWithSegments(new PathString("/terminal")))
             {
-                //pass onto terminal service here
                 if (httpContext.WebSockets.IsWebSocketRequest)
                 {
                     var pathParts = httpContext.Request.Path.ToString().Substring(1).Split("/");
                     var portName = pathParts[1];
-                    //get details from query string
+
                     var connection = _serialPortConnectionManager.GetOrOpen(
                         portName,
-                        1,
-                        Parity.None,
-                        8,
-                        StopBits.One,
-                        Handshake.None,
+                        int.Parse(GetQueryValueOrDefault(httpContext.Request.Query, "baudrate", "9600")),
+                        Enum.Parse<Parity>(GetQueryValueOrDefault(httpContext.Request.Query, "parity", Parity.None.ToString()), true),
+                        int.Parse(GetQueryValueOrDefault(httpContext.Request.Query, "databits", "8")),
+                        Enum.Parse<StopBits>(GetQueryValueOrDefault(httpContext.Request.Query, "stopbits", StopBits.One.ToString()), true),
+                        Enum.Parse<Handshake>(GetQueryValueOrDefault(httpContext.Request.Query, "handshake", Handshake.None.ToString()), true),
                         new TimeSpan(1, 0, 0),
                         new TimeSpan(1, 0, 0));
                     using (WebSocket webSocket = await httpContext.WebSockets.AcceptWebSocketAsync())
@@ -57,6 +56,21 @@ namespace Printly.Middleware
             else
             {
                 await _next.Invoke(httpContext);
+            }
+        }
+
+        private string GetQueryValueOrDefault(
+            IQueryCollection queryCollection,
+            string name,
+            string defaultValue)
+        {
+            if(queryCollection.TryGetValue(name, out var values))
+            {
+                return values[0];
+            }
+            else
+            {
+                return defaultValue;
             }
         }
 
