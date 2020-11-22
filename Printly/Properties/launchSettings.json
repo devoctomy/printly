@@ -15,6 +15,8 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "PRINTLY_ServiceId": "2E910612-CB54-4436-BCD7-890698BC4B2E",
+        "PRINTLY_MongoDbStorageConnectionString": "mongodb://localhost:27017",
+        "PRINTLY_MongoDbStorageDatabaseName": "Printly",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
@@ -24,6 +26,8 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "PRINTLY_ServiceId": "2E910612-CB54-4436-BCD7-890698BC4B2E",
+        "PRINTLY_MongoDbStorageConnectionString": "mongodb://localhost:27017",
+        "PRINTLY_MongoDbStorageDatabaseName": "Printly",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": "true",
@@ -36,7 +40,9 @@
       "publishAllPorts": true,
       "useSSL": true,
       "environmentVariables": {
-        "PRINTLY_ServiceId": "2E910612-CB54-4436-BCD7-890698BC4B2E"
+        "PRINTLY_ServiceId": "2E910612-CB54-4436-BCD7-890698BC4B2E",
+        "PRINTLY_MongoDbStorageConnectionString": "mongodb://localhost:27017",
+        "PRINTLY_MongoDbStorageDatabaseName": "Printly"
       }
     }
   }

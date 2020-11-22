@@ -20,6 +20,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Printly.Domain.Services", "Printly.Domain.Services\Printly.Domain.Services.csproj", "{B020F64D-82F8-472B-9648-ECE008619059}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Printly.Domain.Models", "Printly.Domain.Models\Printly.Domain.Models.csproj", "{6442FAF3-F1D9-42C9-8877-C40DB85ACECB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +50,14 @@ Global
 		{9BDAC9A8-2AF9-43AD-A283-CABE04140FEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BDAC9A8-2AF9-43AD-A283-CABE04140FEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BDAC9A8-2AF9-43AD-A283-CABE04140FEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B020F64D-82F8-472B-9648-ECE008619059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B020F64D-82F8-472B-9648-ECE008619059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B020F64D-82F8-472B-9648-ECE008619059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B020F64D-82F8-472B-9648-ECE008619059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6442FAF3-F1D9-42C9-8877-C40DB85ACECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6442FAF3-F1D9-42C9-8877-C40DB85ACECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6442FAF3-F1D9-42C9-8877-C40DB85ACECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6442FAF3-F1D9-42C9-8877-C40DB85ACECB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

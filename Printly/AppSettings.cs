@@ -8,5 +8,7 @@ namespace Printly
     public class AppSettings
     {
         public string ServiceId { get; set; }
+        public string MongoDbStorageConnectionString { get; set; }
+        public string MongoDbStorageDatabaseName { get; set; }
     }
 }

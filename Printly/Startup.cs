@@ -1,17 +1,16 @@
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Printly.Domain.Services.Extensions;
 using Printly.Extensions;
 using Printly.Middleware;
 using Printly.System;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Printly
 {
@@ -31,6 +30,12 @@ namespace Printly
         {
             services.AddSingleton<AppSettings>(_appSettings);
             services.AddPrintlyServices();
+            services.AddPrintlyDataServices(new Domain.Services.MongoDbConfiguration()
+            {
+                ConnectionString = _appSettings.MongoDbStorageConnectionString,
+                DatabaseName = _appSettings.MongoDbStorageDatabaseName
+            });
+            services.AddAutoMapper(this.GetType().Assembly);
             services.AddMediatR(this.GetType().Assembly);
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -65,5 +70,6 @@ namespace Printly
             var systemStateService = app.ApplicationServices.GetService<ISystemStateService>();
             systemStateService.Reset();
         }
+
     }
 }
