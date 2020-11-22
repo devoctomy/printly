@@ -6,6 +6,7 @@ namespace Printly.Services
     public class SerialPortCommunicationService : ISerialPortCommunicationService
     {
         public event EventHandler<SerialDataReceivedEventArgs> DataReceived;
+        public event EventHandler<SerialErrorReceivedEventArgs> ErrorReceived;
 
         private SerialPort _serialPort;
         private string _portName = string.Empty;
@@ -32,6 +33,7 @@ namespace Printly.Services
             _serialPort.ReadTimeout = (int)readTimeout.TotalMilliseconds;
             _serialPort.WriteTimeout = (int)writeTimeout.TotalMilliseconds;
             _serialPort.DataReceived += _serialPort_DataReceived;
+            _serialPort.ErrorReceived += _serialPort_ErrorReceived;
             _serialPort.Open();
             _portName = portName;
             return _serialPort.IsOpen;
@@ -51,6 +53,13 @@ namespace Printly.Services
         {
             DataReceived?.Invoke(
                 _serialPort,
+                e);
+        }
+
+        private void _serialPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
+        {
+            ErrorReceived?.Invoke(
+                sender,
                 e);
         }
 

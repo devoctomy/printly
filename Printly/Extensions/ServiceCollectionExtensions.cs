@@ -13,6 +13,7 @@ namespace Printly.Extensions
             services.AddSingleton<ISerialPortDiscoveryService, SerialPortDiscoveryService>();
             services.AddSingleton<ISerialPortCommunicationService, SerialPortCommunicationService>();
             services.AddSingleton<ISerialPortConnectionManager, SerialPortConnectionManager>();
+            services.AddScoped<ISerialPortMonitorService, SerialPortMonitorService>();
             return services;
         }
 

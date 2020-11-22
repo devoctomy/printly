@@ -24,6 +24,7 @@ namespace Printly.UnitTests.Extensions
             Assert.NotNull(serviceProvider.GetServices<ISerialPortDiscoveryService>());
             Assert.NotNull(serviceProvider.GetServices<ISerialPortCommunicationService>());
             Assert.NotNull(serviceProvider.GetServices<ISerialPortConnectionManager>());
+            Assert.NotNull(serviceProvider.GetServices<ISerialPortMonitorService>());
         }
     }
 }
