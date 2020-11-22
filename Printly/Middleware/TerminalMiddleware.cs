@@ -42,7 +42,7 @@ namespace Printly.Middleware
                         new TimeSpan(1, 0, 0));
                     using (WebSocket webSocket = await httpContext.WebSockets.AcceptWebSocketAsync())
                     {
-                        await Receive(
+                        await CommsLoop(
                             httpContext,
                             webSocket,
                             connection);
@@ -74,7 +74,7 @@ namespace Printly.Middleware
             }
         }
 
-        private async Task Receive(
+        private async Task CommsLoop(
             HttpContext context,
             WebSocket webSocket,
             ISerialPortCommunicationService serialPortCommunicationService)
@@ -90,20 +90,33 @@ namespace Printly.Middleware
                             var serialPort = (SerialPort)sender;
                             var data = serialPort.ReadExisting();
                             var dataBytes = serialPort.Encoding.GetBytes(data);
-                            await webSocket.SendAsync(new ArraySegment<byte>(dataBytes, 0, dataBytes.Length), WebSocketMessageType.Text, true, CancellationToken.None);
+                            await webSocket.SendAsync(
+                                new ArraySegment<byte>(dataBytes, 0, dataBytes.Length),
+                                WebSocketMessageType.Text,
+                                true,
+                                CancellationToken.None);
                             break;
                         }
                 }
             };
-
             serialPortCommunicationService.DataReceived += dataReceivedHandler;
+
             WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             while (!result.CloseStatus.HasValue)
             {
-                //serialPortCommunicationService.Write(buffer, 0, result.Count); 
-                result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                serialPortCommunicationService.Write(
+                    buffer,
+                    0,
+                    result.Count); 
+                result = await webSocket.ReceiveAsync(
+                    new ArraySegment<byte>(buffer),
+                    CancellationToken.None);
             }
-            await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+
+            await webSocket.CloseAsync(
+                result.CloseStatus.Value,
+                result.CloseStatusDescription,
+                CancellationToken.None);
             serialPortCommunicationService.DataReceived -= dataReceivedHandler;
             _serialPortConnectionManager.Close(serialPortCommunicationService.PortName);
         }
