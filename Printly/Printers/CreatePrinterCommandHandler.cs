@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Printly.Printers
 {
-    public class GetPrinterByIdQueryHandler : IRequestHandler<GetPrinterByIdQuery, GetPrinterByIdQueryResponse>
+    public class CreatePrinterCommandHandler : IRequestHandler<CreatePrinterCommand, CreatePrinterCommandResponse>
     {
         private readonly IDataStorageService<Printer> _storageService;
         private readonly IMapper _mapper;
 
-        public GetPrinterByIdQueryHandler(
+        public CreatePrinterCommandHandler(
             IDataStorageService<Printer> storageService,
             IMapper mapper)
         {
@@ -21,14 +21,16 @@ namespace Printly.Printers
             _mapper = mapper;
         }
 
-        public async Task<GetPrinterByIdQueryResponse> Handle(
-            GetPrinterByIdQuery request,
+        public async Task<CreatePrinterCommandResponse> Handle(
+            CreatePrinterCommand request,
             CancellationToken cancellationToken)
         {
-            var printer = await _storageService.Get(request.Id);
-            return new GetPrinterByIdQueryResponse()
+            var printerDomain = _mapper.Map<Printer>(request.Printer);
+            await _storageService.Create(printerDomain);
+            var printerDto = _mapper.Map<Dto.Response.Printer>(printerDomain);
+            return new CreatePrinterCommandResponse()
             {
-                Printer = _mapper.Map<Printly.Dto.Response.Printer>(printer)
+                Printer = printerDto
             };
         }
     }

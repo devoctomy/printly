@@ -1,8 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Printly.Mapping
 {
@@ -11,6 +7,8 @@ namespace Printly.Mapping
         public DomainToDtoMapping()
         {
             CreateMap<Domain.Models.Printer, Dto.Response.Printer>();
+
+            CreateMap<Dto.Request.Printer, Domain.Models.Printer>();
         }
     }
 }

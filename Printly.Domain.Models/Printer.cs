@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MongoDB.Bson;
 
 namespace Printly.Domain.Models
 {
     public class Printer : StorageEntityBase
     {
-        public override string Id { get; set; } = Guid.NewGuid().ToString();
+        public override ObjectId Id { get; set; } = ObjectId.GenerateNewId();
         public string MarlinId { get; set; }
         public string Name { get; set; }
     }

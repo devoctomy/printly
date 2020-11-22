@@ -1,9 +1,11 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using Printly.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Printly.Domain.Services
 {
@@ -18,28 +20,28 @@ namespace Printly.Domain.Services
             _entities = database.GetCollection<T>(settings.CollectionName);
         }
 
-        public List<T> Get() =>
-            _entities.Find(book => true).ToList();
+        public async Task<List<T>> Get() =>
+            (await _entities.FindAsync(book => true)).ToList();
 
-        public T Get(string id) =>
-            _entities.Find(entity => entity.Id == id).FirstOrDefault();
+        
+        public async Task<T> Get(string id) =>
+            (await _entities.FindAsync(entity => entity.Id == ObjectId.Parse(id))).FirstOrDefault();
 
-        public IEnumerable<T> Find(Expression<Func<T, bool>> filter) =>
-            _entities.Find(filter).ToEnumerable();
+        public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> filter) =>
+            (await _entities.FindAsync(filter)).ToEnumerable();
 
-        public T Create(T entity)
+        public async Task Create(T entity)
         {
-            _entities.InsertOne(entity);
-            return entity;
+            await _entities.InsertOneAsync(entity);
         }
 
         public void Update(string id, T entity) =>
-            _entities.ReplaceOne(book => book.Id == id, entity);
+            _entities.ReplaceOne(book => book.Id == ObjectId.Parse(id), entity);
 
         public void Remove(T entity) =>
             _entities.DeleteOne(book => book.Id == entity.Id);
 
         public void Remove(string id) =>
-            _entities.DeleteOne(book => book.Id == id);
+            _entities.DeleteOne(book => book.Id == ObjectId.Parse(id));
     }
 }

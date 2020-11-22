@@ -8,6 +8,6 @@ namespace Printly.Domain.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public virtual string Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public virtual ObjectId Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

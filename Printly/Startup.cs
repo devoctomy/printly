@@ -41,6 +41,7 @@ namespace Printly
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Printly", Version = "v1" });
+                c.CustomSchemaIds(type => type.ToString());
             });
         }
 
@@ -50,7 +51,10 @@ namespace Printly
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Printly v1"));
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Printly v1");
+                });
             }
 
             app.UseRouting();

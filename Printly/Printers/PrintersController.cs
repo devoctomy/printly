@@ -18,7 +18,7 @@ namespace Printly.Printers
         }
 
         [HttpGet]
-        public async Task<Printer> Get(
+        public async Task<GetPrinterByIdQueryResponse> Get(
             string id,
             CancellationToken cancellationToken)
         {
@@ -29,7 +29,22 @@ namespace Printly.Printers
             var response = await _mediator.Send(
                 request,
                 cancellationToken);
-            return response.Printer;
+            return response;
+        }
+
+        [HttpPost]
+        public async Task<CreatePrinterCommandResponse> Create(
+            [FromBody] Dto.Request.Printer printer,
+            CancellationToken cancellationToken)
+        {
+            var request = new CreatePrinterCommand()
+            {
+                Printer = printer
+            };
+            var response = await _mediator.Send(
+                request,
+                cancellationToken);
+            return response;
         }
     }
 }

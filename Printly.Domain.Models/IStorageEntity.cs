@@ -1,7 +1,9 @@
-﻿namespace Printly.Domain.Models
+﻿using MongoDB.Bson;
+
+namespace Printly.Domain.Models
 {
     public interface IStorageEntity
     {
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
     }
 }
