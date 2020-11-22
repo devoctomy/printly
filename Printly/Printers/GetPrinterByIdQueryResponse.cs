@@ -4,6 +4,6 @@ namespace Printly.Printers
 {
     public class GetPrinterByIdQueryResponse
     {
-        public Printer Printer;
+        public Printer Printer { get; set; }
     }
 }
