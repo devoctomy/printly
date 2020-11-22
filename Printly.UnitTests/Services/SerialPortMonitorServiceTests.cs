@@ -16,10 +16,15 @@ namespace Printly.UnitTests.Services
         {
             // Arrange
             var mockSerialPortDiscoveryService = new Mock<ISerialPortDiscoveryService>();
-            var sut = new SerialPortMonitorService(mockSerialPortDiscoveryService.Object);
+            var mockDateTimeService = new Mock<IDateTimeService>();
+            var sut = new SerialPortMonitorService(
+                mockSerialPortDiscoveryService.Object,
+                mockDateTimeService.Object);
 
             mockSerialPortDiscoveryService.Setup(x => x.GetPorts())
                 .Returns(new string[] { "COM1", "COM2" });
+
+            mockDateTimeService.SetupGet(x => x.UtcNow).Returns(DateTime.UtcNow);
 
             var currentlyConnectedPorts = new List<string>();
 
@@ -54,7 +59,12 @@ namespace Printly.UnitTests.Services
         {
             // Arrange
             var mockSerialPortDiscoveryService = new Mock<ISerialPortDiscoveryService>();
-            var sut = new SerialPortMonitorService(mockSerialPortDiscoveryService.Object);
+            var mockDateTimeService = new Mock<IDateTimeService>();
+            var sut = new SerialPortMonitorService(
+                mockSerialPortDiscoveryService.Object,
+                mockDateTimeService.Object);
+
+            mockDateTimeService.SetupGet(x => x.UtcNow).Returns(DateTime.UtcNow);
 
             var activityTask = PortConnectionActivity(mockSerialPortDiscoveryService);
 

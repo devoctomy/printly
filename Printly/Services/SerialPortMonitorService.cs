@@ -12,14 +12,18 @@ namespace Printly.Services
         public event EventHandler<PortsDisconnectedEventArgs> PortsDisconnected;
 
         private ISerialPortDiscoveryService _serialPortDiscoveryService;
+        private IDateTimeService _dateTimeService;
         private CancellationTokenSource _cancellationTokenSource;
         private Task _monitoringTask;
         private List<SerialPortConnectionInfo> _lastDetectedPorts = new List<SerialPortConnectionInfo>();
 
 
-        public SerialPortMonitorService(ISerialPortDiscoveryService serialPortDiscoveryService)
+        public SerialPortMonitorService(
+            ISerialPortDiscoveryService serialPortDiscoveryService,
+            IDateTimeService dateTimeService)
         {
             _serialPortDiscoveryService = serialPortDiscoveryService;
+            _dateTimeService = dateTimeService;
             _cancellationTokenSource = new CancellationTokenSource();
         }
 
@@ -55,7 +59,7 @@ namespace Printly.Services
                         _lastDetectedPorts.Add(new SerialPortConnectionInfo()
                         {
                             PortName = curConnected,
-                            OnlineSince = DateTime.UtcNow
+                            OnlineSince = _dateTimeService.UtcNow
                         });
                     }
 
