@@ -23,11 +23,14 @@ services:
       dockerfile: Printly/dockerfile
     environment:
       -  ASPNETCORE_URLS=http://0.0.0.0:5000/
+      -  ASPNETCORE_ENVIRONMENT=Development
       -  PRINTLY_ServiceId=2E910612-CB54-4436-BCD7-890698BC4B2E
       -  PRINTLY_MongoDbStorageConnectionString=mongodb://mongo:27017
       -  PRINTLY_MongoDbStorageDatabaseName=Printly
     ports:
       - "5000:5000"
+    depends_on:
+      - mongo
     networks:
       - my-network
 
