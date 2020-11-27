@@ -1,6 +1,10 @@
 # printly
 Simple print-farm POC.
 
+## dotnet 5 SDK (Installation on Raspberry Pi 4 Arm64)
+
+https://dotnet.microsoft.com/download/dotnet/thank-you/sdk-5.0.100-linux-arm64-binaries
+
 ## API Reference
 
 ### System
