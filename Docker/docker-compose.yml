@@ -3,7 +3,6 @@ version: '3.4'
 services:
   mongo:
     image: mongo:latest
-    container_name: mongo
     ports:
       - "27017:27017"
     networks:
@@ -11,7 +10,6 @@ services:
 
   mongo-express:
     image: mongo-express:latest
-    container_name: mongo-express
     ports:
       - "8081:8081"
     depends_on:
@@ -23,7 +21,6 @@ services:
     build:
       context: ../
       dockerfile: Printly/Dockerfile
-    container_name: printly
     environment:
       -  ASPNETCORE_URLS=http://localhost:5000/
       -  PRINTLY_ServiceId=2E910612-CB54-4436-BCD7-890698BC4B2E
