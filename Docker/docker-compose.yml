@@ -22,7 +22,7 @@ services:
       context: ../
       dockerfile: Printly/Dockerfile
     environment:
-      -  ASPNETCORE_URLS=http://0.0.0.0:5000/
+      -  ASPNETCORE_URLS=http://0.0.0.0:80/
       -  PRINTLY_ServiceId=2E910612-CB54-4436-BCD7-890698BC4B2E
       -  PRINTLY_MongoDbStorageConnectionString=mongodb://mongo:27017
       -  PRINTLY_MongoDbStorageDatabaseName=Printly

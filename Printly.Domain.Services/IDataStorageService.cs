@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -11,8 +12,8 @@ namespace Printly.Domain.Services
         Task<T> Get(string id);
         Task<IEnumerable<T>> Find(Expression<Func<T, bool>> filter);
         Task Create(T sample);
-        void Update(string id, T sample);
-        void Remove(T sample);
-        void Remove(string id);
+        ReplaceOneResult Update(string id, T sample);
+        DeleteResult Remove(T sample);
+        DeleteResult Remove(string id);
     }
 }

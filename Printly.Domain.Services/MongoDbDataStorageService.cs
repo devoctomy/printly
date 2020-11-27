@@ -15,33 +15,34 @@ namespace Printly.Domain.Services
 
         public MongoDbDataStorageService(MongoDbStorageServiceConfiguration settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-            _entities = database.GetCollection<T>(settings.CollectionName);
+            if(!string.IsNullOrEmpty(settings.ConnectionString))
+            {
+                var client = new MongoClient(settings.ConnectionString);
+                var database = client.GetDatabase(settings.DatabaseName);
+                _entities = database.GetCollection<T>(settings.CollectionName);
+            }
         }
 
         public async Task<List<T>> Get() =>
-            (await _entities.FindAsync(book => true)).ToList();
+            (await _entities?.FindAsync(book => true)).ToList();
 
         
         public async Task<T> Get(string id) =>
-            (await _entities.FindAsync(entity => entity.Id == ObjectId.Parse(id))).FirstOrDefault();
+            (await _entities?.FindAsync(entity => entity.Id == ObjectId.Parse(id))).FirstOrDefault();
 
         public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> filter) =>
-            (await _entities.FindAsync(filter)).ToEnumerable();
+            (await _entities?.FindAsync(filter)).ToEnumerable();
 
-        public async Task Create(T entity)
-        {
-            await _entities.InsertOneAsync(entity);
-        }
+        public async Task Create(T entity) =>
+            await _entities?.InsertOneAsync(entity);
 
-        public void Update(string id, T entity) =>
-            _entities.ReplaceOne(book => book.Id == ObjectId.Parse(id), entity);
+        public ReplaceOneResult Update(string id, T entity) =>
+            _entities?.ReplaceOne(book => book.Id == ObjectId.Parse(id), entity);
 
-        public void Remove(T entity) =>
-            _entities.DeleteOne(book => book.Id == entity.Id);
+        public DeleteResult Remove(T entity) =>
+            _entities?.DeleteOne(book => book.Id == entity.Id);
 
-        public void Remove(string id) =>
-            _entities.DeleteOne(book => book.Id == ObjectId.Parse(id));
+        public DeleteResult Remove(string id) =>
+            _entities?.DeleteOne(book => book.Id == ObjectId.Parse(id));
     }
 }
