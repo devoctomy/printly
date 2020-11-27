@@ -11,6 +11,7 @@ using Printly.Extensions;
 using Printly.Middleware;
 using Printly.System;
 using System;
+using System.Net;
 
 namespace Printly
 {

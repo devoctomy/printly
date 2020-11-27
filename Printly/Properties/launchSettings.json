@@ -17,7 +17,8 @@
         "PRINTLY_ServiceId": "2E910612-CB54-4436-BCD7-890698BC4B2E",
         "PRINTLY_MongoDbStorageConnectionString": "mongodb://localhost:27017",
         "PRINTLY_MongoDbStorageDatabaseName": "Printly",
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://0.0.0.0:8000"
       }
     },
     "Printly": {
@@ -28,10 +29,10 @@
         "PRINTLY_ServiceId": "2E910612-CB54-4436-BCD7-890698BC4B2E",
         "PRINTLY_MongoDbStorageConnectionString": "",
         "PRINTLY_MongoDbStorageDatabaseName": "Printly",
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://0.0.0.0:8000"
       },
-      "dotnetRunMessages": "true",
-      "applicationUrl": "http://localhost:5000"
+      "dotnetRunMessages": "true"
     },
     "Docker": {
       "commandName": "Docker",
@@ -42,7 +43,8 @@
       "environmentVariables": {
         "PRINTLY_ServiceId": "2E910612-CB54-4436-BCD7-890698BC4B2E",
         "PRINTLY_MongoDbStorageConnectionString": "mongodb://localhost:27017",
-        "PRINTLY_MongoDbStorageDatabaseName": "Printly"
+        "PRINTLY_MongoDbStorageDatabaseName": "Printly",
+        "ASPNETCORE_URLS": "http://0.0.0.0:8000"
       }
     }
   }
