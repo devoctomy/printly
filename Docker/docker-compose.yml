@@ -23,6 +23,7 @@ services:
     build:
       context: ../
       dockerfile: Printly/Dockerfile
+    container_name: printly
     ports:
       - "5000:5000"
     networks:
