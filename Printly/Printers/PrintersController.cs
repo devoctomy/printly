@@ -75,5 +75,21 @@ namespace Printly.Printers
                 cancellationToken);
             return response;
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<DeletePrinterByIdCommandResponse> Delete(
+            string id,
+            CancellationToken cancellationToken)
+        {
+            var request = new DeletePrinterByIdCommand()
+            {
+                Id = id
+            };
+            var response = await _mediator.Send(
+                request,
+                cancellationToken);
+            return response;
+        }
     }
 }

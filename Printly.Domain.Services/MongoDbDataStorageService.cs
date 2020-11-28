@@ -39,10 +39,10 @@ namespace Printly.Domain.Services
         public Task<ReplaceOneResult> Update(string id, T entity) =>
             _entities?.ReplaceOneAsync(book => book.Id == ObjectId.Parse(id), entity);
 
-        public DeleteResult Remove(T entity) =>
-            _entities?.DeleteOne(book => book.Id == entity.Id);
+        public Task<DeleteResult> Remove(T entity) =>
+            _entities?.DeleteOneAsync(book => book.Id == entity.Id);
 
-        public DeleteResult Remove(string id) =>
-            _entities?.DeleteOne(book => book.Id == ObjectId.Parse(id));
+        public Task<DeleteResult> Remove(string id) =>
+            _entities?.DeleteOneAsync(book => book.Id == ObjectId.Parse(id));
     }
 }
