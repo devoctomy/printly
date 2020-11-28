@@ -5,6 +5,21 @@ Simple print-farm POC.
 
 https://dotnet.microsoft.com/download/dotnet/thank-you/sdk-5.0.100-linux-arm64-binaries
 
+## Debugging Printly
+
+To debug just Printly service within Visual Studio, you will need to have a running instance of Mongo.
+this can be done using docker with the following command,
+
+```
+docker run -p 27017:27017 mongo:latest
+```
+
+This will make your connection string as follows,
+
+```
+"PRINTLY_MongoDbStorageConnectionString": "mongodb://localhost:27017"
+```
+
 ## API Reference
 
 ### System

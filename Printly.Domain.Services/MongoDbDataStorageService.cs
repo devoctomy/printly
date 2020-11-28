@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Printly.Domain.Services
 {
-    public class MongoDbDataStorageService<T> : IDataStorageService<T> where T : StorageEntityBase
+    public abstract class MongoDbDataStorageService<T> : IDataStorageService<T> where T : StorageEntityBase
     {
         private readonly IMongoCollection<T> _entities;
 

@@ -11,7 +11,6 @@ using Printly.Extensions;
 using Printly.Middleware;
 using Printly.System;
 using System;
-using System.Net;
 
 namespace Printly
 {
@@ -73,7 +72,7 @@ namespace Printly
             app.UseMiddleware<TerminalMiddleware>();
 
             var systemStateService = app.ApplicationServices.GetService<ISystemStateService>();
-            systemStateService.Reset();
+            systemStateService.Initialise().GetAwaiter().GetResult();
         }
 
     }
