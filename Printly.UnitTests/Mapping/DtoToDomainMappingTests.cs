@@ -20,7 +20,6 @@ namespace Printly.UnitTests.Mapping
 
             var dtoPrinter = new Dto.Request.Printer()
             {
-                Id = ObjectId.GenerateNewId().ToString(),
                 MarlinId = Guid.NewGuid().ToString(),
                 Name = "Hello World",
                 BedSize = new Dto.Request.Dimensions()
@@ -35,7 +34,6 @@ namespace Printly.UnitTests.Mapping
             var domainPrinter = sut.Map<Domain.Models.Printer>(dtoPrinter);
 
             // Assert
-            Assert.Equal(dtoPrinter.Id, domainPrinter.Id.ToString());
             Assert.Equal(dtoPrinter.MarlinId, domainPrinter.MarlinId);
             Assert.Equal(dtoPrinter.Name, domainPrinter.Name);
             Assert.Equal(dtoPrinter.BedSize.X, domainPrinter.BedSizeX);
