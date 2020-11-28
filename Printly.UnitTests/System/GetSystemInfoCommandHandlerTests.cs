@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using MongoDB.Bson;
+using Moq;
 using Printly.System;
 using System;
 using System.Threading;
@@ -16,8 +17,16 @@ namespace Printly.UnitTests.System
             var mockSystemStateService = new Mock<ISystemStateService>();
             var sut = new GetSystemInfoCommandHandler(mockSystemStateService.Object);
 
+            var config = new Domain.Models.Configuration()
+            {
+                Id = ObjectId.GenerateNewId(),
+                SystemId = Guid.NewGuid().ToString()
+            };
             var uptime = new TimeSpan(1, 0, 0);
             var startedAt = DateTime.UtcNow.Subtract(uptime);
+
+            mockSystemStateService.SetupGet(x => x.Configuration)
+                .Returns(config);
 
             mockSystemStateService.SetupGet(x => x.StartedAt)
                 .Returns(startedAt);
@@ -31,6 +40,7 @@ namespace Printly.UnitTests.System
                 CancellationToken.None);
 
             // Assert
+            Assert.Equal(config.SystemId, result.SystemInfo.SystemId);
             Assert.Equal(startedAt, result.SystemInfo.StartedAt);
             Assert.Equal(uptime, result.SystemInfo.Uptime);
         }

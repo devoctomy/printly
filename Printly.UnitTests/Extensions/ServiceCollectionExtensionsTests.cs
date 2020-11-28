@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Printly.Domain.Services.Extensions;
 using Printly.Extensions;
 using Printly.Services;
 using Printly.System;
@@ -16,6 +17,11 @@ namespace Printly.UnitTests.Extensions
 
             // Act
             sut.AddPrintlyServices();
+            sut.AddPrintlyDataServices(new Domain.Services.MongoDbConfiguration()
+            {
+                ConnectionString = "mongodb://localhost:27017",
+                DatabaseName = "Test"
+            });
             var serviceProvider = sut.BuildServiceProvider();
 
             // Assert

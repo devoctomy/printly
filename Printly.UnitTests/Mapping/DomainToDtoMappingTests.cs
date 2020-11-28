@@ -33,7 +33,7 @@ namespace Printly.UnitTests.Mapping
 
             // Assert
             Assert.Equal(domainPrinter.Id.ToString(), dtoPrinter.Id);
-            Assert.Equal(domainPrinter.MarlinId, dtoPrinter.Id);
+            Assert.Equal(domainPrinter.MarlinId, dtoPrinter.MarlinId);
             Assert.Equal(domainPrinter.Name, dtoPrinter.Name);
             Assert.Equal(domainPrinter.BedSizeX, dtoPrinter.BedSize.X);
             Assert.Equal(domainPrinter.BedSizeY, dtoPrinter.BedSize.Y);
