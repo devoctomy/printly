@@ -1,4 +1,6 @@
 ﻿using Moq;
+using Printly.Domain.Models;
+using Printly.Domain.Services;
 using Printly.Services;
 using Printly.System;
 using System;
@@ -19,7 +21,8 @@ namespace Printly.UnitTests.System
                 .Returns(DateTime.UtcNow.Subtract(uptime));
             var sut = new SystemStateService(
                 mockDateTimeService.Object,
-                mockSerialPortDiscoveryService.Object);
+                mockSerialPortDiscoveryService.Object,
+                Mock.Of<IDataStorageService<Configuration>>());
 
             mockSerialPortDiscoveryService.Setup(x => x.GetPorts())
                 .Returns(new string[] { "COM1", "COM2" });
