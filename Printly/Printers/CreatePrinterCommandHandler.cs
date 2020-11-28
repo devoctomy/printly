@@ -2,7 +2,6 @@
 using MediatR;
 using Printly.Domain.Models;
 using Printly.Domain.Services;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
