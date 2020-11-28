@@ -36,8 +36,8 @@ namespace Printly.Domain.Services
         public async Task Create(T entity) =>
             await _entities?.InsertOneAsync(entity);
 
-        public ReplaceOneResult Update(string id, T entity) =>
-            _entities?.ReplaceOne(book => book.Id == ObjectId.Parse(id), entity);
+        public Task<ReplaceOneResult> Update(string id, T entity) =>
+            _entities?.ReplaceOneAsync(book => book.Id == ObjectId.Parse(id), entity);
 
         public DeleteResult Remove(T entity) =>
             _entities?.DeleteOne(book => book.Id == entity.Id);

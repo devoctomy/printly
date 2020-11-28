@@ -12,7 +12,7 @@ namespace Printly.Domain.Services
         Task<T> Get(string id);
         Task<IEnumerable<T>> Find(Expression<Func<T, bool>> filter);
         Task Create(T sample);
-        ReplaceOneResult Update(string id, T sample);
+        Task<ReplaceOneResult> Update(string id, T sample);
         DeleteResult Remove(T sample);
         DeleteResult Remove(string id);
     }

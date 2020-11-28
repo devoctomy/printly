@@ -1,6 +1,4 @@
-﻿using Printly.Dto.Response;
-
-namespace Printly.Dto.Request
+﻿namespace Printly.Dto.Request
 {
     public class Printer
     {

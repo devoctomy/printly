@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Printly.Dto.Response;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,6 +38,24 @@ namespace Printly.Printers
         {
             var request = new CreatePrinterCommand()
             {
+                Printer = printer
+            };
+            var response = await _mediator.Send(
+                request,
+                cancellationToken);
+            return response;
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<UpdatePrinterCommandResponse> Update(
+            string id,
+            [FromBody] Dto.Request.Printer printer,
+            CancellationToken cancellationToken)
+        {
+            var request = new UpdatePrinterCommand()
+            {
+                Id = id,
                 Printer = printer
             };
             var response = await _mediator.Send(
