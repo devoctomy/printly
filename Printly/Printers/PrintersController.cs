@@ -17,6 +17,18 @@ namespace Printly.Printers
         }
 
         [HttpGet]
+        public async Task<GetAllPrintersQueryResponse> Get(
+            CancellationToken cancellationToken)
+        {
+            var request = new GetAllPrintersQuery();
+            var response = await _mediator.Send(
+                request,
+                cancellationToken);
+            return response;
+        }
+
+        [HttpGet]
+        [Route("{id}")]
         public async Task<GetPrinterByIdQueryResponse> Get(
             string id,
             CancellationToken cancellationToken)
