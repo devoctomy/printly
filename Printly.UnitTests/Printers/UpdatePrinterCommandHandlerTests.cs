@@ -13,7 +13,7 @@ namespace Printly.UnitTests.Printers
     public class UpdatePrinterCommandHandlerTests
     {
         [Fact]
-        public async Task GivenCommand_WhenHandled_ThenDtoMappedToDomain_AndStorageCreateCalled_AndResponseReturned()
+        public async Task GivenCommand_WhenHandled_ThenDtoMappedToDomain_AndStorageUpdateCalled_AndResponseReturned()
         {
             // Arrange
             var mockDataStorage = new Mock<IDataStorageService<Domain.Models.Printer>>();
