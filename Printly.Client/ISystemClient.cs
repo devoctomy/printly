@@ -6,6 +6,6 @@ namespace Printly.Client
 {
     public interface ISystemClient
     {
-        Task<PrintlyResponse<SystemInfo>> GetInfoAsync(CancellationToken cancellationToken);
+        Task<ObjectResponse<SystemInfo>> GetInfoAsync(CancellationToken cancellationToken);
     }
 }

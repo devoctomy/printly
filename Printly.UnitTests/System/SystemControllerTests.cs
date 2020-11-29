@@ -41,7 +41,8 @@ namespace Printly.UnitTests.System
             mockMediator.Verify(x => x.Send<GetSystemInfoResponse>(
                 It.IsAny<IRequest<GetSystemInfoResponse>>(),
                 It.IsAny<CancellationToken>()), Times.Once);
-            Assert.Equal(response.SystemInfo, result);
+            Assert.True(result.Success);
+            Assert.Equal(response.SystemInfo, result.Value);
         }
     }
 }

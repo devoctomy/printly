@@ -1,4 +1,5 @@
-﻿using Printly.Dto.Response;
+﻿using Newtonsoft.Json;
+using Printly.Dto.Response;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,12 +15,12 @@ namespace Printly.Client
             _httpAdapter = httpAdapter;
         }
 
-        public async Task<PrintlyResponse<SystemInfo>> GetInfoAsync(CancellationToken cancellationToken)
+        public async Task<ObjectResponse<SystemInfo>> GetInfoAsync(CancellationToken cancellationToken)
         {
             var response = await _httpAdapter.GetAsync(
                 new Uri("/api/System", UriKind.Relative),
                 cancellationToken);
-            return await ProcessHttpResponseMessage<SystemInfo>(response);
+            return JsonConvert.DeserializeObject<ObjectResponse<SystemInfo>> (await response.Content.ReadAsStringAsync(cancellationToken));
         }
     }
 }

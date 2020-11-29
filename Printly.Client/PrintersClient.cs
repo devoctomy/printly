@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Printly.Dto.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Printly.Client
             _httpAdapter = httpAdapter;
         }
 
-        public async Task<PrintlyResponse<Dto.Response.Printer>> Createsync(
+        public async Task<ObjectResponse<Dto.Response.Printer>> Createsync(
             Dto.Request.Printer printer,
             CancellationToken cancellationToken)
         {
@@ -26,28 +27,28 @@ namespace Printly.Client
                 new Uri($"/api/Printers", UriKind.Relative),
                 new StringContent(JsonConvert.SerializeObject(printer), Encoding.UTF8, "application/json"),
                 cancellationToken);
-            return await ProcessHttpResponseMessage<Dto.Response.Printer>(response);
+            return JsonConvert.DeserializeObject<ObjectResponse<Dto.Response.Printer>>(await response.Content.ReadAsStringAsync(cancellationToken));
         }
 
-        public async Task<PrintlyResponse<List<Dto.Response.Printer>>> GetAllAsync(CancellationToken cancellationToken)
+        public async Task<ObjectResponse<List<Dto.Response.Printer>>> GetAllAsync(CancellationToken cancellationToken)
         {
             var response = await _httpAdapter.GetAsync(
                 new Uri("/api/Printers", UriKind.Relative),
                 cancellationToken);
-            return await ProcessHttpResponseMessage<List<Dto.Response.Printer>>(response);
+            return JsonConvert.DeserializeObject<ObjectResponse<List<Dto.Response.Printer>>>(await response.Content.ReadAsStringAsync(cancellationToken));
         }
 
-        public async Task<PrintlyResponse<Dto.Response.Printer>> GetAsync(
+        public async Task<ObjectResponse<Dto.Response.Printer>> GetAsync(
             string id,
             CancellationToken cancellationToken)
         {
             var response = await _httpAdapter.GetAsync(
                 new Uri($"/api/Printers/{id}", UriKind.Relative),
                 cancellationToken);
-            return await ProcessHttpResponseMessage<Dto.Response.Printer>(response);
+            return JsonConvert.DeserializeObject<ObjectResponse<Dto.Response.Printer>>(await response.Content.ReadAsStringAsync(cancellationToken));
         }
 
-        public async Task<PrintlyResponse<Dto.Response.Printer>> UpdateAsync(
+        public async Task<ObjectResponse<Dto.Response.Printer>> UpdateAsync(
             string id,
             Dto.Request.Printer printer,
             CancellationToken cancellationToken)
@@ -55,17 +56,17 @@ namespace Printly.Client
             var response = await _httpAdapter.DeleteAsync(
                 new Uri($"/api/Printers/{id}", UriKind.Relative),
                 cancellationToken);
-            return await ProcessHttpResponseMessage<Dto.Response.Printer>(response);
+            return JsonConvert.DeserializeObject<ObjectResponse<Dto.Response.Printer>>(await response.Content.ReadAsStringAsync(cancellationToken));
         }
 
-        public async Task<PrintlyResponse<Dto.Response.Printer>> DeleteAsync(
+        public async Task<ObjectResponse<Dto.Response.Printer>> DeleteAsync(
             string id,
             CancellationToken cancellationToken)
         {
             var response = await _httpAdapter.DeleteAsync(
                 new Uri($"/api/Printers/{id}", UriKind.Relative),
                 cancellationToken);
-            return await ProcessHttpResponseMessage<Dto.Response.Printer>(response);
+            return JsonConvert.DeserializeObject<ObjectResponse<Dto.Response.Printer>>(await response.Content.ReadAsStringAsync(cancellationToken));
         }
     }
 }

@@ -23,13 +23,17 @@ namespace Printly.System
         }
 
         [HttpGet("Info")]
-        public async Task<SystemInfo> GetSystemInfo()
+        public async Task<ObjectResponse<SystemInfo>> GetSystemInfo()
         {
             _logger.LogInformation("GetSystemInfo...");
             var response = await _mediator.Send(
                 new GetSystemInfoCommand(),
                 CancellationToken.None);
-            return response.SystemInfo;
+            return new ObjectResponse<SystemInfo>()
+            {
+                Success = true,
+                Value = response.SystemInfo
+            };
         }
 
     }

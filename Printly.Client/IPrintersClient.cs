@@ -7,18 +7,18 @@ namespace Printly.Client
 {
     public interface IPrintersClient
     {
-        Task<PrintlyResponse<List<Printer>>> GetAllAsync(CancellationToken cancellationToken);
-        Task<PrintlyResponse<Printer>> GetAsync(
+        Task<ObjectResponse<List<Printer>>> GetAllAsync(CancellationToken cancellationToken);
+        Task<ObjectResponse<Printer>> GetAsync(
             string id,
             CancellationToken cancellationToken);
-        Task<PrintlyResponse<Printer>> Createsync(
+        Task<ObjectResponse<Printer>> Createsync(
             Dto.Request.Printer printer,
             CancellationToken cancellationToken);
-        Task<PrintlyResponse<Printer>> UpdateAsync(
+        Task<ObjectResponse<Printer>> UpdateAsync(
             string id,
             Dto.Request.Printer printer,
             CancellationToken cancellationToken);
-        Task<PrintlyResponse<Printer>> DeleteAsync(
+        Task<ObjectResponse<Printer>> DeleteAsync(
             string id,
             CancellationToken cancellationToken);
     }

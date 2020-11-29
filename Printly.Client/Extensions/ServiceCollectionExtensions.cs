@@ -21,6 +21,15 @@ namespace Printly.Client.Extensions
                     configuration.SleepDuration))
                 .SetHandlerLifetime(configuration.HttpMessageHandlerLifetime);
 
+            services.AddHttpClient<IHttpAdapter<PrintersClient>, HttpAdapter<PrintersClient>>(client =>
+            {
+                client.BaseAddress = new Uri(configuration.BaseUrl);
+            })
+                .AddPolicyHandler(GetRetryPolicy(
+                    configuration.RetryCount,
+                    configuration.SleepDuration))
+                .SetHandlerLifetime(configuration.HttpMessageHandlerLifetime);
+
             return services;
         }
 
