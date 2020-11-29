@@ -17,12 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Printly.UnitTests", "Printl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{E177A6BF-33BC-4BF5-9C44-654479A7CBA8}"
 	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Printly.Domain.Services", "Printly.Domain.Services\Printly.Domain.Services.csproj", "{B020F64D-82F8-472B-9648-ECE008619059}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Printly.Domain.Services", "Printly.Domain.Services\Printly.Domain.Services.csproj", "{B020F64D-82F8-472B-9648-ECE008619059}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Printly.Domain.Models", "Printly.Domain.Models\Printly.Domain.Models.csproj", "{6442FAF3-F1D9-42C9-8877-C40DB85ACECB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Printly.Domain.Models", "Printly.Domain.Models\Printly.Domain.Models.csproj", "{6442FAF3-F1D9-42C9-8877-C40DB85ACECB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

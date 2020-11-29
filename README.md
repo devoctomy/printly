@@ -1,3 +1,7 @@
+
+[![Build Status](https://travis-ci.org/devoctomy/printly.svg?branch=main)](https://travis-ci.org/devoctomy/printly)
+[![codecov](https://codecov.io/gh/devoctomy/printly/branch/main/graph/badge.svg?token=1HHMS22045)](https://codecov.io/gh/devoctomy/printly)
+
 # printly
 Simple print-farm POC.
 
