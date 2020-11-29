@@ -10,13 +10,6 @@ namespace Printly.Dto.Response
 
         public ObjectResponse()
         {
-            Success = true;
-        }
-
-        public ObjectResponse(T value)
-        {
-            Success = true;
-            Value = value;
         }
 
         public ObjectResponse(

@@ -9,7 +9,6 @@ namespace Printly.Dto.Response
 
         public Response()
         {
-            Success = true;
         }
 
         public Response(
