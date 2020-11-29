@@ -1,5 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Printly.Dto.Response;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,22 +20,36 @@ namespace Printly.Printers
         }
 
         [HttpGet]
-        public async Task<GetAllPrintersQueryResponse> Get(
+        public async Task<ObjectResponse<List<Printer>>> Get(
             CancellationToken cancellationToken)
         {
+            if(!ModelState.IsValid)
+            {
+                return new ObjectResponse<List<Printer>>(
+                    HttpStatusCode.BadRequest,
+                    "Model state is invalid.");
+            }
+
             var request = new GetAllPrintersQuery();
             var response = await _mediator.Send(
                 request,
                 cancellationToken);
-            return response;
+            return new ObjectResponse<List<Printer>>(response.Printers);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<GetPrinterByIdQueryResponse> Get(
+        public async Task<ObjectResponse<Printer>> Get(
             string id,
             CancellationToken cancellationToken)
         {
+            if (!ModelState.IsValid)
+            {
+                return new ObjectResponse<Printer>(
+                    HttpStatusCode.BadRequest,
+                    "Model state is invalid.");
+            }
+
             var request = new GetPrinterByIdQuery()
             {
                 Id = id
@@ -40,14 +57,21 @@ namespace Printly.Printers
             var response = await _mediator.Send(
                 request,
                 cancellationToken);
-            return response;
+            return new ObjectResponse<Printer>(response.Printer);
         }
 
         [HttpPost]
-        public async Task<CreatePrinterCommandResponse> Create(
+        public async Task<ObjectResponse<Printer>> Create(
             [FromBody] Dto.Request.Printer printer,
             CancellationToken cancellationToken)
         {
+            if (!ModelState.IsValid)
+            {
+                return new ObjectResponse<Printer>(
+                    HttpStatusCode.BadRequest,
+                    "Model state is invalid.");
+            }
+
             var request = new CreatePrinterCommand()
             {
                 Printer = printer
@@ -55,16 +79,23 @@ namespace Printly.Printers
             var response = await _mediator.Send(
                 request,
                 cancellationToken);
-            return response;
+            return new ObjectResponse<Printer>(response.Printer);
         }
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<UpdatePrinterCommandResponse> Update(
+        public async Task<Response> Update(
             string id,
             [FromBody] Dto.Request.Printer printer,
             CancellationToken cancellationToken)
         {
+            if (!ModelState.IsValid)
+            {
+                return new Response(
+                    HttpStatusCode.BadRequest,
+                    "Model state is invalid.");
+            }
+
             var request = new UpdatePrinterCommand()
             {
                 Id = id,
@@ -73,15 +104,22 @@ namespace Printly.Printers
             var response = await _mediator.Send(
                 request,
                 cancellationToken);
-            return response;
+            return new Response();
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<DeletePrinterByIdCommandResponse> Delete(
+        public async Task<Response> Delete(
             string id,
             CancellationToken cancellationToken)
         {
+            if (!ModelState.IsValid)
+            {
+                return new Response(
+                    HttpStatusCode.BadRequest,
+                    "Model state is invalid.");
+            }
+
             var request = new DeletePrinterByIdCommand()
             {
                 Id = id
@@ -89,7 +127,7 @@ namespace Printly.Printers
             var response = await _mediator.Send(
                 request,
                 cancellationToken);
-            return response;
+            return new Response();
         }
     }
 }

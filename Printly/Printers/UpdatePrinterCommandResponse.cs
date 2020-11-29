@@ -1,9 +1,10 @@
 ﻿using MongoDB.Driver;
+using Printly.Dto.Response;
 
 namespace Printly.Printers
 {
     public class UpdatePrinterCommandResponse
     {
-        public bool IsAcknowledged { get; set; }
+        public Error Error { get; set; }
     }
 }

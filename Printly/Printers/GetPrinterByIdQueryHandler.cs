@@ -3,6 +3,7 @@ using MediatR;
 using Printly.Domain.Models;
 using Printly.Domain.Services;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,10 +27,24 @@ namespace Printly.Printers
             CancellationToken cancellationToken)
         {
             var printer = await _storageService.Get(request.Id);
-            return new GetPrinterByIdQueryResponse()
+            if(printer != null)
             {
-                Printer = _mapper.Map<Printly.Dto.Response.Printer>(printer)
-            };
+                return new GetPrinterByIdQueryResponse()
+                {
+                    Printer = _mapper.Map<Printly.Dto.Response.Printer>(printer)
+                };
+            }
+            else
+            {
+                return new GetPrinterByIdQueryResponse()
+                {
+                    Error = new Dto.Response.Error()
+                    {
+                        HttpStatusCode = HttpStatusCode.NotFound,
+                        Message = $"Printer with id '{request.Id}' not found."
+                    }
+                };
+            }
         }
     }
 }

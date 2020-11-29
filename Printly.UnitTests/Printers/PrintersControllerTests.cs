@@ -44,9 +44,9 @@ namespace Printly.UnitTests.Printers
             mockMediator.Verify(x => x.Send(
                 It.IsAny<GetAllPrintersQuery>(),
                 It.IsAny<CancellationToken>()), Times.Once);
-            Assert.Equal(response.Printers.Count, result.Printers.Count);
-            Assert.Equal(response.Printers[0].Id, result.Printers[0].Id);
-            Assert.Equal(response.Printers[1].Id, result.Printers[1].Id);
+            Assert.Equal(response.Printers.Count, result.Value.Count);
+            Assert.Equal(response.Printers[0].Id, result.Value[0].Id);
+            Assert.Equal(response.Printers[1].Id, result.Value[1].Id);
         }
 
         [Fact]
@@ -79,7 +79,7 @@ namespace Printly.UnitTests.Printers
             mockMediator.Verify(x => x.Send(
                 It.IsAny<GetPrinterByIdQuery>(),
                 It.IsAny<CancellationToken>()), Times.Once);
-            Assert.Equal(response.Printer.Id, result.Printer.Id);
+            Assert.Equal(response.Printer.Id, result.Value.Id);
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace Printly.UnitTests.Printers
             mockMediator.Verify(x => x.Send(
                 It.IsAny<CreatePrinterCommand>(),
                 It.IsAny<CancellationToken>()), Times.Once);
-            Assert.Equal(response.Printer.Id, result.Printer.Id);
+            Assert.Equal(response.Printer.Id, result.Value.Id);
         }
 
         [Fact]
@@ -121,10 +121,7 @@ namespace Printly.UnitTests.Printers
             var mockMediator = new Mock<IMediator>();
             var sut = new PrintersController(mockMediator.Object);
 
-            var response = new UpdatePrinterCommandResponse()
-            {
-                IsAcknowledged = true
-            };
+            var response = new UpdatePrinterCommandResponse();
 
             mockMediator.Setup(x => x.Send(
                 It.IsAny<UpdatePrinterCommand>(),
@@ -141,7 +138,7 @@ namespace Printly.UnitTests.Printers
             mockMediator.Verify(x => x.Send(
                 It.IsAny<UpdatePrinterCommand>(),
                 It.IsAny<CancellationToken>()), Times.Once);
-            Assert.True(response.IsAcknowledged);
+            Assert.Null(response.Error);
         }
 
         [Fact]
@@ -151,10 +148,7 @@ namespace Printly.UnitTests.Printers
             var mockMediator = new Mock<IMediator>();
             var sut = new PrintersController(mockMediator.Object);
 
-            var response = new DeletePrinterByIdCommandResponse()
-            {
-                IsAcknowledged = true
-            };
+            var response = new DeletePrinterByIdCommandResponse();
 
             mockMediator.Setup(x => x.Send(
                 It.IsAny<DeletePrinterByIdCommand>(),
@@ -170,7 +164,7 @@ namespace Printly.UnitTests.Printers
             mockMediator.Verify(x => x.Send(
                 It.IsAny<DeletePrinterByIdCommand>(),
                 It.IsAny<CancellationToken>()), Times.Once);
-            Assert.True(response.IsAcknowledged);
+            Assert.Null(response.Error);
         }
     }
 }

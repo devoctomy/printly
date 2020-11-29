@@ -4,6 +4,7 @@ using MongoDB.Bson;
 using Printly.Domain.Models;
 using Printly.Domain.Services;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,10 +32,21 @@ namespace Printly.Printers
             var result = await _storageService.Update(
                 request.Id,
                 printerDomain);
-            return new UpdatePrinterCommandResponse()
+            if (result.IsAcknowledged && result.IsModifiedCountAvailable && result.ModifiedCount == 1)
             {
-                IsAcknowledged = result.IsAcknowledged
-            };
+                return new UpdatePrinterCommandResponse();
+            }
+            else
+            {
+                return new UpdatePrinterCommandResponse()
+                {
+                    Error = new Dto.Response.Error()
+                    {
+                        HttpStatusCode = HttpStatusCode.NotFound,
+                        Message = $"Printer with id '{request.Id}' not found."
+                    }
+                };
+            }
         }
     }
 }
