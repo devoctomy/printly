@@ -5,6 +5,7 @@ using Printly.Domain.Services;
 using Printly.Services;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -39,10 +40,11 @@ namespace Printly.UnitTests.System
             mockSerialPortDiscoveryService.Setup(x => x.GetPorts())
                 .Returns(new string[] { "COM1", "COM2" });
 
-            mockConfigDataService.Setup(x => x.Get())
+            mockConfigDataService.Setup(x => x.Get(
+                It.IsAny<CancellationToken>()))
                 .ReturnsAsync(configurations);
 
-            await sut.Initialise();
+            await sut.InitialiseAsync(CancellationToken.None);
 
             // Act & Assert
             Assert.Equal(configurations[0].Id.ToString(), sut.Configuration.Id.ToString());

@@ -1,5 +1,6 @@
 ﻿using Printly.Domain.Models;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Printly.System
@@ -11,7 +12,7 @@ namespace Printly.System
         TimeSpan Uptime { get; }
         string[] SerialPorts { get; }
 
-        Task Initialise();
+        Task InitialiseAsync(CancellationToken cancellationToken);
         void Reset();
     }
 }

@@ -26,7 +26,9 @@ namespace Printly.Printers
             GetPrinterByIdQuery request,
             CancellationToken cancellationToken)
         {
-            var printer = await _storageService.Get(request.Id);
+            var printer = await _storageService.Get(
+                request.Id,
+                cancellationToken);
             if(printer != null)
             {
                 return new GetPrinterByIdQueryResponse()

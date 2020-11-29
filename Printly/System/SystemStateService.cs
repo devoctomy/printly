@@ -3,6 +3,7 @@ using Printly.Domain.Services;
 using Printly.Domain.Services.System;
 using Printly.Services;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Printly.System
@@ -29,13 +30,15 @@ namespace Printly.System
             _configurationDataStorageService = configurationDataStorageService;
         }
 
-        public async Task Initialise()
+        public async Task InitialiseAsync(CancellationToken cancellationToken)
         {
-            var systemInfo = await _configurationDataStorageService.Get();
+            var systemInfo = await _configurationDataStorageService.Get(cancellationToken);
             if (systemInfo.Count == 0)
             {
                 var newSystemInfo = new Configuration();
-                await _configurationDataStorageService.Create(newSystemInfo);
+                await _configurationDataStorageService.Create(
+                    newSystemInfo,
+                    cancellationToken);
                 Configuration = newSystemInfo;
             }
             else

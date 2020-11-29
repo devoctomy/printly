@@ -3,10 +3,7 @@ using Moq;
 using Printly.Domain.Services;
 using Printly.Printers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -31,8 +28,16 @@ namespace Printly.UnitTests.Printers
             };
 
             mockDataStorage.Setup(x => x.Get(
-                It.IsAny<string>()))
+                It.IsAny<string>(),
+                It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new Domain.Models.Printer());
+
+            mockMapper.Setup(x => x.Map<Dto.Response.Printer>(
+                It.IsAny<object>()))
+                .Returns(new Dto.Response.Printer()
+                {
+                    Name = "Bob Hoskins"
+                });
 
             // Act
             var result = await sut.Handle(
@@ -41,8 +46,10 @@ namespace Printly.UnitTests.Printers
 
             // Assert
             mockDataStorage.Verify(x => x.Get(
-                It.IsAny<string>()), Times.Once);
+                It.Is<string>(y => y == query.Id),
+                It.IsAny<CancellationToken>()), Times.Once);
             Assert.Null(result.Error);
+            Assert.Equal("Bob Hoskins", result.Printer.Name);
         }
 
         [Fact]
@@ -61,7 +68,8 @@ namespace Printly.UnitTests.Printers
             };
 
             mockDataStorage.Setup(x => x.Get(
-                It.IsAny<string>()))
+                It.IsAny<string>(),
+                It.IsAny<CancellationToken>()))
                 .ReturnsAsync((Domain.Models.Printer)null);
 
             // Act
@@ -71,7 +79,8 @@ namespace Printly.UnitTests.Printers
 
             // Assert
             mockDataStorage.Verify(x => x.Get(
-                It.IsAny<string>()), Times.Once);
+                It.Is<string>(y => y == query.Id),
+                It.IsAny<CancellationToken>()), Times.Once);
             Assert.NotNull(result.Error);
             Assert.Equal(HttpStatusCode.NotFound, result.Error.HttpStatusCode);
             Assert.Contains(query.Id, result.Error.Message);

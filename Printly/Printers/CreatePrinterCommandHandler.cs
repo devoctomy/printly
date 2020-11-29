@@ -25,7 +25,9 @@ namespace Printly.Printers
             CancellationToken cancellationToken)
         {
             var printerDomain = _mapper.Map<Printer>(request.Printer);
-            await _storageService.Create(printerDomain);
+            await _storageService.Create(
+                printerDomain,
+                cancellationToken);
             var printerDto = _mapper.Map<Dto.Response.Printer>(printerDomain);
             return new CreatePrinterCommandResponse()
             {

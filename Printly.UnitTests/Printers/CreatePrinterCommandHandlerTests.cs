@@ -40,7 +40,8 @@ namespace Printly.UnitTests.Printers
                 It.IsAny<Domain.Models.Printer>())).Returns(printerResponse);
 
             mockDataStorage.Setup(x => x.Create(
-                It.IsAny<Domain.Models.Printer>()))
+                It.IsAny<Domain.Models.Printer>(),
+                It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
 
             // Act
@@ -56,7 +57,8 @@ namespace Printly.UnitTests.Printers
                 It.Is<Domain.Models.Printer>(y => y == printerDomain)), Times.Once);
 
             mockDataStorage.Verify(x => x.Create(
-                It.Is<Domain.Models.Printer>(y => y == printerDomain)), Times.Once);
+                It.Is<Domain.Models.Printer>(y => y == printerDomain),
+                It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

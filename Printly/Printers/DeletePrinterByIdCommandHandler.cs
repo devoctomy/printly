@@ -22,7 +22,9 @@ namespace Printly.Printers
             DeletePrinterByIdCommand request,
             CancellationToken cancellationToken)
         {
-            var result = await _storageService.Remove(request.Id);
+            var result = await _storageService.Remove(
+                request.Id,
+                cancellationToken);
             if(result.IsAcknowledged && result.DeletedCount == 1)
             {
                 return new DeletePrinterByIdCommandResponse();

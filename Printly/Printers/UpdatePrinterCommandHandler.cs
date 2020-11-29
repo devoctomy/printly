@@ -31,7 +31,8 @@ namespace Printly.Printers
             printerDomain.Id = ObjectId.Parse(request.Id);
             var result = await _storageService.Update(
                 request.Id,
-                printerDomain);
+                printerDomain,
+                cancellationToken);
             if (result.IsAcknowledged && result.IsModifiedCountAvailable && result.ModifiedCount == 1)
             {
                 return new UpdatePrinterCommandResponse();

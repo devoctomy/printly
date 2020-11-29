@@ -36,7 +36,8 @@ namespace Printly.UnitTests.Printers
 
             mockDataStorage.Setup(x => x.Update(
                 It.IsAny<string>(),
-                It.IsAny<Domain.Models.Printer>()))
+                It.IsAny<Domain.Models.Printer>(),
+                It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ReplaceOneResult.Acknowledged(
                     1,
                     1,
@@ -52,7 +53,8 @@ namespace Printly.UnitTests.Printers
                 It.Is<Dto.Request.Printer>(y => y == command.Printer)), Times.Once);
             mockDataStorage.Verify(x => x.Update(
                 It.Is<string>(y => y == command.Id),
-                It.Is<Domain.Models.Printer>(y => y == printerDomain)), Times.Once);
+                It.Is<Domain.Models.Printer>(y => y == printerDomain),
+                It.IsAny<CancellationToken>()), Times.Once);
             Assert.Null(response.Error);
         }
 
@@ -79,7 +81,8 @@ namespace Printly.UnitTests.Printers
 
             mockDataStorage.Setup(x => x.Update(
                 It.IsAny<string>(),
-                It.IsAny<Domain.Models.Printer>()))
+                It.IsAny<Domain.Models.Printer>(),
+                It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ReplaceOneResult.Acknowledged(
                     0,
                     null,
@@ -95,7 +98,8 @@ namespace Printly.UnitTests.Printers
                 It.Is<Dto.Request.Printer>(y => y == command.Printer)), Times.Once);
             mockDataStorage.Verify(x => x.Update(
                 It.Is<string>(y => y == command.Id),
-                It.Is<Domain.Models.Printer>(y => y == printerDomain)), Times.Once);
+                It.Is<Domain.Models.Printer>(y => y == printerDomain),
+                It.IsAny<CancellationToken>()), Times.Once);
             Assert.NotNull(result.Error);
             Assert.Equal(HttpStatusCode.NotFound, result.Error.HttpStatusCode);
             Assert.Contains(command.Id, result.Error.Message);

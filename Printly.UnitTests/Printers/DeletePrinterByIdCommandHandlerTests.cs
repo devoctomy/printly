@@ -29,7 +29,8 @@ namespace Printly.UnitTests.Printers
             };
 
             mockDataStorage.Setup(x => x.Remove(
-                It.IsAny<string>()))
+                It.IsAny<string>(),
+                It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new DeleteResult.Acknowledged(1));
 
             // Act
@@ -39,7 +40,8 @@ namespace Printly.UnitTests.Printers
 
             // Assert
             mockDataStorage.Verify(x => x.Remove(
-                It.Is<string>(y => y == command.Id)), Times.Once);
+                It.Is<string>(y => y == command.Id),
+                It.IsAny<CancellationToken>()), Times.Once);
             Assert.Null(result.Error);
         }
 
@@ -56,7 +58,8 @@ namespace Printly.UnitTests.Printers
             };
 
             mockDataStorage.Setup(x => x.Remove(
-                It.IsAny<string>()))
+                It.IsAny<string>(),
+                It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new DeleteResult.Acknowledged(0));
 
             // Act
@@ -66,7 +69,8 @@ namespace Printly.UnitTests.Printers
 
             // Assert
             mockDataStorage.Verify(x => x.Remove(
-                It.Is<string>(y => y == command.Id)), Times.Once);
+                It.Is<string>(y => y == command.Id),
+                It.IsAny<CancellationToken>()), Times.Once);
             Assert.NotNull(result.Error);
             Assert.Equal(HttpStatusCode.NotFound, result.Error.HttpStatusCode);
             Assert.Contains(command.Id, result.Error.Message);

@@ -11,6 +11,7 @@ using Printly.Extensions;
 using Printly.Middleware;
 using Printly.System;
 using System;
+using System.Threading;
 
 namespace Printly
 {
@@ -71,8 +72,9 @@ namespace Printly
             app.UseWebSockets(webSocketOptions);
             app.UseMiddleware<TerminalMiddleware>();
 
+            var cancellationTokenSource = new CancellationTokenSource(new TimeSpan(0, 0, 30));
             var systemStateService = app.ApplicationServices.GetService<ISystemStateService>();
-            systemStateService.Initialise().GetAwaiter().GetResult();
+            systemStateService.InitialiseAsync(cancellationTokenSource.Token).GetAwaiter().GetResult();
         }
 
     }
