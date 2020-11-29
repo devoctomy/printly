@@ -4,7 +4,7 @@ using Printly.System;
 
 namespace Printly.Extensions
 {
-    public static class ServiceCollectionExtensions
+    public static class PrintlyServicesExtensions
     {
         public static IServiceCollection AddPrintlyServices(this IServiceCollection services)
         {

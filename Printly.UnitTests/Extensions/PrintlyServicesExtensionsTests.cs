@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Printly.UnitTests.Extensions
 {
-    public class ServiceCollectionExtensionsTests
+    public class PrintlyServicesExtensionsTests
     {
         [Fact]
         public void GivenConfig_WhenAddPrintlyClient_ThenClientAddedForInjection()

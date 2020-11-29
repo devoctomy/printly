@@ -57,7 +57,7 @@ namespace Printly
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Printly v1");
                 });
             }
-
+            app.ConfigureExceptionHandler();
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
