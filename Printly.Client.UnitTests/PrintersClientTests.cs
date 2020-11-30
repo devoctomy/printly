@@ -116,7 +116,7 @@ namespace Printly.Client.UnitTests
         }
 
         [Fact]
-        public async Task GivenCancellationToken_WhenGetAsync_ThenHttpAdapterCalled_AndResponseDeserialised()
+        public async Task GivenId_AndCancellationToken_WhenGetAsync_ThenHttpAdapterCalled_AndResponseDeserialised()
         {
             // Arrange
             var mockHttpAdapter = new Mock<IHttpAdapter<PrintersClient>>();
