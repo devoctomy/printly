@@ -5,7 +5,7 @@ using Printly.Domain.Services.System;
 
 namespace Printly.Domain.Services.Extensions
 {
-    public static class ServiceCollectionExtensions
+    public static class PrintlyDataServicesExtensions
     {
         public static IServiceCollection AddPrintlyDataServices(
             this IServiceCollection services,

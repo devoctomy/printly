@@ -10,7 +10,7 @@ namespace Printly.UnitTests.Extensions
     public class PrintlyServicesExtensionsTests
     {
         [Fact]
-        public void GivenConfig_WhenAddPrintlyClient_ThenClientAddedForInjection()
+        public void GivenConfig_WhenAddPrintlyServices_ThenServicesAddedForInjection()
         {
             // Arrange
             var sut = new ServiceCollection();
