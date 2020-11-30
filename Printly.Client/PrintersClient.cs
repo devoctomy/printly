@@ -47,7 +47,7 @@ namespace Printly.Client
             return JsonConvert.DeserializeObject<ObjectResponse<Printer>>(await response.Content.ReadAsStringAsync(cancellationToken));
         }
 
-        public async Task<ObjectResponse<Printer>> UpdateAsync(
+        public async Task<Response> UpdateAsync(
             string id,
             Dto.Request.Printer printer,
             CancellationToken cancellationToken)
@@ -56,7 +56,7 @@ namespace Printly.Client
                 new Uri($"/api/Printers/{id}", UriKind.Relative),
                 new StringContent(JsonConvert.SerializeObject(printer), Encoding.UTF8, "application/json"),
                 cancellationToken);
-            return JsonConvert.DeserializeObject<ObjectResponse<Printer>>(await response.Content.ReadAsStringAsync(cancellationToken));
+            return JsonConvert.DeserializeObject<Response>(await response.Content.ReadAsStringAsync(cancellationToken));
         }
 
         public async Task<Response> DeleteAsync(

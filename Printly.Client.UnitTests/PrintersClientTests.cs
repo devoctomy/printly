@@ -175,13 +175,9 @@ namespace Printly.Client.UnitTests
             };
             var requestContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
 
-            var response = new ObjectResponse<Printer>()
+            var response = new Response()
             {
                 Success = true,
-                Value = new Printer()
-                {
-                    Id = "Hello World"
-                },
                 Error = new Error()
                 {
                     HttpStatusCode = System.Net.HttpStatusCode.OK,
@@ -210,7 +206,6 @@ namespace Printly.Client.UnitTests
 
             // Assert
             Assert.True(result.Success);
-            Assert.Equal(response.Value.Id, result.Value.Id);
             Assert.Equal(response.Error.Message, result.Error.Message);
             mockHttpAdapter.Verify(x => x.PutAsync(
                 It.Is<Uri>(y => y.ToString() == new Uri($"/api/Printers/{id}", UriKind.Relative).ToString()),

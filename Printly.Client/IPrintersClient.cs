@@ -14,7 +14,7 @@ namespace Printly.Client
         Task<ObjectResponse<Printer>> CreateAsync(
             Dto.Request.Printer printer,
             CancellationToken cancellationToken);
-        Task<ObjectResponse<Printer>> UpdateAsync(
+        Task<Response> UpdateAsync(
             string id,
             Dto.Request.Printer printer,
             CancellationToken cancellationToken);
