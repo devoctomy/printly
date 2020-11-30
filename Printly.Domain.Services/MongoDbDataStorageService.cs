@@ -12,16 +12,17 @@ namespace Printly.Domain.Services
 {
     public abstract class MongoDbDataStorageService<T> : IDataStorageService<T> where T : StorageEntityBase
     {
+        private readonly IMongoClient _mongoClient;
+        private readonly IMongoDatabase _mongoDatabase;
         private readonly IMongoCollection<T> _entities;
 
-        public MongoDbDataStorageService(MongoDbStorageServiceConfiguration settings)
+        public MongoDbDataStorageService(
+            IMongoClient mongoClient,
+            MongoDbStorageServiceConfiguration<T> settings)
         {
-            if(!string.IsNullOrEmpty(settings.ConnectionString))
-            {
-                var client = new MongoClient(settings.ConnectionString);
-                var database = client.GetDatabase(settings.DatabaseName);
-                _entities = database.GetCollection<T>(settings.CollectionName);
-            }
+            _mongoClient = mongoClient;
+            _mongoDatabase = _mongoClient.GetDatabase(settings.DatabaseName);
+            _entities = _mongoDatabase.GetCollection<T>(settings.CollectionName);
         }
 
         public async Task<List<T>> Get(CancellationToken cancellationToken) =>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
 using Printly.Domain.Models;
 using Printly.Domain.Services.System;
 
@@ -10,19 +11,21 @@ namespace Printly.Domain.Services.Extensions
             this IServiceCollection services,
             MongoDbConfiguration configuration)
         {
-            services.AddSingleton<IDataStorageService<Printer>>(new PrinterStorageService(new MongoDbStorageServiceConfiguration()
+            services.AddSingleton<IMongoClient>(new MongoClient(configuration.ConnectionString));
+
+            services.AddSingleton<MongoDbStorageServiceConfiguration<Printer>>(new MongoDbStorageServiceConfiguration<Printer>()
             {
-                ConnectionString = configuration.ConnectionString,
                 DatabaseName = configuration.DatabaseName,
                 CollectionName = "Printers"
-            }));
+            });
+            services.AddSingleton<IDataStorageService<Printer>, PrinterStorageService>();
 
-            services.AddSingleton<IDataStorageService<Configuration>>(new ConfigurationDataStorageService(new MongoDbStorageServiceConfiguration()
+            services.AddSingleton<MongoDbStorageServiceConfiguration<Configuration>>(new MongoDbStorageServiceConfiguration<Configuration>()
             {
-                ConnectionString = configuration.ConnectionString,
                 DatabaseName = configuration.DatabaseName,
                 CollectionName = "Configuration"
-            }));
+            });
+            services.AddSingleton<IDataStorageService<Configuration>, ConfigurationDataStorageService>();
 
             return services;
         }
