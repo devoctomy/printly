@@ -7,6 +7,7 @@ namespace Printly.Client
 {
     public interface IHttpAdapter<TClient>
     {
+        string BaseUrl { get; }
         Task<HttpResponseMessage> GetAsync(
             Uri uri,
             CancellationToken cancellationToken);

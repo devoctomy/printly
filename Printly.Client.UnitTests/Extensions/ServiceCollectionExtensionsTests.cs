@@ -12,7 +12,7 @@ namespace Printly.Client.UnitTests.Extensions
             // Arrange
             var config = new PrintlyClientConfiguration()
             {
-                BaseUrl = "http://www.test.com",
+                BaseUrl = "http://www.test.com/",
                 RetryCount = 10,
                 SleepDuration = new System.TimeSpan(0,1,0),
                 HttpMessageHandlerLifetime = new System.TimeSpan(0,10,0)
@@ -24,8 +24,12 @@ namespace Printly.Client.UnitTests.Extensions
             var serviceProvider = sut.BuildServiceProvider();
 
             // Assert
-            var systemClient = serviceProvider.GetServices<ISystemClient>();
-            Assert.NotNull(systemClient);
+            var systemClientHttpAdapter = serviceProvider.GetService<IHttpAdapter<SystemClient>>();
+            Assert.Equal(config.BaseUrl, systemClientHttpAdapter.BaseUrl);
+            Assert.NotNull(serviceProvider.GetServices<ISystemClient>());
+            var printersClientHttpAdapter = serviceProvider.GetService<IHttpAdapter<PrintersClient>>();
+            Assert.Equal(config.BaseUrl, printersClientHttpAdapter.BaseUrl);
+            Assert.NotNull(serviceProvider.GetServices<IPrintersClient>());
         }
     }
 }

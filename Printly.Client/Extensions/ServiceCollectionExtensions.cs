@@ -30,6 +30,8 @@ namespace Printly.Client.Extensions
                     configuration.SleepDuration))
                 .SetHandlerLifetime(configuration.HttpMessageHandlerLifetime);
 
+            services.AddTransient<ISystemClient, SystemClient>();
+            services.AddTransient<IPrintersClient, PrintersClient>();
             return services;
         }
 

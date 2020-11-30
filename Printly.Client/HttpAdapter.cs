@@ -10,6 +10,8 @@ namespace Printly.Client
     {
         private readonly HttpClient _httpClient;
 
+        public string BaseUrl => _httpClient.BaseAddress.ToString();
+
         public HttpAdapter(HttpClient httpClient)
         {
             _httpClient = httpClient;
