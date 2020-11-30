@@ -27,7 +27,7 @@ namespace Printly.Domain.Services
 
         public async Task<List<T>> Get(CancellationToken cancellationToken) =>
             (await _entities?.FindAsync(
-                book => true,
+                entity => true,
                 null,
                 cancellationToken)).ToList();
 
@@ -61,7 +61,7 @@ namespace Printly.Domain.Services
             T entity,
             CancellationToken cancellationToken) =>
             _entities.ReplaceOneAsync(
-                book => book.Id == ObjectId.Parse(id),
+                entity => entity.Id == ObjectId.Parse(id),
                 entity,
                 (ReplaceOptions)null,
                 cancellationToken);
@@ -70,14 +70,14 @@ namespace Printly.Domain.Services
             T entity,
             CancellationToken cancellationToken) =>
             _entities?.DeleteOneAsync(
-                book => book.Id == entity.Id,
+                entity => entity.Id == entity.Id,
                 cancellationToken);
 
         public Task<DeleteResult> Remove(
             string id,
             CancellationToken cancellationToken) =>
             _entities?.DeleteOneAsync(
-                book => book.Id == ObjectId.Parse(id),
+                entity => entity.Id == ObjectId.Parse(id),
                 cancellationToken);
     }
 }

@@ -74,7 +74,7 @@ namespace Printly
             app.UseWebSockets(webSocketOptions);
             app.UseMiddleware<TerminalMiddleware>();
 
-            var cancellationTokenSource = new CancellationTokenSource(new TimeSpan(0, 0, 30));
+            var cancellationTokenSource = new CancellationTokenSource(new TimeSpan(0, 0, 15));
             var systemStateService = app.ApplicationServices.GetService<ISystemStateService>();
             systemStateService.InitialiseAsync(cancellationTokenSource.Token).GetAwaiter().GetResult();
         }
