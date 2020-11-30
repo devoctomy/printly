@@ -24,8 +24,7 @@ namespace Printly.Client.UnitTests
                 Success = true,
                 Value = new SystemInfo()
                 {
-                    StartedAt = startedAt,
-                    Uptime = new TimeSpan(1, 0, 0)
+                    StartedAt = startedAt
                 }
             };
 
@@ -46,9 +45,8 @@ namespace Printly.Client.UnitTests
             // Assert
             Assert.True(result.Success);
             Assert.Equal(startedAt, result.Value.StartedAt);
-            Assert.Equal(new TimeSpan(1, 0, 0), result.Value.Uptime);
             mockHttpAdapter.Verify(x => x.GetAsync(
-                It.Is<Uri>(y => y.ToString() == new Uri("/api/System", UriKind.Relative).ToString()),
+                It.Is<Uri>(y => y.ToString() == new Uri("/api/System/Info", UriKind.Relative).ToString()),
                 It.Is<CancellationToken>(y => y == cancellationTokenSource.Token)), Times.Once);
         }
     }

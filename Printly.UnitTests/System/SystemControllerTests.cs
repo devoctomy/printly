@@ -24,8 +24,7 @@ namespace Printly.UnitTests.System
             {
                 SystemInfo = new Dto.Response.SystemInfo()
                 {
-                    StartedAt = DateTime.UtcNow.Subtract(new TimeSpan(1, 0, 0)),
-                    Uptime = new TimeSpan(1, 0, 0)
+                    StartedAt = DateTime.UtcNow.Subtract(new TimeSpan(1, 0, 0))
                 }
             };
 

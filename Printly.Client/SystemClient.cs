@@ -18,8 +18,9 @@ namespace Printly.Client
         public async Task<ObjectResponse<SystemInfo>> GetInfoAsync(CancellationToken cancellationToken)
         {
             var response = await _httpAdapter.GetAsync(
-                new Uri("/api/System", UriKind.Relative),
+                new Uri("/api/System/Info", UriKind.Relative),
                 cancellationToken);
+            var responseString = await response.Content.ReadAsStringAsync(cancellationToken);
             return JsonConvert.DeserializeObject<ObjectResponse<SystemInfo>> (await response.Content.ReadAsStringAsync(cancellationToken));
         }
     }

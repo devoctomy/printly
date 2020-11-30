@@ -42,7 +42,6 @@ namespace Printly.UnitTests.System
             // Assert
             Assert.Equal(config.SystemId, result.SystemInfo.SystemId);
             Assert.Equal(startedAt, result.SystemInfo.StartedAt);
-            Assert.Equal(uptime, result.SystemInfo.Uptime);
         }
     }
 }

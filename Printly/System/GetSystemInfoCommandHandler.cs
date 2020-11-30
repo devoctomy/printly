@@ -24,7 +24,6 @@ namespace Printly.System
                 {
                     SystemId = _systemStateService.Configuration.SystemId,
                     StartedAt = _systemStateService.StartedAt,
-                    Uptime = _systemStateService.Uptime,
                     SerialPorts = _systemStateService.SerialPorts
                 }
             });
