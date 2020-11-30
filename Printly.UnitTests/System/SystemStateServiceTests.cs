@@ -44,9 +44,10 @@ namespace Printly.UnitTests.System
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(configurations);
 
+            // Act
             await sut.InitialiseAsync(CancellationToken.None);
 
-            // Act & Assert
+            // Assert
             Assert.Equal(configurations[0].Id.ToString(), sut.Configuration.Id.ToString());
             Assert.Equal(configurations[0].SystemId, sut.Configuration.SystemId);
             Assert.True(sut.Uptime - uptime < new TimeSpan(0, 1, 0));
@@ -76,9 +77,43 @@ namespace Printly.UnitTests.System
                 It.IsAny<Configuration>(),
                 It.IsAny<CancellationToken>()));
 
+            // Act
             await sut.InitialiseAsync(CancellationToken.None);
 
-            // Act & Assert
+            // Assert
+            Assert.True(sut.Uptime - uptime < new TimeSpan(0, 1, 0));
+        }
+
+        [Fact]
+        public async Task GivenInitialisedService_WhenReset_ThenUptimeReset()
+        {
+            // Arrange
+            var mockDateTimeService = new Mock<IDateTimeService>();
+            var mockSerialPortDiscoveryService = new Mock<ISerialPortDiscoveryService>();
+            var mockConfigDataService = new Mock<IDataStorageService<Configuration>>();
+            var uptime = new TimeSpan(1, 0, 0);
+            mockDateTimeService.SetupGet(x => x.UtcNow)
+                .Returns(DateTime.UtcNow.Subtract(uptime));
+            var sut = new Printly.System.SystemStateService(
+                mockDateTimeService.Object,
+                mockSerialPortDiscoveryService.Object,
+                mockConfigDataService.Object);
+
+            mockConfigDataService.Setup(x => x.Get(
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new List<Configuration>());
+
+            mockConfigDataService.Setup(x => x.Create(
+                It.IsAny<Configuration>(),
+                It.IsAny<CancellationToken>()));
+
+            await sut.InitialiseAsync(CancellationToken.None);
+            await Task.Delay(new TimeSpan(0, 0, 5));
+
+            // Act
+            sut.Reset();
+
+            // Assert
             Assert.True(sut.Uptime - uptime < new TimeSpan(0, 1, 0));
         }
 
