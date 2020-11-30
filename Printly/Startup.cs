@@ -11,10 +11,12 @@ using Printly.Extensions;
 using Printly.Middleware;
 using Printly.System;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace Printly
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         private readonly AppSettings _appSettings;

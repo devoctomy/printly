@@ -14,7 +14,7 @@ namespace Printly.UnitTests.System
     public class SystemStateServiceTests
     {
         [Fact]
-        public async Task GivenService_WhenInitialise_ThenSystemStateInitialisedCorrectly()
+        public async Task GivenExistingService_WhenInitialise_ThenSystemStateInitialisedCorrectly()
         {
             // Arrange
             var mockDateTimeService = new Mock<IDateTimeService>();
@@ -52,5 +52,36 @@ namespace Printly.UnitTests.System
             Assert.True(sut.Uptime - uptime < new TimeSpan(0, 1, 0));
             Assert.Equal("COM1,COM2", string.Join(',', sut.SerialPorts));
         }
+
+        [Fact]
+        public async Task GivenNewService_WhenInitialise_ThenSystemStateInitialisedCorrectly()
+        {
+            // Arrange
+            var mockDateTimeService = new Mock<IDateTimeService>();
+            var mockSerialPortDiscoveryService = new Mock<ISerialPortDiscoveryService>();
+            var mockConfigDataService = new Mock<IDataStorageService<Configuration>>();
+            var uptime = new TimeSpan(1, 0, 0);
+            mockDateTimeService.SetupGet(x => x.UtcNow)
+                .Returns(DateTime.UtcNow.Subtract(uptime));
+            var sut = new Printly.System.SystemStateService(
+                mockDateTimeService.Object,
+                mockSerialPortDiscoveryService.Object,
+                mockConfigDataService.Object);
+
+            mockConfigDataService.Setup(x => x.Get(
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new List<Configuration>());
+
+            mockConfigDataService.Setup(x => x.Create(
+                It.IsAny<Configuration>(),
+                It.IsAny<CancellationToken>()));
+
+            await sut.InitialiseAsync(CancellationToken.None);
+
+            // Act & Assert
+            Assert.True(sut.Uptime - uptime < new TimeSpan(0, 1, 0));
+        }
+
+
     }
 }
