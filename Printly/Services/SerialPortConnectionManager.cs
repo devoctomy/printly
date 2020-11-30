@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Printly.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 
@@ -6,14 +7,16 @@ namespace Printly.Services
 {
     public class SerialPortConnectionManager : ISerialPortConnectionManager
     {
+        private readonly ISerialPortCommunicationServiceFactory _serialPortCommunicationServiceFactory;
         private readonly Dictionary<string, ISerialPortCommunicationService> _connectionCache;
 
-        public SerialPortConnectionManager()
+        public SerialPortConnectionManager(ISerialPortCommunicationServiceFactory serialPortCommunicationServiceFactory)
         {
+            _serialPortCommunicationServiceFactory = serialPortCommunicationServiceFactory;
             _connectionCache = new Dictionary<string, ISerialPortCommunicationService>();
         }
 
-        public ISerialPortCommunicationService Get(string portName)
+        private ISerialPortCommunicationService Get(string portName)
         {
             if(_connectionCache.ContainsKey(portName))
             {
@@ -38,7 +41,7 @@ namespace Printly.Services
             var connection = Get(portName);
             if(connection == null)
             {
-                var newConnection = new SerialPortCommunicationService();
+                var newConnection = _serialPortCommunicationServiceFactory.Create();
                 var isOpen = newConnection.Open(
                     portName,
                     baudRate,
@@ -50,7 +53,7 @@ namespace Printly.Services
                     writeTimeout);
                 if(!isOpen)
                 {
-                    throw new Exception("Failed to open connection");
+                    throw new SerialPortConnectionException("Failed to open connection to serial port.");
                 }
                 connection = newConnection;
                 _connectionCache.Add(
@@ -61,12 +64,17 @@ namespace Printly.Services
             return connection;
         }
 
-        public void Close(string portName)
+        public bool Close(string portName)
         {
             if (_connectionCache.ContainsKey(portName))
             {
                 _connectionCache[portName].Close();
                 _connectionCache.Remove(portName);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

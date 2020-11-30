@@ -5,8 +5,6 @@ namespace Printly.Services
 {
     public interface ISerialPortConnectionManager
     {
-        ISerialPortCommunicationService Get(string portName);
-
         ISerialPortCommunicationService GetOrOpen(
             string portName,
             int baudRate,
@@ -17,6 +15,6 @@ namespace Printly.Services
             TimeSpan readTimeout,
             TimeSpan writeTimeout);
 
-        void Close(string portName);
+        bool Close(string portName);
     }
 }
