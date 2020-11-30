@@ -18,7 +18,7 @@ namespace Printly.Client
             string id,
             Dto.Request.Printer printer,
             CancellationToken cancellationToken);
-        Task<ObjectResponse<Printer>> DeleteAsync(
+        Task<Response> DeleteAsync(
             string id,
             CancellationToken cancellationToken);
     }

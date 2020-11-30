@@ -161,5 +161,103 @@ namespace Printly.Client.UnitTests
                 It.Is<Uri>(y => y.ToString() == new Uri($"/api/Printers/{id}", UriKind.Relative).ToString()),
                 It.Is<CancellationToken>(y => y == cancellationTokenSource.Token)), Times.Once);
         }
+
+        [Fact]
+        public async Task GivenId_AndPrinter_AndCancellationToken_WhenUpdateAsync_ThenHttpAdapterCalled_AndResponseDeserialised()
+        {
+            // Arrange
+            var mockHttpAdapter = new Mock<IHttpAdapter<PrintersClient>>();
+            var sut = new PrintersClient(mockHttpAdapter.Object);
+
+            var request = new Dto.Request.Printer()
+            {
+                Name = "Bob Hoskins"
+            };
+            var requestContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+            var response = new ObjectResponse<Printer>()
+            {
+                Success = true,
+                Value = new Printer()
+                {
+                    Id = "Hello World"
+                },
+                Error = new Error()
+                {
+                    HttpStatusCode = System.Net.HttpStatusCode.OK,
+                    Message = "Deserialisation test"
+                }
+            };
+            var id = Guid.NewGuid().ToString();
+
+            mockHttpAdapter.Setup(x => x.PutAsync(
+                It.IsAny<Uri>(),
+                It.IsAny<StringContent>(),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new HttpResponseMessage()
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Content = new StringContent(JsonConvert.SerializeObject(response))
+                });
+
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            // Act
+            var result = await sut.UpdateAsync(
+                id,
+                request,
+                cancellationTokenSource.Token);
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(response.Value.Id, result.Value.Id);
+            Assert.Equal(response.Error.Message, result.Error.Message);
+            mockHttpAdapter.Verify(x => x.PutAsync(
+                It.Is<Uri>(y => y.ToString() == new Uri($"/api/Printers/{id}", UriKind.Relative).ToString()),
+                It.Is<StringContent>(y => y.ReadAsStringAsync().GetAwaiter().GetResult() == requestContent.ReadAsStringAsync().GetAwaiter().GetResult()),
+                It.Is<CancellationToken>(y => y == cancellationTokenSource.Token)), Times.Once);
+        }
+
+        [Fact]
+        public async Task GivenId_AndCancellationToken_WhenDeleteAsync_ThenHttpAdapterCalled_AndResponseDeserialised()
+        {
+            // Arrange
+            var mockHttpAdapter = new Mock<IHttpAdapter<PrintersClient>>();
+            var sut = new PrintersClient(mockHttpAdapter.Object);
+
+            var response = new Response()
+            {
+                Success = true,
+                Error = new Error()
+                {
+                    HttpStatusCode = System.Net.HttpStatusCode.OK,
+                    Message = "Deserialisation test"
+                }
+            };
+            var id = Guid.NewGuid().ToString();
+
+            mockHttpAdapter.Setup(x => x.DeleteAsync(
+                It.IsAny<Uri>(),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new HttpResponseMessage()
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Content = new StringContent(JsonConvert.SerializeObject(response))
+                });
+
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            // Act
+            var result = await sut.DeleteAsync(
+                id,
+                cancellationTokenSource.Token);
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(response.Error.Message, result.Error.Message);
+            mockHttpAdapter.Verify(x => x.DeleteAsync(
+                It.Is<Uri>(y => y.ToString() == new Uri($"/api/Printers/{id}", UriKind.Relative).ToString()),
+                It.Is<CancellationToken>(y => y == cancellationTokenSource.Token)), Times.Once);
+        }
     }
 }

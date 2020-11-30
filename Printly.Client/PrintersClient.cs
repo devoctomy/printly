@@ -52,20 +52,21 @@ namespace Printly.Client
             Dto.Request.Printer printer,
             CancellationToken cancellationToken)
         {
-            var response = await _httpAdapter.DeleteAsync(
+            var response = await _httpAdapter.PutAsync(
                 new Uri($"/api/Printers/{id}", UriKind.Relative),
+                new StringContent(JsonConvert.SerializeObject(printer), Encoding.UTF8, "application/json"),
                 cancellationToken);
             return JsonConvert.DeserializeObject<ObjectResponse<Printer>>(await response.Content.ReadAsStringAsync(cancellationToken));
         }
 
-        public async Task<ObjectResponse<Printer>> DeleteAsync(
+        public async Task<Response> DeleteAsync(
             string id,
             CancellationToken cancellationToken)
         {
             var response = await _httpAdapter.DeleteAsync(
                 new Uri($"/api/Printers/{id}", UriKind.Relative),
                 cancellationToken);
-            return JsonConvert.DeserializeObject<ObjectResponse<Printer>>(await response.Content.ReadAsStringAsync(cancellationToken));
+            return JsonConvert.DeserializeObject<Response>(await response.Content.ReadAsStringAsync(cancellationToken));
         }
     }
 }
