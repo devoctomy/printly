@@ -15,21 +15,28 @@ namespace Printly.Client
             _httpClient = httpClient;
         }
 
-        public Task<HttpResponseMessage> DeleteAsync(Uri uri, CancellationToken cancellationToken)
+        public Task<HttpResponseMessage> DeleteAsync(
+            Uri uri,
+            CancellationToken cancellationToken)
         {
             return _httpClient.DeleteAsync(
                 uri,
                 cancellationToken);
         }
 
-        public Task<HttpResponseMessage> GetAsync(Uri uri, CancellationToken cancellationToken)
+        public Task<HttpResponseMessage> GetAsync(
+            Uri uri,
+            CancellationToken cancellationToken)
         {
             return _httpClient.GetAsync(
                 uri,
                 cancellationToken);
         }
 
-        public Task<HttpResponseMessage> PostAsync(Uri uri, object value, CancellationToken cancellationToken)
+        public Task<HttpResponseMessage> PostAsync(
+            Uri uri,
+            object value,
+            CancellationToken cancellationToken)
         {
             return _httpClient.PostAsync(
                 uri,
@@ -37,7 +44,10 @@ namespace Printly.Client
                 cancellationToken);
         }
 
-        public Task<HttpResponseMessage> PutAsync(Uri uri, object value, CancellationToken cancellationToken)
+        public Task<HttpResponseMessage> PutAsync(
+            Uri uri,
+            object value,
+            CancellationToken cancellationToken)
         {
             return _httpClient.PutAsync(
                 uri,

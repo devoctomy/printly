@@ -15,8 +15,8 @@ namespace Printly.Client.UnitTests
         public async Task GivenApiUp_WhenGetInfoAsync_ThenApiCalledAndResponseReturned()
         {
             // Arrange
-            var mockHttpAddapter = new Mock<IHttpAdapter<SystemClient>>();
-            var sut = new SystemClient(mockHttpAddapter.Object);
+            var mockHttpAdapter = new Mock<IHttpAdapter<SystemClient>>();
+            var sut = new SystemClient(mockHttpAdapter.Object);
 
             var startedAt = DateTime.UtcNow.Subtract(new TimeSpan(1, 0, 0));
             var response = new ObjectResponse<SystemInfo>()
@@ -29,7 +29,7 @@ namespace Printly.Client.UnitTests
                 }
             };
 
-            mockHttpAddapter.Setup(x => x.GetAsync(
+            mockHttpAdapter.Setup(x => x.GetAsync(
                 It.IsAny<Uri>(),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new System.Net.Http.HttpResponseMessage()
@@ -38,13 +38,18 @@ namespace Printly.Client.UnitTests
                     Content = new StringContent(JsonConvert.SerializeObject(response))
                 });
 
+            var cancellationTokenSource = new CancellationTokenSource();
+
             // Act
-            var result = await sut.GetInfoAsync(CancellationToken.None);
+            var result = await sut.GetInfoAsync(cancellationTokenSource.Token);
 
             // Assert
             Assert.True(result.Success);
             Assert.Equal(startedAt, result.Value.StartedAt);
             Assert.Equal(new TimeSpan(1, 0, 0), result.Value.Uptime);
+            mockHttpAdapter.Verify(x => x.GetAsync(
+                It.Is<Uri>(y => y.ToString() == new Uri("/api/System", UriKind.Relative).ToString()),
+                It.Is<CancellationToken>(y => y == cancellationTokenSource.Token)), Times.Once);
         }
     }
 }
