@@ -26,7 +26,7 @@ namespace Printly.Printers
             CancellationToken cancellationToken)
         {
             var printers = await _storageService.Get(cancellationToken);
-            return new GetAllPrintersQueryResponse()
+            return new GetAllPrintersQueryResponse
             {
                 Printers = _mapper.Map<List<Dto.Response.Printer>>(printers)
             };

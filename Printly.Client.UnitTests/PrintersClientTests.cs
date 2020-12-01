@@ -79,7 +79,7 @@ namespace Printly.Client.UnitTests
                 Success = true,
                 Value = new List<Printer>
                 {
-                    new Printer()
+                    new Printer
                     {
                         Id = "Hello World"
                     }
@@ -178,7 +178,7 @@ namespace Printly.Client.UnitTests
             var response = new Response
             {
                 Success = true,
-                Error = new Error()
+                Error = new Error
                 {
                     HttpStatusCode = System.Net.HttpStatusCode.OK,
                     Message = "Deserialisation test"
@@ -190,7 +190,7 @@ namespace Printly.Client.UnitTests
                 It.IsAny<Uri>(),
                 It.IsAny<StringContent>(),
                 It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new HttpResponseMessage()
+                .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
                     Content = new StringContent(JsonConvert.SerializeObject(response))
@@ -220,10 +220,10 @@ namespace Printly.Client.UnitTests
             var mockHttpAdapter = new Mock<IHttpAdapter<PrintersClient>>();
             var sut = new PrintersClient(mockHttpAdapter.Object);
 
-            var response = new Response()
+            var response = new Response
             {
                 Success = true,
-                Error = new Error()
+                Error = new Error
                 {
                     HttpStatusCode = System.Net.HttpStatusCode.OK,
                     Message = "Deserialisation test"
@@ -234,7 +234,7 @@ namespace Printly.Client.UnitTests
             mockHttpAdapter.Setup(x => x.DeleteAsync(
                 It.IsAny<Uri>(),
                 It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new HttpResponseMessage()
+                .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
                     Content = new StringContent(JsonConvert.SerializeObject(response))

@@ -20,7 +20,7 @@ namespace Printly.Extensions
                     var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if(exceptionHandlerFeature != null)
                     {
-                        await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response()
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response
                         {
                             Success = false,
                             Error = new Error

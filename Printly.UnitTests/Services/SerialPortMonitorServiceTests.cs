@@ -43,7 +43,7 @@ namespace Printly.UnitTests.Services
 
             // Act
             sut.Start();
-            await Task.Delay(5000).ConfigureAwait(false); ;
+            await Task.Delay(5000).ConfigureAwait(false);
 
             // Assert
             Assert.Equal(2, currentlyConnectedPorts.Count);
@@ -80,7 +80,7 @@ namespace Printly.UnitTests.Services
 
             // Act
             sut.Start();
-            await PortConnectionActivity(mockSerialPortDiscoveryService);
+            await PortConnectionActivity(mockSerialPortDiscoveryService).ConfigureAwait(false);
 
             // Assert
             Assert.Equal(2, currentlyConnectedPorts.Count);
@@ -91,7 +91,7 @@ namespace Printly.UnitTests.Services
         private static async Task PortConnectionActivity(Mock<ISerialPortDiscoveryService> mockSerialPortDiscoveryService)
         {
             await Task.Yield();
-            var connectedPorts = new List<string>() { "COM1", "COM2" };
+            var connectedPorts = new List<string> { "COM1", "COM2" };
             mockSerialPortDiscoveryService.Setup(x => x.GetPorts())
                 .Returns(() =>
                 {

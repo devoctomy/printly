@@ -110,7 +110,7 @@ namespace Printly.Printers
                     "Model state is invalid.");
             }
 
-            var request = new UpdatePrinterCommand()
+            var request = new UpdatePrinterCommand
             {
                 Id = id,
                 Printer = printer
@@ -138,7 +138,7 @@ namespace Printly.Printers
                     "Model state is invalid.");
             }
 
-            var request = new DeletePrinterByIdCommand()
+            var request = new DeletePrinterByIdCommand
             {
                 Id = id
             };

@@ -260,7 +260,7 @@ namespace Printly.Domain.Services.UnitTests
         public async Task GivenEntity_AndCancellationToken_WhenRemove_ThenCollectionDeleteOneAsync()
         {
             // Arrange
-            var configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>()
+            var configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>
             {
                 DatabaseName = "Hello",
                 CollectionName = "World"
@@ -298,10 +298,10 @@ namespace Printly.Domain.Services.UnitTests
         }
 
         [Fact]
-        public void GivenId_AndCancellationToken_WhenRemove_ThenCollectionDeleteOneAsync()
+        public async Task GivenId_AndCancellationToken_WhenRemove_ThenCollectionDeleteOneAsync()
         {
             // Arrange
-            var configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>()
+            var configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>
             {
                 DatabaseName = "Hello",
                 CollectionName = "World"
@@ -328,7 +328,7 @@ namespace Printly.Domain.Services.UnitTests
             var cancellationTokenSource = new CancellationTokenSource();
 
             // Act
-            var result = sut.Remove(
+            await sut.Remove(
                 id,
                 cancellationTokenSource.Token);
 

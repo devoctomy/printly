@@ -130,7 +130,7 @@ namespace Printly.UnitTests.Printers
                 .ReturnsAsync(response);
 
             // Act
-            var result = await sut.Update(
+            await sut.Update(
                 "HelloWorld",
                 new Dto.Request.Printer(),
                 CancellationToken.None);
@@ -157,7 +157,7 @@ namespace Printly.UnitTests.Printers
                 .ReturnsAsync(response);
 
             // Act
-            var result = await sut.Delete(
+            await sut.Delete(
                 "HelloWorld",
                 CancellationToken.None);
 

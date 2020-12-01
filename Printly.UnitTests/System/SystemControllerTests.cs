@@ -20,9 +20,9 @@ namespace Printly.UnitTests.System
                 mockMediator.Object,
                 Mock.Of<ILogger<SystemController>>());
 
-            var response = new GetSystemInfoResponse()
+            var response = new GetSystemInfoResponse
             {
-                SystemInfo = new Dto.Response.SystemInfo()
+                SystemInfo = new Dto.Response.SystemInfo
                 {
                     StartedAt = DateTime.UtcNow.Subtract(new TimeSpan(1, 0, 0))
                 }

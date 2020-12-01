@@ -17,7 +17,7 @@ namespace Printly.UnitTests.System
             var mockSystemStateService = new Mock<ISystemStateService>();
             var sut = new GetSystemInfoCommandHandler(mockSystemStateService.Object);
 
-            var config = new Domain.Models.Configuration()
+            var config = new Domain.Models.Configuration
             {
                 Id = ObjectId.GenerateNewId(),
                 SystemId = Guid.NewGuid().ToString()

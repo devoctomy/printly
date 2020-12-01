@@ -31,7 +31,7 @@ namespace Printly.Printers
             }
             else
             {
-                return new DeletePrinterByIdCommandResponse()
+                return new DeletePrinterByIdCommandResponse
                 {
                     Error = new Dto.Response.Error
                     {
