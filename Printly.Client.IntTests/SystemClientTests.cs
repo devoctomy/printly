@@ -15,7 +15,7 @@ namespace Printly.Client.IntTests
 
         public SystemClientTests()
         {
-            var config = new PrintlyClientConfiguration()
+            var config = new PrintlyClientConfiguration
             {
                 BaseUrl = "http://localhost:5000",
                 HttpMessageHandlerLifetime = new TimeSpan(1, 0, 0),

@@ -38,10 +38,10 @@ namespace Printly.Domain.Services.UnitTests
                 configuration);
 
             // Assert
+            Assert.NotNull(sut);
             mockMongoClient.Verify(x => x.GetDatabase(
                 It.Is<string>(y => y == configuration.DatabaseName),
                 It.IsAny<MongoDatabaseSettings>()), Times.Once);
-
             mockDatabase.Verify(x => x.GetCollection<TestableStorageEntity>(
                 It.Is<string>(y => y == configuration.CollectionName),
                 It.IsAny<MongoCollectionSettings>()), Times.Once);
@@ -87,7 +87,7 @@ namespace Printly.Domain.Services.UnitTests
         }
 
         [Fact]
-        public void GivenId_AndCancellationToken_WhenGet_ThenCollectionFindAsync()
+        public async Task GivenId_AndCancellationToken_WhenGet_ThenCollectionFindAsync()
         {
             // Arrange
             var configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>()
@@ -117,7 +117,7 @@ namespace Printly.Domain.Services.UnitTests
             var cancellationTokenSource = new CancellationTokenSource();
 
             // Act
-            var result = sut.Get(
+            await sut.Get(
                 id,
                 cancellationTokenSource.Token);
 
@@ -129,7 +129,7 @@ namespace Printly.Domain.Services.UnitTests
         }
 
         [Fact]
-        public void GivenPredicate_AndCancellationToken_WhenFind_ThenCollectionFindAsync()
+        public async Task GivenPredicate_AndCancellationToken_WhenFind_ThenCollectionFindAsync()
         {
             // Arrange
             var configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>()
@@ -158,7 +158,7 @@ namespace Printly.Domain.Services.UnitTests
             var cancellationTokenSource = new CancellationTokenSource();
 
             // Act
-            var result = sut.Find(
+            await sut.Find(
                 y => true,
                 cancellationTokenSource.Token);
 
@@ -170,10 +170,10 @@ namespace Printly.Domain.Services.UnitTests
         }
 
         [Fact]
-        public void GivenEntity_AndCancellationToken_WhenCreate_ThenCollectionInsertOneAsync()
+        public async Task GivenEntity_AndCancellationToken_WhenCreate_ThenCollectionInsertOneAsync()
         {
             // Arrange
-            var configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>()
+            var configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>
             {
                 DatabaseName = "Hello",
                 CollectionName = "World"
@@ -200,7 +200,7 @@ namespace Printly.Domain.Services.UnitTests
             var cancellationTokenSource = new CancellationTokenSource();
 
             // Act
-            var result = sut.Create(
+            await sut.Create(
                 entity,
                 cancellationTokenSource.Token);
 
@@ -212,7 +212,7 @@ namespace Printly.Domain.Services.UnitTests
         }
 
         [Fact]
-        public void GivenId_AndEntity_AndCancellationToken_WhenUpdate_ThenCollectionReplaceOneAsync()
+        public async Task GivenId_AndEntity_AndCancellationToken_WhenUpdate_ThenCollectionReplaceOneAsync()
         {
             // Arrange
             var configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>()
@@ -243,7 +243,7 @@ namespace Printly.Domain.Services.UnitTests
             var cancellationTokenSource = new CancellationTokenSource();
 
             // Act
-            var result = sut.Update(
+            await sut.Update(
                 id,
                 entity,
                 cancellationTokenSource.Token);
@@ -257,7 +257,7 @@ namespace Printly.Domain.Services.UnitTests
         }
 
         [Fact]
-        public void GivenEntity_AndCancellationToken_WhenRemove_ThenCollectionDeleteOneAsync()
+        public async Task GivenEntity_AndCancellationToken_WhenRemove_ThenCollectionDeleteOneAsync()
         {
             // Arrange
             var configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>()
@@ -287,7 +287,7 @@ namespace Printly.Domain.Services.UnitTests
             var cancellationTokenSource = new CancellationTokenSource();
 
             // Act
-            var result = sut.Remove(
+            await sut.Remove(
                 entity,
                 cancellationTokenSource.Token);
 
