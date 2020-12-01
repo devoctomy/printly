@@ -90,7 +90,7 @@ namespace Printly.Domain.Services.UnitTests
         public async Task GivenId_AndCancellationToken_WhenGet_ThenCollectionFindAsync()
         {
             // Arrange
-            var configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>()
+            var configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>
             {
                 DatabaseName = "Hello",
                 CollectionName = "World"
