@@ -30,7 +30,7 @@ namespace Printly.System
             var response = await _mediator.Send(
                 new GetSystemInfoCommand(),
                 CancellationToken.None);
-            return new ObjectResponse<SystemInfo>()
+            return new ObjectResponse<SystemInfo>
             {
                 Success = true,
                 Value = response.SystemInfo

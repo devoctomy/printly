@@ -39,9 +39,9 @@ namespace Printly.Printers
             }
             else
             {
-                return new UpdatePrinterCommandResponse()
+                return new UpdatePrinterCommandResponse
                 {
-                    Error = new Dto.Response.Error()
+                    Error = new Dto.Response.Error
                     {
                         HttpStatusCode = HttpStatusCode.NotFound,
                         Message = $"Printer with id '{request.Id}' not found."

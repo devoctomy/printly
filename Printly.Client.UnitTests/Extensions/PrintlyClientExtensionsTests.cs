@@ -4,13 +4,13 @@ using Xunit;
 
 namespace Printly.Client.UnitTests.Extensions
 {
-    public class ServiceCollectionExtensionsTests
+    public class PrintlyClientExtensionsTests
     {
         [Fact]
         public void GivenConfig_WhenAddPrintlyClient_ThenClientAddedForInjection()
         {
             // Arrange
-            var config = new PrintlyClientConfiguration()
+            var config = new PrintlyClientConfiguration
             {
                 BaseUrl = "http://www.test.com/",
                 RetryCount = 10,

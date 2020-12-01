@@ -6,7 +6,7 @@ using System.Net.Http;
 
 namespace Printly.Client.Extensions
 {
-    public static class ServiceCollectionExtensions
+    public static class PrintlyClientExtensions
     {
         public static IServiceCollection AddPrintlyClient(
             this IServiceCollection services,

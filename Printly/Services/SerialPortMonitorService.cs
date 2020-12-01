@@ -50,7 +50,6 @@ namespace Printly.Services
             while(!cancellationToken.IsCancellationRequested)
             {
                 var ports = _serialPortDiscoveryService.GetPorts();
-                var stablePorts = ports.Where(x => _lastDetectedPorts.Any(y => y.PortName == x)).ToArray();
                 var connectedPorts = ports.Where(x => !_lastDetectedPorts.Any(y => y.PortName == x)).ToArray();
                 var disconnectedPorts = _lastDetectedPorts.Where(x => !ports.Contains(x.PortName)).Select(y => y.PortName).ToArray();
 
@@ -58,7 +57,7 @@ namespace Printly.Services
                 {
                     foreach (var curConnected in connectedPorts)
                     {
-                        _lastDetectedPorts.Add(new SerialPortConnectionInfo()
+                        _lastDetectedPorts.Add(new SerialPortConnectionInfo
                         {
                             PortName = curConnected,
                             OnlineSince = _dateTimeService.UtcNow
@@ -67,7 +66,7 @@ namespace Printly.Services
 
                     PortsConnected?.Invoke(
                         this,
-                        new PortsConnectedEventArgs()
+                        new PortsConnectedEventArgs
                         {
                             SerialPorts = connectedPorts
                         });
@@ -83,7 +82,7 @@ namespace Printly.Services
 
                     PortsDisconnected?.Invoke(
                         this,
-                        new PortsDisconnectedEventArgs()
+                        new PortsDisconnectedEventArgs
                         {
                             SerialPorts = disconnectedPorts
                         });

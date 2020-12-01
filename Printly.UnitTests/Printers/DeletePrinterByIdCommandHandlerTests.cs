@@ -23,7 +23,7 @@ namespace Printly.UnitTests.Printers
             var mockDataStorage = new Mock<IDataStorageService<Domain.Models.Printer>>();
             var sut = new DeletePrinterByIdCommandHandler(mockDataStorage.Object);
 
-            var command = new DeletePrinterByIdCommand()
+            var command = new DeletePrinterByIdCommand
             {
                 Id = Guid.NewGuid().ToString()
             };
@@ -52,7 +52,7 @@ namespace Printly.UnitTests.Printers
             var mockDataStorage = new Mock<IDataStorageService<Domain.Models.Printer>>();
             var sut = new DeletePrinterByIdCommandHandler(mockDataStorage.Object);
 
-            var command = new DeletePrinterByIdCommand()
+            var command = new DeletePrinterByIdCommand
             {
                 Id = Guid.NewGuid().ToString()
             };

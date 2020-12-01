@@ -29,7 +29,7 @@ namespace Printly.Printers
                 printerDomain,
                 cancellationToken);
             var printerDto = _mapper.Map<Dto.Response.Printer>(printerDomain);
-            return new CreatePrinterCommandResponse()
+            return new CreatePrinterCommandResponse
             {
                 Printer = printerDto
             };

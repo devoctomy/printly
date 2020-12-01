@@ -33,7 +33,7 @@ namespace Printly
         {
             services.AddSingleton<AppSettings>(_appSettings);
             services.AddPrintlyServices();
-            services.AddPrintlyDataServices(new Domain.Services.MongoDbConfiguration
+            services.AddPrintlyDomainServices(new Domain.Services.MongoDbConfiguration
             {
                 ConnectionString = _appSettings.MongoDbStorageConnectionString,
                 DatabaseName = _appSettings.MongoDbStorageDatabaseName
@@ -67,7 +67,7 @@ namespace Printly
                 endpoints.MapControllers();
             });
 
-            var webSocketOptions = new WebSocketOptions()
+            var webSocketOptions = new WebSocketOptions
             {
                 KeepAliveInterval = TimeSpan.FromSeconds(120)
             };

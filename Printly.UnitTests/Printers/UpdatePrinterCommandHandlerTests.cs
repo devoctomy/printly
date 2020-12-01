@@ -23,7 +23,7 @@ namespace Printly.UnitTests.Printers
                 mockDataStorage.Object,
                 mockMapper.Object);
 
-            var command = new UpdatePrinterCommand()
+            var command = new UpdatePrinterCommand
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Printer = new Dto.Request.Printer()
@@ -68,7 +68,7 @@ namespace Printly.UnitTests.Printers
                 mockDataStorage.Object,
                 mockMapper.Object);
 
-            var command = new UpdatePrinterCommand()
+            var command = new UpdatePrinterCommand
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Printer = new Dto.Request.Printer()

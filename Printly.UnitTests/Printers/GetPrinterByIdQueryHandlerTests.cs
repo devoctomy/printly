@@ -22,7 +22,7 @@ namespace Printly.UnitTests.Printers
                 mockDataStorage.Object,
                 mockMapper.Object);
 
-            var query = new GetPrinterByIdQuery()
+            var query = new GetPrinterByIdQuery
             {
                 Id = Guid.NewGuid().ToString()
             };
@@ -62,7 +62,7 @@ namespace Printly.UnitTests.Printers
                 mockDataStorage.Object,
                 mockMapper.Object);
 
-            var query = new GetPrinterByIdQuery()
+            var query = new GetPrinterByIdQuery
             {
                 Id = Guid.NewGuid().ToString()
             };

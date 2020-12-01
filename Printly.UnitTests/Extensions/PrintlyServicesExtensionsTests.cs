@@ -17,7 +17,7 @@ namespace Printly.UnitTests.Extensions
 
             // Act
             sut.AddPrintlyServices();
-            sut.AddPrintlyDataServices(new Domain.Services.MongoDbConfiguration
+            sut.AddPrintlyDomainServices(new Domain.Services.MongoDbConfiguration
             {
                 ConnectionString = "mongodb://localhost:27017",
                 DatabaseName = "Test"

@@ -5,9 +5,9 @@ using Printly.Domain.Services.System;
 
 namespace Printly.Domain.Services.Extensions
 {
-    public static class PrintlyDataServicesExtensions
+    public static class PrintlyDomainServicesExtensions
     {
-        public static IServiceCollection AddPrintlyDataServices(
+        public static IServiceCollection AddPrintlyDomainServices(
             this IServiceCollection services,
             MongoDbConfiguration configuration)
         {

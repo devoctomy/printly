@@ -6,16 +6,16 @@ using Xunit;
 
 namespace Printly.Domain.Services.UnitTests.Extensions
 {
-    public class PrintlyDataServicesExtensionsTests
+    public class PrintlyDomainServicesExtensionsTests
     {
         [Fact]
-        public void GivenConfig_WhenAddPrintlyDataServices_ThenServicesAddedForInjection()
+        public void GivenConfig_WhenAddPrintlyDomainServices_ThenServicesAddedForInjection()
         {
             // Arrange
             var sut = new ServiceCollection();
 
             // Act
-            sut.AddPrintlyDataServices(new MongoDbConfiguration
+            sut.AddPrintlyDomainServices(new MongoDbConfiguration
             {
                 ConnectionString = "mongodb://localhost:27017",
                 DatabaseName = "Test"
