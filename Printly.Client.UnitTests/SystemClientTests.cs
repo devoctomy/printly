@@ -19,10 +19,10 @@ namespace Printly.Client.UnitTests
             var sut = new SystemClient(mockHttpAdapter.Object);
 
             var startedAt = DateTime.UtcNow.Subtract(new TimeSpan(1, 0, 0));
-            var response = new ObjectResponse<SystemInfo>()
+            var response = new ObjectResponse<SystemInfo>
             {
                 Success = true,
-                Value = new SystemInfo()
+                Value = new SystemInfo
                 {
                     StartedAt = startedAt
                 }

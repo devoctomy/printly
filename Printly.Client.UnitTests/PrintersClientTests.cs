@@ -26,7 +26,7 @@ namespace Printly.Client.UnitTests
             };
             var requestContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
 
-            var response = new ObjectResponse<Printer>()
+            var response = new ObjectResponse<Printer>
             {
                 Success = true,
                 Value = new Printer()
@@ -74,17 +74,17 @@ namespace Printly.Client.UnitTests
             var mockHttpAdapter = new Mock<IHttpAdapter<PrintersClient>>();
             var sut = new PrintersClient(mockHttpAdapter.Object);
 
-            var response = new ObjectResponse<List<Printer>>()
+            var response = new ObjectResponse<List<Printer>>
             {
                 Success = true,
-                Value = new List<Printer>()
+                Value = new List<Printer>
                 {
                     new Printer()
                     {
                         Id = "Hello World"
                     }
                 },
-                Error = new Error()
+                Error = new Error
                 {
                     HttpStatusCode = System.Net.HttpStatusCode.OK,
                     Message = "Deserialisation test"
@@ -169,13 +169,13 @@ namespace Printly.Client.UnitTests
             var mockHttpAdapter = new Mock<IHttpAdapter<PrintersClient>>();
             var sut = new PrintersClient(mockHttpAdapter.Object);
 
-            var request = new Dto.Request.Printer()
+            var request = new Dto.Request.Printer
             {
                 Name = "Bob Hoskins"
             };
             var requestContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
 
-            var response = new Response()
+            var response = new Response
             {
                 Success = true,
                 Error = new Error()

@@ -9,13 +9,13 @@ namespace Printly.Domain.Services.UnitTests.Extensions
     public class PrintlyDataServicesExtensionsTests
     {
         [Fact]
-        public void GivenConfig_WhenAddPrintlyServices_ThenServicesAddedForInjection()
+        public void GivenConfig_WhenAddPrintlyDataServices_ThenServicesAddedForInjection()
         {
             // Arrange
             var sut = new ServiceCollection();
 
             // Act
-            sut.AddPrintlyDataServices(new MongoDbConfiguration()
+            sut.AddPrintlyDataServices(new MongoDbConfiguration
             {
                 ConnectionString = "mongodb://localhost:27017",
                 DatabaseName = "Test"
