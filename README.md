@@ -14,13 +14,13 @@ https://dotnet.microsoft.com/download/dotnet/thank-you/sdk-5.0.100-linux-arm64-b
 To debug just Printly service within Visual Studio, you will need to have a running instance of Mongo.
 this can be done using docker with the following command,
 
-```
+```powershell
 docker run -p 27017:27017 mongo:latest
 ```
 
 This will make your connection string as follows,
 
-```
+```javascript
 "PRINTLY_MongoDbStorageConnectionString": "mongodb://localhost:27017"
 ```
 
@@ -36,11 +36,11 @@ Gets information about the system, including version, uptime and available seria
 
 **WS /terminal/{PortName}?baudrate={BaudRate}&parity={Parity}&databits={DataBits}&stopbits={StopBits}&handshake={HandShake}**
 
-  - BaudRate (optional) = Baudrate to use for the serial port connection, typically 1 of (300,600,1200,2400,4800,9600,14400,19200,38400,57600,115200,230400,460800)
-  - Party (optional) = Party to use for the serial port connection, typically 1 of (none,odd,even,mark,space)
-  - DataBits (optional) = Data bits to use for the serial port connection, typically 1 of (5,6,7,8,9)
-  - StopBits (optional) = Stop bits to use for the serial port connection, typically 1 of (none,one,onepointfive,two)
-  - Handshake (optional) = Handshake use for the serial port connection, typically 1 of (none,requesttosend,requesttosendxonxoff,xonxoff)
+- BaudRate (optional) = Baudrate to use for the serial port connection, typically 1 of (300,600,1200,2400,4800,9600,14400,19200,38400,57600,115200,230400,460800)
+- Party (optional) = Party to use for the serial port connection, typically 1 of (none,odd,even,mark,space)
+- DataBits (optional) = Data bits to use for the serial port connection, typically 1 of (5,6,7,8,9)
+- StopBits (optional) = Stop bits to use for the serial port connection, typically 1 of (none,one,onepointfive,two)
+- Handshake (optional) = Handshake use for the serial port connection, typically 1 of (none,requesttosend,requesttosendxonxoff,xonxoff)
 
 ### Description
 
