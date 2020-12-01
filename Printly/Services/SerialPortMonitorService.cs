@@ -89,7 +89,7 @@ namespace Printly.Services
                         });
                 }
 
-                await Task.Delay(5000).ConfigureAwait(false);
+                await Task.Delay(1000).ConfigureAwait(false);
             }
         }
 

@@ -87,7 +87,7 @@ namespace Printly.UnitTests.Services
 
             // Act
             sut.Start();
-            await Task.Delay(30000).ConfigureAwait(false);
+            await Task.Delay(5000).ConfigureAwait(false);
 
             // Assert
             Assert.Equal(2, currentlyConnectedPorts.Count);
@@ -106,16 +106,16 @@ namespace Printly.UnitTests.Services
                     return connectedPorts.ToArray();
                 });
 
-            await Task.Delay(5000);
+            await Task.Delay(1000).ConfigureAwait(false);
             connectedPorts.Remove("COM1");
 
-            await Task.Delay(5000);
+            await Task.Delay(1000).ConfigureAwait(false);
             connectedPorts.Remove("COM2");
 
-            await Task.Delay(5000);
+            await Task.Delay(1000).ConfigureAwait(false);
             connectedPorts.Add("COM3");
 
-            await Task.Delay(5000);
+            await Task.Delay(1000).ConfigureAwait(false);
             connectedPorts.Add("COM4");
         }
     }
