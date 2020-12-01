@@ -18,15 +18,15 @@ namespace Printly.UnitTests.Printers
             var mockMediator = new Mock<IMediator>();
             var sut = new PrintersController(mockMediator.Object);
 
-            var response = new GetAllPrintersQueryResponse()
+            var response = new GetAllPrintersQueryResponse
             {
-                Printers = new List<Dto.Response.Printer>()
+                Printers = new List<Dto.Response.Printer>
                 {
-                    new Dto.Response.Printer()
+                    new Dto.Response.Printer
                     {
                         Id = "Hello"
                     },
-                    new Dto.Response.Printer()
+                    new Dto.Response.Printer
                     {
                         Id = "World"
                     }
@@ -58,9 +58,9 @@ namespace Printly.UnitTests.Printers
             var sut = new PrintersController(mockMediator.Object);
 
             var id = ObjectId.GenerateNewId().ToString();
-            var response = new GetPrinterByIdQueryResponse()
+            var response = new GetPrinterByIdQueryResponse
             {
-                Printer = new Dto.Response.Printer()
+                Printer = new Dto.Response.Printer
                 {
                     Id = "HelloWorld"
                 }

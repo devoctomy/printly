@@ -63,8 +63,6 @@ namespace Printly.UnitTests.Services
 
             mockDateTimeService.SetupGet(x => x.UtcNow).Returns(DateTime.UtcNow);
 
-            var activityTask = PortConnectionActivity(mockSerialPortDiscoveryService);
-
             var currentlyConnectedPorts = new List<string>();
 
             sut.PortsConnected += (sender, e) =>
@@ -82,7 +80,7 @@ namespace Printly.UnitTests.Services
 
             // Act
             sut.Start();
-            await Task.Delay(10000).ConfigureAwait(false);
+            await PortConnectionActivity(mockSerialPortDiscoveryService);
 
             // Assert
             Assert.Equal(2, currentlyConnectedPorts.Count);
@@ -111,6 +109,8 @@ namespace Printly.UnitTests.Services
 
             await Task.Delay(1000).ConfigureAwait(false);
             connectedPorts.Add("COM4");
+
+            await Task.Delay(1000).ConfigureAwait(false);
         }
     }
 }
