@@ -11,11 +11,11 @@ namespace Printly.Services
         public event EventHandler<PortsConnectedEventArgs> PortsConnected;
         public event EventHandler<PortsDisconnectedEventArgs> PortsDisconnected;
 
-        private ISerialPortDiscoveryService _serialPortDiscoveryService;
-        private IDateTimeService _dateTimeService;
-        private CancellationTokenSource _cancellationTokenSource;
+        private readonly ISerialPortDiscoveryService _serialPortDiscoveryService;
+        private readonly IDateTimeService _dateTimeService;
+        private readonly CancellationTokenSource _cancellationTokenSource;
+        private readonly List<SerialPortConnectionInfo> _lastDetectedPorts = new List<SerialPortConnectionInfo>();
         private Task _monitoringTask;
-        private List<SerialPortConnectionInfo> _lastDetectedPorts = new List<SerialPortConnectionInfo>();
         private bool _disposed;
 
         public SerialPortMonitorService(

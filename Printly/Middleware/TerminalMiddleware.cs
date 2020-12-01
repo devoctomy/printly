@@ -88,7 +88,7 @@ namespace Printly.Middleware
             var cancellationTokenSource = new CancellationTokenSource();
             var buffer = new byte[1024 * 4];
 
-            EventHandler<SerialDataReceivedEventArgs> dataReceivedHandler = async (object sender, SerialDataReceivedEventArgs e) =>
+            serialPortCommunicationService.DataReceived += async (object sender, SerialDataReceivedEventArgs e) =>
             {
                 switch(e.EventType)
                 {
@@ -111,9 +111,8 @@ namespace Printly.Middleware
                         }
                 }
             };
-            serialPortCommunicationService.DataReceived += dataReceivedHandler;
 
-            EventHandler<PortsDisconnectedEventArgs> portsDisconnectedHandler = async (object sender, PortsDisconnectedEventArgs e) =>
+            serialPortMonitorService.PortsDisconnected += async (object sender, PortsDisconnectedEventArgs e) =>
             {
                 if (e.SerialPorts.Any(x => x.ToLower() == serialPortCommunicationService.PortName.ToLower()))
                 {
@@ -127,7 +126,6 @@ namespace Printly.Middleware
                     cancellationTokenSource.Cancel();
                 }
             };
-            serialPortMonitorService.PortsDisconnected += portsDisconnectedHandler;
             serialPortMonitorService.Start();
 
             WebSocketReceiveResult result = null;
