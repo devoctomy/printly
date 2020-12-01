@@ -13,14 +13,14 @@ namespace Printly.Domain.Services.Extensions
         {
             services.AddSingleton<IMongoClient>(new MongoClient(configuration.ConnectionString));
 
-            services.AddSingleton<MongoDbStorageServiceConfiguration<Printer>>(new MongoDbStorageServiceConfiguration<Printer>()
+            services.AddSingleton<MongoDbStorageServiceConfiguration<Printer>>(new MongoDbStorageServiceConfiguration<Printer>
             {
                 DatabaseName = configuration.DatabaseName,
                 CollectionName = "Printers"
             });
             services.AddSingleton<IDataStorageService<Printer>, PrinterStorageService>();
 
-            services.AddSingleton<MongoDbStorageServiceConfiguration<Configuration>>(new MongoDbStorageServiceConfiguration<Configuration>()
+            services.AddSingleton<MongoDbStorageServiceConfiguration<Configuration>>(new MongoDbStorageServiceConfiguration<Configuration>
             {
                 DatabaseName = configuration.DatabaseName,
                 CollectionName = "Configuration"

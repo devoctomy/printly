@@ -31,16 +31,16 @@ namespace Printly.Printers
                 cancellationToken);
             if(printer != null)
             {
-                return new GetPrinterByIdQueryResponse()
+                return new GetPrinterByIdQueryResponse
                 {
-                    Printer = _mapper.Map<Printly.Dto.Response.Printer>(printer)
+                    Printer = _mapper.Map<Dto.Response.Printer>(printer)
                 };
             }
             else
             {
-                return new GetPrinterByIdQueryResponse()
+                return new GetPrinterByIdQueryResponse
                 {
-                    Error = new Dto.Response.Error()
+                    Error = new Dto.Response.Error
                     {
                         HttpStatusCode = HttpStatusCode.NotFound,
                         Message = $"Printer with id '{request.Id}' not found."

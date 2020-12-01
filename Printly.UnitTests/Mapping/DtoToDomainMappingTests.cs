@@ -18,11 +18,11 @@ namespace Printly.UnitTests.Mapping
             });
             var sut = new Mapper(config);
 
-            var dtoPrinter = new Dto.Request.Printer()
+            var dtoPrinter = new Dto.Request.Printer
             {
                 MarlinId = Guid.NewGuid().ToString(),
                 Name = "Hello World",
-                BedSize = new Dto.Request.Dimensions()
+                BedSize = new Dto.Request.Dimensions
                 {
                     X = 100,
                     Y = 200,

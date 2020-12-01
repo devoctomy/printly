@@ -33,7 +33,7 @@ namespace Printly
         {
             services.AddSingleton<AppSettings>(_appSettings);
             services.AddPrintlyServices();
-            services.AddPrintlyDataServices(new Domain.Services.MongoDbConfiguration()
+            services.AddPrintlyDataServices(new Domain.Services.MongoDbConfiguration
             {
                 ConnectionString = _appSettings.MongoDbStorageConnectionString,
                 DatabaseName = _appSettings.MongoDbStorageDatabaseName

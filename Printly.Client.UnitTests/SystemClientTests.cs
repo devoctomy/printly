@@ -31,7 +31,7 @@ namespace Printly.Client.UnitTests
             mockHttpAdapter.Setup(x => x.GetAsync(
                 It.IsAny<Uri>(),
                 It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new System.Net.Http.HttpResponseMessage()
+                .ReturnsAsync(new System.Net.Http.HttpResponseMessage
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
                     Content = new StringContent(JsonConvert.SerializeObject(response))

@@ -34,7 +34,7 @@ namespace Printly.Printers
             var response = await _mediator.Send(
                 request,
                 cancellationToken);
-            return new ObjectResponse<List<Printer>>()
+            return new ObjectResponse<List<Printer>>
             {
                 Success = response.Error == null,
                 Value = response.Printers,
@@ -55,14 +55,14 @@ namespace Printly.Printers
                     "Model state is invalid.");
             }
 
-            var request = new GetPrinterByIdQuery()
+            var request = new GetPrinterByIdQuery
             {
                 Id = id
             };
             var response = await _mediator.Send(
                 request,
                 cancellationToken);
-            return new ObjectResponse<Printer>()
+            return new ObjectResponse<Printer>
             {
                 Success = response.Error == null,
                 Value = response.Printer,
@@ -82,14 +82,14 @@ namespace Printly.Printers
                     "Model state is invalid.");
             }
 
-            var request = new CreatePrinterCommand()
+            var request = new CreatePrinterCommand
             {
                 Printer = printer
             };
             var response = await _mediator.Send(
                 request,
                 cancellationToken);
-            return new ObjectResponse<Printer>()
+            return new ObjectResponse<Printer>
             {
                 Success = true,
                 Value = response.Printer
@@ -118,7 +118,7 @@ namespace Printly.Printers
             var response = await _mediator.Send(
                 request,
                 cancellationToken);
-            return new Response()
+            return new Response
             {
                 Success = response.Error == null,
                 Error = response.Error
@@ -145,7 +145,7 @@ namespace Printly.Printers
             var response = await _mediator.Send(
                 request,
                 cancellationToken);
-            return new Response()
+            return new Response
             {
                 Error = response.Error
             };

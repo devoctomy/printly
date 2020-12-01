@@ -18,9 +18,9 @@ namespace Printly.System
             GetSystemInfoCommand request,
             CancellationToken cancellationToken)
         {
-            return Task.FromResult(new GetSystemInfoResponse()
+            return Task.FromResult(new GetSystemInfoResponse
             {
-                SystemInfo = new SystemInfo()
+                SystemInfo = new SystemInfo
                 {
                     SystemId = _systemStateService.Configuration.SystemId,
                     StartedAt = _systemStateService.StartedAt,

@@ -11,9 +11,9 @@ namespace Printly.Mapping
                 .ForMember(dest => dest.BedSize, src => src.MapFrom(x => MapBedSizeToDimensionResponse(x)));
         }
 
-        private Dto.Response.Dimensions MapBedSizeToDimensionResponse(Domain.Models.Printer printer)
+        private static Dto.Response.Dimensions MapBedSizeToDimensionResponse(Domain.Models.Printer printer)
         {
-            return new Dto.Response.Dimensions()
+            return new Dto.Response.Dimensions
             {
                 X = printer.BedSizeX,
                 Y = printer.BedSizeY,

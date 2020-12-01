@@ -28,9 +28,9 @@ namespace Printly.UnitTests.System
                 mockSerialPortDiscoveryService.Object,
                 mockConfigDataService.Object);
 
-            var configurations = new List<Configuration>()
+            var configurations = new List<Configuration>
             {
-                new Configuration()
+                new Configuration
                 {
                     Id = ObjectId.GenerateNewId(),
                     SystemId = Guid.NewGuid().ToString()

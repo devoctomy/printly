@@ -23,7 +23,7 @@ namespace Printly.Extensions
                         await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response()
                         {
                             Success = false,
-                            Error = new Error()
+                            Error = new Error
                             {
                                 HttpStatusCode = (HttpStatusCode)context.Response.StatusCode,
                                 Message = exceptionHandlerFeature.Error.Message
