@@ -18,7 +18,7 @@ namespace Printly.UnitTests.Mapping
             });
             var sut = new Mapper(config);
 
-            var domainPrinter = new Domain.Models.Printer()
+            var domainPrinter = new Domain.Models.Printer
             {
                 Id = ObjectId.GenerateNewId(),
                 MarlinId = Guid.NewGuid().ToString(),

@@ -26,7 +26,7 @@ namespace Printly.Domain.Services
             (await _entities?.FindAsync(
                 entity => true,
                 null,
-                cancellationToken)).ToList();
+                cancellationToken))?.ToList(cancellationToken);
 
         
         public async Task<T> Get(
@@ -35,7 +35,7 @@ namespace Printly.Domain.Services
             (await _entities?.FindAsync(
                 entity => entity.Id == ObjectId.Parse(id),
                 null,
-                cancellationToken)).FirstOrDefault();
+                cancellationToken)).FirstOrDefault(cancellationToken);
 
         public async Task<IEnumerable<T>> Find(
             Expression<Func<T, bool>> filter,
@@ -43,7 +43,7 @@ namespace Printly.Domain.Services
             (await _entities?.FindAsync(
                 filter,
                 null,
-                cancellationToken)).ToEnumerable();
+                cancellationToken)).ToEnumerable(cancellationToken);
 
         public async Task Create(
             T entity,

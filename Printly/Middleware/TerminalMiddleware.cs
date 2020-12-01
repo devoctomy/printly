@@ -32,7 +32,7 @@ namespace Printly.Middleware
             {
                 if (httpContext.WebSockets.IsWebSocketRequest)
                 {
-                    var pathParts = httpContext.Request.Path.ToString().Substring(1).Split("/");
+                    var pathParts = httpContext.Request.Path.ToString()[1..].Split("/");
                     var portName = pathParts[1];
 
                     var connection = _serialPortConnectionManager.GetOrOpen(
@@ -44,14 +44,11 @@ namespace Printly.Middleware
                         Enum.Parse<Handshake>(GetQueryValueOrDefault(httpContext.Request.Query, "handshake", Handshake.None.ToString()), true),
                         new TimeSpan(1, 0, 0),
                         new TimeSpan(1, 0, 0));
-                    using (WebSocket webSocket = await httpContext.WebSockets.AcceptWebSocketAsync())
-                    {
-                        await CommsLoop(
-                            httpContext,
-                            webSocket,
-                            connection,
-                            serialPortMonitorService).ConfigureAwait(false);
-                    }
+                    using WebSocket webSocket = await httpContext.WebSockets.AcceptWebSocketAsync();
+                    await CommsLoop(
+                        webSocket,
+                        connection,
+                        serialPortMonitorService).ConfigureAwait(false);
                 }
                 else
                 {
@@ -64,7 +61,7 @@ namespace Printly.Middleware
             }
         }
 
-        private string GetQueryValueOrDefault(
+        private static string GetQueryValueOrDefault(
             IQueryCollection queryCollection,
             string name,
             string defaultValue)
@@ -80,7 +77,6 @@ namespace Printly.Middleware
         }
 
         private async Task CommsLoop(
-            HttpContext context,
             WebSocket webSocket,
             ISerialPortCommunicationService serialPortCommunicationService,
             ISerialPortMonitorService serialPortMonitorService)

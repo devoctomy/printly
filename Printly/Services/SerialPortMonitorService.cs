@@ -89,7 +89,9 @@ namespace Printly.Services
                         });
                 }
 
-                await Task.Delay(1000).ConfigureAwait(false);
+                await Task.Delay(
+                    1000,
+                    cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -108,6 +110,10 @@ namespace Printly.Services
             _disposed = true;
         }
 
-        public void Dispose() => Dispose(true);
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

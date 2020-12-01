@@ -28,20 +28,18 @@ namespace Printly.UnitTests.Services
 
             var currentlyConnectedPorts = new List<string>();
 
-            EventHandler<PortsConnectedEventArgs> portsConnectedHandler = (sender, e) =>
+            sut.PortsConnected += (sender, e) =>
             {
                 currentlyConnectedPorts.AddRange(e.SerialPorts);
             };
-            sut.PortsConnected += portsConnectedHandler;
 
-            EventHandler<PortsDisconnectedEventArgs> portsDisconnectedHandler = (sender, e) =>
+            sut.PortsDisconnected += (sender, e) =>
             {
                 foreach(var curPort in e.SerialPorts)
                 {
                     currentlyConnectedPorts.Remove(curPort);
                 }
             };
-            sut.PortsDisconnected += portsDisconnectedHandler;
 
             // Act
             sut.Start();
@@ -51,7 +49,6 @@ namespace Printly.UnitTests.Services
             Assert.Equal(2, currentlyConnectedPorts.Count);
             Assert.Contains(currentlyConnectedPorts, x => x == "COM1");
             Assert.Contains(currentlyConnectedPorts, x => x == "COM2");
-            await sut.Stop();
         }
 
         [Fact]
@@ -70,33 +67,30 @@ namespace Printly.UnitTests.Services
 
             var currentlyConnectedPorts = new List<string>();
 
-            EventHandler<PortsConnectedEventArgs> portsConnectedHandler = (sender, e) =>
+            sut.PortsConnected += (sender, e) =>
             {
                 currentlyConnectedPorts.AddRange(e.SerialPorts);
             };
-            sut.PortsConnected += portsConnectedHandler;
 
-            EventHandler<PortsDisconnectedEventArgs> portsDisconnectedHandler = (sender, e) =>
+            sut.PortsDisconnected += (sender, e) =>
             {
                 foreach (var curPort in e.SerialPorts)
                 {
                     currentlyConnectedPorts.Remove(curPort);
                 }
             };
-            sut.PortsDisconnected += portsDisconnectedHandler;
 
             // Act
             sut.Start();
-            await Task.Delay(5000).ConfigureAwait(false);
+            await Task.Delay(10000).ConfigureAwait(false);
 
             // Assert
             Assert.Equal(2, currentlyConnectedPorts.Count);
             Assert.Contains(currentlyConnectedPorts, x => x == "COM3");
             Assert.Contains(currentlyConnectedPorts, x => x == "COM4");
-            await sut.Stop();
         }
 
-        private async Task PortConnectionActivity(Mock<ISerialPortDiscoveryService> mockSerialPortDiscoveryService)
+        private static async Task PortConnectionActivity(Mock<ISerialPortDiscoveryService> mockSerialPortDiscoveryService)
         {
             await Task.Yield();
             var connectedPorts = new List<string>() { "COM1", "COM2" };

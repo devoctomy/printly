@@ -33,7 +33,7 @@ namespace Printly.UnitTests.Printers
 
             mockMapper.Setup(x => x.Map<List<Dto.Response.Printer>>(
                 It.IsAny<object>()))
-                .Returns(new List<Dto.Response.Printer>()
+                .Returns(new List<Dto.Response.Printer>
                 {
                     new Dto.Response.Printer(),
                     new Dto.Response.Printer()

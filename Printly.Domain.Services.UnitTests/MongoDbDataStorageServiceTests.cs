@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using Moq;
 using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Printly.Domain.Services.UnitTests
@@ -47,7 +48,7 @@ namespace Printly.Domain.Services.UnitTests
         }
 
         [Fact]
-        public void GivenCancellationToken_WhenGet_ThenCollectionFindAsync()
+        public async Task GivenCancellationToken_WhenGet_ThenCollectionFindAsync()
         {
             // Arrange
             var configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>()
@@ -76,7 +77,7 @@ namespace Printly.Domain.Services.UnitTests
             var cancellationTokenSource = new CancellationTokenSource();
 
             // Act
-            var result = sut.Get(cancellationTokenSource.Token);
+            await sut.Get(cancellationTokenSource.Token);
 
             // Assert
             mockCollection.Verify(x => x.FindAsync(

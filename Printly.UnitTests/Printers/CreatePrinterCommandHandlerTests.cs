@@ -25,7 +25,7 @@ namespace Printly.UnitTests.Printers
                 mockDataStorage.Object,
                 mockMapper.Object);
 
-            var command = new CreatePrinterCommand()
+            var command = new CreatePrinterCommand
             {
                 Printer = new Dto.Request.Printer()
             };
@@ -45,7 +45,7 @@ namespace Printly.UnitTests.Printers
                 .Returns(Task.CompletedTask);
 
             // Act
-            var response = await sut.Handle(
+            await sut.Handle(
                 command,
                 CancellationToken.None);
 

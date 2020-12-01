@@ -34,7 +34,7 @@ namespace Printly.UnitTests.Printers
 
             mockMapper.Setup(x => x.Map<Dto.Response.Printer>(
                 It.IsAny<object>()))
-                .Returns(new Dto.Response.Printer()
+                .Returns(new Dto.Response.Printer
                 {
                     Name = "Bob Hoskins"
                 });

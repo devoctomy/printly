@@ -90,9 +90,9 @@ namespace Printly.UnitTests.Printers
             var mockMediator = new Mock<IMediator>();
             var sut = new PrintersController(mockMediator.Object);
 
-            var response = new CreatePrinterCommandResponse()
+            var response = new CreatePrinterCommandResponse
             {
-                Printer = new Dto.Response.Printer()
+                Printer = new Dto.Response.Printer
                 {
                     Id = "HelloWorld"
                 }

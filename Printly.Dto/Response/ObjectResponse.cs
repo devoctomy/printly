@@ -16,7 +16,7 @@ namespace Printly.Dto.Response
             HttpStatusCode code,
             string message)
         {
-            Error = new Error()
+            Error = new Error
             {
                 HttpStatusCode = code,
                 Message = message
