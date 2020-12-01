@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Localization;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
 using Printly.Domain.Services;
 using Printly.Printers;
+using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,7 +23,8 @@ namespace Printly.UnitTests.Printers
             var mockMapper = new Mock<IMapper>();
             var sut = new UpdatePrinterCommandHandler(
                 mockDataStorage.Object,
-                mockMapper.Object);
+                mockMapper.Object,
+                Mock.Of<IStringLocalizerFactory>());
 
             var command = new UpdatePrinterCommand
             {
@@ -64,9 +67,18 @@ namespace Printly.UnitTests.Printers
             // Arrange
             var mockDataStorage = new Mock<IDataStorageService<Domain.Models.Printer>>();
             var mockMapper = new Mock<IMapper>();
+            var mockStringLocalizerFactory = new Mock<IStringLocalizerFactory>();
+            var mockStringLocalizer = new Mock<IStringLocalizer>();
+
+            mockStringLocalizerFactory.Setup(x => x.Create(
+                It.IsAny<string>(),
+                It.IsAny<string>()))
+                .Returns(mockStringLocalizer.Object);
+
             var sut = new UpdatePrinterCommandHandler(
                 mockDataStorage.Object,
-                mockMapper.Object);
+                mockMapper.Object,
+                mockStringLocalizerFactory.Object);
 
             var command = new UpdatePrinterCommand
             {
@@ -87,6 +99,8 @@ namespace Printly.UnitTests.Printers
                     0,
                     null,
                     null));
+
+            mockStringLocalizer.SetupGet(x => x["PrinterNotFound", It.IsAny<string>()]).Returns(new LocalizedString("PrinterNotFound", $"{command.Id}"));
 
             // Act
             var result = await sut.Handle(

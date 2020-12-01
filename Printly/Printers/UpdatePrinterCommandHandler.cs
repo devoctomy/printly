@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Localization;
 using MongoDB.Bson;
 using Printly.Domain.Models;
 using Printly.Domain.Services;
 using System;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,13 +16,17 @@ namespace Printly.Printers
     {
         private readonly IDataStorageService<Printer> _storageService;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer _stringLocalizer;
 
         public UpdatePrinterCommandHandler(
             IDataStorageService<Printer> storageService,
-            IMapper mapper)
+            IMapper mapper,
+            IStringLocalizerFactory stringLocalizerFactory)
         {
             _storageService = storageService;
             _mapper = mapper;
+            var assemblyName = new AssemblyName(this.GetType().Assembly.FullName);
+            _stringLocalizer = stringLocalizerFactory.Create("Printly", assemblyName.Name);
         }
 
         public async Task<UpdatePrinterCommandResponse> Handle(
@@ -44,7 +50,7 @@ namespace Printly.Printers
                     Error = new Dto.Response.Error
                     {
                         HttpStatusCode = HttpStatusCode.NotFound,
-                        Message = $"Printer with id '{request.Id}' not found."
+                        Message = _stringLocalizer["PrinterNotFound", request.Id]
                     }
                 };
             }

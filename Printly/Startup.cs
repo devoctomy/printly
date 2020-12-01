@@ -2,16 +2,20 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Printly.Domain.Services.Extensions;
 using Printly.Extensions;
 using Printly.Middleware;
 using Printly.System;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Threading;
 
 namespace Printly
@@ -41,6 +45,21 @@ namespace Printly
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddMediatR(this.GetType().Assembly);
             services.AddControllers();
+            services.Configure<RequestLocalizationOptions>(
+                opts =>
+                {
+                    var supportedCultures = new List<CultureInfo>
+                    {
+                            new CultureInfo("en-GB")
+                    };
+                    opts.DefaultRequestCulture = new RequestCulture("en-GB");
+                    opts.SupportedCultures = supportedCultures;
+                    opts.SupportedUICultures = supportedCultures;
+                });
+            services.AddLocalization(opts =>
+            {
+                opts.ResourcesPath = "Resources";
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Printly", Version = "v1" });
@@ -60,6 +79,7 @@ namespace Printly
                 });
             }
             app.ConfigureExceptionHandler();
+            app.UseRequestLocalization(app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value);
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
