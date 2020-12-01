@@ -45,13 +45,13 @@ namespace Printly.UnitTests.Services
 
             // Act
             sut.Start();
-            await Task.Delay(5000);
+            await Task.Delay(5000).ConfigureAwait(false); ;
 
             // Assert
             Assert.Equal(2, currentlyConnectedPorts.Count);
             Assert.Contains(currentlyConnectedPorts, x => x == "COM1");
             Assert.Contains(currentlyConnectedPorts, x => x == "COM2");
-            sut.Stop();
+            await sut.Stop();
         }
 
         [Fact]
@@ -87,13 +87,13 @@ namespace Printly.UnitTests.Services
 
             // Act
             sut.Start();
-            await Task.Delay(30000);
+            await Task.Delay(30000).ConfigureAwait(false);
 
             // Assert
             Assert.Equal(2, currentlyConnectedPorts.Count);
             Assert.Contains(currentlyConnectedPorts, x => x == "COM3");
             Assert.Contains(currentlyConnectedPorts, x => x == "COM4");
-            sut.Stop();
+            await sut.Stop();
         }
 
         private async Task PortConnectionActivity(Mock<ISerialPortDiscoveryService> mockSerialPortDiscoveryService)

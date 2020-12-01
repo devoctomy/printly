@@ -14,7 +14,7 @@ namespace Printly.Domain.Services
     {
         private readonly IMongoCollection<T> _entities;
 
-        public MongoDbDataStorageService(
+        protected MongoDbDataStorageService(
             IMongoClient mongoClient,
             MongoDbStorageServiceConfiguration<T> settings)
         {

@@ -37,10 +37,10 @@ namespace Printly.Services
             }
         }
 
-        public async void Stop()
+        public async Task Stop()
         {
             _cancellationTokenSource.Cancel();
-            await _monitoringTask;
+            await _monitoringTask.ConfigureAwait(false);
             _monitoringTask = null;
         }
 
@@ -89,7 +89,7 @@ namespace Printly.Services
                         });
                 }
 
-                await Task.Delay(5000);
+                await Task.Delay(5000).ConfigureAwait(false);
             }
         }
 

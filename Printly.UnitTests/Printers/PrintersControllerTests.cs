@@ -4,6 +4,7 @@ using Moq;
 using Printly.Printers;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Printly.UnitTests.Printers
@@ -11,7 +12,7 @@ namespace Printly.UnitTests.Printers
     public class PrintersControllerTests
     {
         [Fact]
-        public async void GivenNoParams_WhenGet_ThenQuerySent_AndResponseReturned()
+        public async Task GivenNoParams_WhenGet_ThenQuerySent_AndResponseReturned()
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
@@ -50,7 +51,7 @@ namespace Printly.UnitTests.Printers
         }
 
         [Fact]
-        public async void GivenId_WhenGet_ThenQuerySent_AndResponseReturned()
+        public async Task GivenId_WhenGet_ThenQuerySent_AndResponseReturned()
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
@@ -83,7 +84,7 @@ namespace Printly.UnitTests.Printers
         }
 
         [Fact]
-        public async void GivenPrinter_WhenCreate_ThenQuerySent_AndResponseReturned()
+        public async Task GivenPrinter_WhenCreate_ThenQuerySent_AndResponseReturned()
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
@@ -115,7 +116,7 @@ namespace Printly.UnitTests.Printers
         }
 
         [Fact]
-        public async void GivenId_AndPrinter_WhenCreate_ThenQuerySent_AndResponseReturned()
+        public async Task GivenId_AndPrinter_WhenCreate_ThenQuerySent_AndResponseReturned()
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
@@ -142,7 +143,7 @@ namespace Printly.UnitTests.Printers
         }
 
         [Fact]
-        public async void GivenId_WhenDelete_ThenQuerySent_AndResponseReturned()
+        public async Task GivenId_WhenDelete_ThenQuerySent_AndResponseReturned()
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();

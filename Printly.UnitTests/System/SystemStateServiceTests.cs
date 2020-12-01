@@ -108,7 +108,7 @@ namespace Printly.UnitTests.System
                 It.IsAny<CancellationToken>()));
 
             await sut.InitialiseAsync(CancellationToken.None);
-            await Task.Delay(new TimeSpan(0, 0, 5));
+            await Task.Delay(new TimeSpan(0, 0, 5)).ConfigureAwait(false);
 
             // Act
             sut.Reset();

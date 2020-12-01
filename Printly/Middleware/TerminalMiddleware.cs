@@ -50,7 +50,7 @@ namespace Printly.Middleware
                             httpContext,
                             webSocket,
                             connection,
-                            serialPortMonitorService);
+                            serialPortMonitorService).ConfigureAwait(false);
                     }
                 }
                 else
@@ -143,7 +143,7 @@ namespace Printly.Middleware
                         cancellationTokenSource.Token);
                 }
             }
-            catch(OperationCanceledException ex)
+            catch(OperationCanceledException)
             {
                 //Gracefully shut down
             }
@@ -156,9 +156,7 @@ namespace Printly.Middleware
                     "Connection forcefully closed from server side.",
                     CancellationToken.None);
             }
-            serialPortCommunicationService.DataReceived -= dataReceivedHandler;
-            serialPortMonitorService.Stop();
-            serialPortMonitorService.PortsDisconnected -= portsDisconnectedHandler;
+            await serialPortMonitorService.Stop();
             _serialPortConnectionManager.Close(serialPortCommunicationService.PortName);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Printly.Services
 {
@@ -8,6 +9,6 @@ namespace Printly.Services
         event EventHandler<PortsDisconnectedEventArgs> PortsDisconnected;
 
         void Start();
-        void Stop();
+        Task Stop();
     }
 }

@@ -221,15 +221,7 @@ namespace Printly.UnitTests.Services
             var mockSerialPortCommunicationServiceFactory = new Mock<ISerialPortCommunicationServiceFactory>();
             var mockSerialPortCommunicationService = new Mock<ISerialPortCommunicationService>();
             var sut = new SerialPortConnectionManager(mockSerialPortCommunicationServiceFactory.Object);
-
             var portName = "Bob";
-            var baudRate = 9600;
-            var parity = Parity.None;
-            var dataBits = 8;
-            var stopBits = StopBits.One;
-            var handshake = Handshake.None;
-            var readTimeout = new TimeSpan(0, 1, 0);
-            var writeTimeout = new TimeSpan(0, 1, 0);
 
             mockSerialPortCommunicationServiceFactory.Setup(x => x.Create())
                 .Returns(mockSerialPortCommunicationService.Object);
