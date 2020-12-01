@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Printly.Services
 {
-    public class SerialPortMonitorService : ISerialPortMonitorService
+    public class SerialPortMonitorService : ISerialPortMonitorService, IDisposable
     {
         public event EventHandler<PortsConnectedEventArgs> PortsConnected;
         public event EventHandler<PortsDisconnectedEventArgs> PortsDisconnected;
@@ -16,7 +16,7 @@ namespace Printly.Services
         private CancellationTokenSource _cancellationTokenSource;
         private Task _monitoringTask;
         private List<SerialPortConnectionInfo> _lastDetectedPorts = new List<SerialPortConnectionInfo>();
-
+        private bool _disposed;
 
         public SerialPortMonitorService(
             ISerialPortDiscoveryService serialPortDiscoveryService,
@@ -26,6 +26,8 @@ namespace Printly.Services
             _dateTimeService = dateTimeService;
             _cancellationTokenSource = new CancellationTokenSource();
         }
+
+        ~SerialPortMonitorService() => Dispose(false);
 
         public void Start()
         {
@@ -90,5 +92,22 @@ namespace Printly.Services
                 await Task.Delay(5000);
             }
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(_disposed)
+            {
+                return;
+            }
+
+            if(disposing)
+            {
+                _cancellationTokenSource.Dispose();
+            }
+
+            _disposed = true;
+        }
+
+        public void Dispose() => Dispose(true);
     }
 }

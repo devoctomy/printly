@@ -104,6 +104,11 @@ namespace Printly.Middleware
                                 CancellationToken.None);
                             break;
                         }
+                    default:
+                        {
+                            // Do nothing
+                            break;
+                        }
                 }
             };
             serialPortCommunicationService.DataReceived += dataReceivedHandler;
