@@ -12,17 +12,14 @@ namespace Printly.Domain.Services
 {
     public abstract class MongoDbDataStorageService<T> : IDataStorageService<T> where T : StorageEntityBase
     {
-        private readonly IMongoClient _mongoClient;
-        private readonly IMongoDatabase _mongoDatabase;
         private readonly IMongoCollection<T> _entities;
 
         public MongoDbDataStorageService(
             IMongoClient mongoClient,
             MongoDbStorageServiceConfiguration<T> settings)
         {
-            _mongoClient = mongoClient;
-            _mongoDatabase = _mongoClient.GetDatabase(settings.DatabaseName);
-            _entities = _mongoDatabase.GetCollection<T>(settings.CollectionName);
+            var mongoDatabase = mongoClient.GetDatabase(settings.DatabaseName);
+            _entities = mongoDatabase.GetCollection<T>(settings.CollectionName);
         }
 
         public async Task<List<T>> Get(CancellationToken cancellationToken) =>
@@ -70,7 +67,7 @@ namespace Printly.Domain.Services
             T entity,
             CancellationToken cancellationToken) =>
             _entities?.DeleteOneAsync(
-                entity => entity.Id == entity.Id,
+                ent => ent.Id == entity.Id,
                 cancellationToken);
 
         public Task<DeleteResult> Remove(

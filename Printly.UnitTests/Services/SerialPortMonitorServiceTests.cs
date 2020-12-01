@@ -22,7 +22,7 @@ namespace Printly.UnitTests.Services
                 mockDateTimeService.Object);
 
             mockSerialPortDiscoveryService.Setup(x => x.GetPorts())
-                .Returns(new string[] { "COM1", "COM2" });
+                .Returns(new [] { "COM1", "COM2" });
 
             mockDateTimeService.SetupGet(x => x.UtcNow).Returns(DateTime.UtcNow);
 

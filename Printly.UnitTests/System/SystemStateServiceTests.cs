@@ -38,7 +38,7 @@ namespace Printly.UnitTests.System
             };
 
             mockSerialPortDiscoveryService.Setup(x => x.GetPorts())
-                .Returns(new string[] { "COM1", "COM2" });
+                .Returns(new [] { "COM1", "COM2" });
 
             mockConfigDataService.Setup(x => x.Get(
                 It.IsAny<CancellationToken>()))
