@@ -8,10 +8,16 @@ namespace Printly.Services
         public event EventHandler<SerialDataReceivedEventArgs> DataReceived;
         public event EventHandler<SerialErrorReceivedEventArgs> ErrorReceived;
 
-        private SerialPort _serialPort;
+        private readonly ISerialPortFactory _serialPortFactory;
+        private ISerialPort _serialPort;
         private string _portName = string.Empty;
 
         public string PortName => _portName;
+
+        public SerialPortCommunicationService(ISerialPortFactory serialPortFactory)
+        {
+            _serialPortFactory = serialPortFactory;
+        }
 
         public bool Open(
             string portName,
@@ -23,17 +29,17 @@ namespace Printly.Services
             TimeSpan readTimeout,
             TimeSpan writeTimeout)
         {
-            _serialPort = new SerialPort();
-            _serialPort.PortName = portName;
-            _serialPort.BaudRate = baudRate;
-            _serialPort.Parity = parity;
-            _serialPort.DataBits = dataBits;
-            _serialPort.StopBits = stopBits;
-            _serialPort.Handshake = handshake;
-            _serialPort.ReadTimeout = (int)readTimeout.TotalMilliseconds;
-            _serialPort.WriteTimeout = (int)writeTimeout.TotalMilliseconds;
-            _serialPort.DataReceived += _serialPort_DataReceived;
-            _serialPort.ErrorReceived += _serialPort_ErrorReceived;
+            _serialPort = _serialPortFactory.Create(
+                portName,
+                baudRate,
+                parity,
+                dataBits,
+                stopBits,
+                handshake,
+                readTimeout,
+                writeTimeout);
+            _serialPort.DataReceived += SerialPort_DataReceived;
+            _serialPort.ErrorReceived += SerialPort_ErrorReceived;
             _serialPort.Open();
             _portName = portName;
             return _serialPort.IsOpen;
@@ -41,13 +47,13 @@ namespace Printly.Services
 
         public void Close()
         {
-            if(_serialPort.IsOpen)
+            if(_serialPort != null && _serialPort.IsOpen)
             {
                 _serialPort.Close();
             }
         }
 
-        private void _serialPort_DataReceived(
+        private void SerialPort_DataReceived(
             object sender,
             SerialDataReceivedEventArgs e)
         {
@@ -56,7 +62,7 @@ namespace Printly.Services
                 e);
         }
 
-        private void _serialPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
+        private void SerialPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
             ErrorReceived?.Invoke(
                 sender,
@@ -73,7 +79,5 @@ namespace Printly.Services
                 offset,
                 count);
         }
-
-
     }
 }

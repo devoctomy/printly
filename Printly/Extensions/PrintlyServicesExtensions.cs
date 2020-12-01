@@ -10,6 +10,7 @@ namespace Printly.Extensions
         {
             services.AddSingleton<IDateTimeService, DateTimeService>();
             services.AddSingleton<ISystemStateService, SystemStateService>();
+            services.AddSingleton<ISerialPortFactory, SerialPortFactory>();
             services.AddSingleton<ISerialPortDiscoveryService, SerialPortDiscoveryService>();
             services.AddSingleton<ISerialPortCommunicationService, SerialPortCommunicationService>();
             services.AddSingleton<ISerialPortConnectionManager, SerialPortConnectionManager>();
