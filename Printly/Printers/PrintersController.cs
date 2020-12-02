@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using Printly.Dto.Response;
 using System;
 using System.Collections.Generic;
@@ -24,15 +25,6 @@ namespace Printly.Printers
         public async Task<ObjectResponse<List<Printer>>> Get(
             CancellationToken cancellationToken)
         {
-            if(!ModelState.IsValid)
-            {
-                return new ObjectResponse<List<Printer>>(
-                    HttpStatusCode.BadRequest,
-                    "Model state is invalid.");
-            }
-
-            throw new Exception("Balls!");
-
             var request = new GetAllPrintersQuery();
             var response = await _mediator.Send(
                 request,
@@ -51,11 +43,13 @@ namespace Printly.Printers
             string id,
             CancellationToken cancellationToken)
         {
-            if (!ModelState.IsValid)
+            var idValidationResultError = ValidateId(id);
+            if (idValidationResultError != null)
             {
-                return new ObjectResponse<Printer>(
-                    HttpStatusCode.BadRequest,
-                    "Model state is invalid.");
+                return new ObjectResponse<Printer>
+                {
+                    Error = idValidationResultError
+                };
             }
 
             var request = new GetPrinterByIdQuery
@@ -106,6 +100,15 @@ namespace Printly.Printers
             [FromBody] Dto.Request.Printer printer,
             CancellationToken cancellationToken)
         {
+            var idValidationResultError = ValidateId(id);
+            if (idValidationResultError != null)
+            {
+                return new Response
+                {
+                    Error = idValidationResultError
+                };
+            }
+
             if (!ModelState.IsValid)
             {
                 return new Response(
@@ -134,11 +137,13 @@ namespace Printly.Printers
             string id,
             CancellationToken cancellationToken)
         {
-            if (!ModelState.IsValid)
+            var idValidationResultError = ValidateId(id);
+            if (idValidationResultError != null)
             {
-                return new Response(
-                    HttpStatusCode.BadRequest,
-                    "Model state is invalid.");
+                return new Response
+                {
+                    Error = idValidationResultError
+                };
             }
 
             var request = new DeletePrinterByIdCommand
@@ -152,6 +157,35 @@ namespace Printly.Printers
             {
                 Error = response.Error
             };
+        }
+
+        private Error ValidateId(string id)
+        {
+            if (String.IsNullOrWhiteSpace(id))
+            {
+                return new Error
+                {
+                    HttpStatusCode = HttpStatusCode.BadRequest,
+                    Message = "Missing id."
+                };
+            }
+            else
+            {
+                try
+                {
+                    var objectId = ObjectId.Parse(id);
+                }
+                catch (Exception ex)
+                {
+                    return new Error
+                    {
+                        HttpStatusCode = HttpStatusCode.BadRequest,
+                        Message = $"Id format incorrect. {ex.Message}"
+                    };
+                }
+            }
+
+            return null;
         }
     }
 }
