@@ -30,10 +30,8 @@ namespace Printly.UnitTests.Services
                 .Returns(_mockSerialPortCommunicationService.Object);
         }
 
-        [Fact]
-        public void GivenPortName_AndConnectionNotCached_AndConnectionAvailable_WhenGetOrOpen_ThenConnectionOpenedAndReturned()
+        private void MockPortOpen(bool success)
         {
-            // Arrange
             _mockSerialPortCommunicationService.Setup(x => x.Open(
                 It.IsAny<string>(),
                 It.IsAny<int>(),
@@ -43,10 +41,12 @@ namespace Printly.UnitTests.Services
                 It.IsAny<Handshake>(),
                 It.IsAny<TimeSpan>(),
                 It.IsAny<TimeSpan>()))
-                .Returns(true);
+                .Returns(success);
+        }
 
-            // Act
-            var result = _sut.GetOrOpen(
+        private ISerialPortCommunicationService GetOrOpen()
+        {
+            return _sut.GetOrOpen(
                 _portName,
                 _baudRate,
                 _parity,
@@ -55,6 +55,16 @@ namespace Printly.UnitTests.Services
                 _handshake,
                 _readTimeout,
                 _writeTimeout);
+        }
+
+        [Fact]
+        public void GivenPortName_AndConnectionNotCached_AndConnectionAvailable_WhenGetOrOpen_ThenConnectionOpenedAndReturned()
+        {
+            // Arrange
+            MockPortOpen(true);
+
+            // Act
+            var result = GetOrOpen();
 
             // Assert
             Assert.Equal(_mockSerialPortCommunicationService.Object, result);
@@ -64,29 +74,12 @@ namespace Printly.UnitTests.Services
         public void GivenPortName_AndConnectionNotCached_AndConnectionNotAvailable_WhenGetOrOpen_ThenExceptionThrown()
         {
             // Arrange
-            _mockSerialPortCommunicationService.Setup(x => x.Open(
-                It.IsAny<string>(),
-                It.IsAny<int>(),
-                It.IsAny<Parity>(),
-                It.IsAny<int>(),
-                It.IsAny<StopBits>(),
-                It.IsAny<Handshake>(),
-                It.IsAny<TimeSpan>(),
-                It.IsAny<TimeSpan>()))
-                .Returns(false);
+            MockPortOpen(false);
 
             // Act & Assert
             Assert.ThrowsAny<SerialPortConnectionException>(() =>
             {
-                _sut.GetOrOpen(
-                    _portName,
-                    _baudRate,
-                    _parity,
-                    _dataBits,
-                    _stopBits,
-                    _handshake,
-                    _readTimeout,
-                    _writeTimeout);
+                GetOrOpen();
             });
         }
 
@@ -94,37 +87,12 @@ namespace Printly.UnitTests.Services
         public void GivenPortName_AndConnectionCached_AndConnectionAvailable_WhenGetOrOpen_ThenCachedConnectionReturned()
         {
             // Arrange
-            _mockSerialPortCommunicationService.Setup(x => x.Open(
-                It.IsAny<string>(),
-                It.IsAny<int>(),
-                It.IsAny<Parity>(),
-                It.IsAny<int>(),
-                It.IsAny<StopBits>(),
-                It.IsAny<Handshake>(),
-                It.IsAny<TimeSpan>(),
-                It.IsAny<TimeSpan>()))
-                .Returns(true);
+            MockPortOpen(true);
 
-            _sut.GetOrOpen(
-                _portName,
-                _baudRate,
-                _parity,
-                _dataBits,
-                _stopBits,
-                _handshake,
-                _readTimeout,
-                _writeTimeout);
+            GetOrOpen();
 
             // Act
-            var result = _sut.GetOrOpen(
-                    _portName,
-                    _baudRate,
-                    _parity,
-                    _dataBits,
-                    _stopBits,
-                    _handshake,
-                    _readTimeout,
-                    _writeTimeout);
+            var result = GetOrOpen();
 
             // Assert
             Assert.NotNull(result);
@@ -143,26 +111,8 @@ namespace Printly.UnitTests.Services
         public void GivenPortName_AndConnectionOpened_WhenClose_ThenTrueReturned()
         {
             // Arrange
-            _mockSerialPortCommunicationService.Setup(x => x.Open(
-                It.IsAny<string>(),
-                It.IsAny<int>(),
-                It.IsAny<Parity>(),
-                It.IsAny<int>(),
-                It.IsAny<StopBits>(),
-                It.IsAny<Handshake>(),
-                It.IsAny<TimeSpan>(),
-                It.IsAny<TimeSpan>()))
-                .Returns(true);
-
-            _sut.GetOrOpen(
-                _portName,
-                _baudRate,
-                _parity,
-                _dataBits,
-                _stopBits,
-                _handshake,
-                _readTimeout,
-                _writeTimeout);
+            MockPortOpen(true);
+            GetOrOpen();
 
             // Act
             var result = _sut.Close(_portName);
