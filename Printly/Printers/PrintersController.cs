@@ -159,7 +159,7 @@ namespace Printly.Printers
             };
         }
 
-        private Error ValidateId(string id)
+        private static Error ValidateId(string id)
         {
             if (String.IsNullOrWhiteSpace(id))
             {

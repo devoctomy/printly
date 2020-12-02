@@ -52,6 +52,7 @@ namespace Printly.UnitTests.Services
             int offset,
             int count)
         {
+            // Do nothing
         }
 
         public void TestDataReceived(SerialDataReceivedEventArgs args)
