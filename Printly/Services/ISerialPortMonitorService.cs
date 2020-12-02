@@ -8,6 +8,7 @@ namespace Printly.Services
         event EventHandler<PortsConnectedEventArgs> PortsConnected;
         event EventHandler<PortsDisconnectedEventArgs> PortsDisconnected;
 
+        bool IsRunning { get; }
         void Start();
         Task Stop();
     }

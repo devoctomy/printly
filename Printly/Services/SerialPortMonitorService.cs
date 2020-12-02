@@ -14,10 +14,12 @@ namespace Printly.Services
         private readonly SerialPortMonitorServiceConfiguration _serialPortMonitorServiceConfiguration;
         private readonly ISerialPortDiscoveryService _serialPortDiscoveryService;
         private readonly IDateTimeService _dateTimeService;
-        private readonly CancellationTokenSource _cancellationTokenSource;
+        private CancellationTokenSource _cancellationTokenSource;
         private readonly List<SerialPortConnectionInfo> _lastDetectedPorts = new List<SerialPortConnectionInfo>();
         private Task _monitoringTask;
         private bool _disposed;
+
+        public bool IsRunning => _monitoringTask != null;
 
         public SerialPortMonitorService(
             SerialPortMonitorServiceConfiguration serialPortMonitorServiceConfiguration,
@@ -26,8 +28,7 @@ namespace Printly.Services
         {
             _serialPortMonitorServiceConfiguration = serialPortMonitorServiceConfiguration;
             _serialPortDiscoveryService = serialPortDiscoveryService;
-            _dateTimeService = dateTimeService;
-            _cancellationTokenSource = new CancellationTokenSource();
+            _dateTimeService = dateTimeService;          
         }
 
         ~SerialPortMonitorService() => Dispose(false);
@@ -36,6 +37,7 @@ namespace Printly.Services
         {
             if(_monitoringTask == null)
             {
+                _cancellationTokenSource = new CancellationTokenSource();
                 _monitoringTask = Monitor(_cancellationTokenSource.Token);
             }
         }
@@ -93,7 +95,7 @@ namespace Printly.Services
 
                 await Task.Delay(
                     _serialPortMonitorServiceConfiguration.PollPauseMilliseconds,
-                    cancellationToken).ConfigureAwait(false);
+                    CancellationToken.None).ConfigureAwait(false);
             }
         }
 

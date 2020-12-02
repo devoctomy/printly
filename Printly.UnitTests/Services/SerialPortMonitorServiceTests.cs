@@ -121,5 +121,33 @@ namespace Printly.UnitTests.Services
 
             await Task.Delay(1000).ConfigureAwait(false);
         }
+
+        [Fact]
+        public async Task GivenRunningService_WhenStop_ThenServiceStopped()
+        {
+            // Arrange
+            var serialPortMonitorServiceConfiguration = new SerialPortMonitorServiceConfiguration
+            {
+                PollPauseMilliseconds = 100
+            };
+            var mockSerialPortDiscoveryService = new Mock<ISerialPortDiscoveryService>();
+            var mockDateTimeService = new Mock<IDateTimeService>();
+            var sut = new SerialPortMonitorService(
+                serialPortMonitorServiceConfiguration,
+                mockSerialPortDiscoveryService.Object,
+                mockDateTimeService.Object);
+
+            mockSerialPortDiscoveryService.Setup(x => x.GetPorts())
+                .Returns(Array.Empty<string>());
+
+            mockDateTimeService.SetupGet(x => x.UtcNow).Returns(DateTime.UtcNow);
+            sut.Start();
+
+            // Act
+            await sut.Stop();
+
+            // Assert
+            Assert.False(sut.IsRunning);
+        }
     }
 }
