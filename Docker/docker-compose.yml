@@ -30,6 +30,14 @@ services:
       -  PRINTLY_MongoDbStorageConnectionString=mongodb://mongo:27017
       -  PRINTLY_MongoDbStorageDatabaseName=Printly
       -  PRINTLY_SerialPortPollPauseMilliseconds=1000
+      -  PRINTLY_TerminalReadBufferSize=4096
+      -  PRINTLY_DefaultTerminalBaudRate=9600
+      -  PRINTLY_DefaultTerminalDataBits=8
+      -  PRINTLY_DefaultTerminalStopBits=1
+      -  PRINTLY_DefaultTerminalParity=None
+      -  PRINTLY_DefaultTerminalHandshake=None
+      -  PRINTLY_DefaultReadTimeoutMilliseconds=10000
+      -  PRINTLY_DefaultWriteTimeoutMilliseconds=10000
     ports:
       - "5000:5000"
     depends_on:
