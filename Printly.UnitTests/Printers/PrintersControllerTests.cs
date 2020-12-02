@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using Moq;
 using Printly.Printers;
+using Printly.Services;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
@@ -17,7 +18,9 @@ namespace Printly.UnitTests.Printers
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
-            var sut = new PrintersController(mockMediator.Object);
+            var sut = new PrintersController(
+                new PrinterIdValidator(),
+                mockMediator.Object);
 
             var response = new GetAllPrintersQueryResponse
             {
@@ -58,7 +61,9 @@ namespace Printly.UnitTests.Printers
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
-            var sut = new PrintersController(mockMediator.Object);
+            var sut = new PrintersController(
+                new PrinterIdValidator(),
+                mockMediator.Object);
 
             var id = "  ";
             var cancellationTokenSource = new CancellationTokenSource();
@@ -78,7 +83,9 @@ namespace Printly.UnitTests.Printers
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
-            var sut = new PrintersController(mockMediator.Object);
+            var sut = new PrintersController(
+                new PrinterIdValidator(),
+                mockMediator.Object);
 
             var id = "pop";
             var cancellationTokenSource = new CancellationTokenSource();
@@ -98,7 +105,9 @@ namespace Printly.UnitTests.Printers
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
-            var sut = new PrintersController(mockMediator.Object);
+            var sut = new PrintersController(
+                new PrinterIdValidator(),
+                mockMediator.Object);
 
             var id = ObjectId.GenerateNewId().ToString();
             var response = new GetPrinterByIdQueryResponse
@@ -133,7 +142,9 @@ namespace Printly.UnitTests.Printers
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
-            var sut = new PrintersController(mockMediator.Object);
+            var sut = new PrintersController(
+                new PrinterIdValidator(),
+                mockMediator.Object);
             var printer = new Dto.Request.Printer();
             var response = new CreatePrinterCommandResponse
             {
@@ -167,7 +178,9 @@ namespace Printly.UnitTests.Printers
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
-            var sut = new PrintersController(mockMediator.Object);
+            var sut = new PrintersController(
+                new PrinterIdValidator(),
+                mockMediator.Object);
             sut.ModelState.AddModelError("error", "Something bad went down!");
             var cancellationTokenSource = new CancellationTokenSource();
 
@@ -186,7 +199,9 @@ namespace Printly.UnitTests.Printers
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
-            var sut = new PrintersController(mockMediator.Object);
+            var sut = new PrintersController(
+                new PrinterIdValidator(),
+                mockMediator.Object);
             var id = ObjectId.GenerateNewId().ToString();
             var printer = new Dto.Request.Printer();
             var response = new UpdatePrinterCommandResponse();
@@ -216,7 +231,9 @@ namespace Printly.UnitTests.Printers
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
-            var sut = new PrintersController(mockMediator.Object);
+            var sut = new PrintersController(
+                new PrinterIdValidator(),
+                mockMediator.Object);
             var cancellationTokenSource = new CancellationTokenSource();
 
             // Act
@@ -235,7 +252,9 @@ namespace Printly.UnitTests.Printers
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
-            var sut = new PrintersController(mockMediator.Object);
+            var sut = new PrintersController(
+                new PrinterIdValidator(),
+                mockMediator.Object);
             var cancellationTokenSource = new CancellationTokenSource();
 
             // Act
@@ -254,7 +273,9 @@ namespace Printly.UnitTests.Printers
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
-            var sut = new PrintersController(mockMediator.Object);
+            var sut = new PrintersController(
+                new PrinterIdValidator(),
+                mockMediator.Object);
             sut.ModelState.AddModelError("error", "Something bad went down!");
             var cancellationTokenSource = new CancellationTokenSource();
 
@@ -274,7 +295,9 @@ namespace Printly.UnitTests.Printers
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
-            var sut = new PrintersController(mockMediator.Object);
+            var sut = new PrintersController(
+                new PrinterIdValidator(),
+                mockMediator.Object);
             var id = ObjectId.GenerateNewId().ToString();
             var response = new DeletePrinterByIdCommandResponse();
 
@@ -302,7 +325,9 @@ namespace Printly.UnitTests.Printers
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
-            var sut = new PrintersController(mockMediator.Object);
+            var sut = new PrintersController(
+                new PrinterIdValidator(),
+                mockMediator.Object);
             var response = new DeletePrinterByIdCommandResponse();
 
             mockMediator.Setup(x => x.Send(
@@ -327,7 +352,9 @@ namespace Printly.UnitTests.Printers
         {
             // Arrange
             var mockMediator = new Mock<IMediator>();
-            var sut = new PrintersController(mockMediator.Object);
+            var sut = new PrintersController(
+                new PrinterIdValidator(),
+                mockMediator.Object);
             var response = new DeletePrinterByIdCommandResponse();
 
             mockMediator.Setup(x => x.Send(

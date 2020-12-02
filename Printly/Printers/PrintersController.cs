@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using Printly.Dto.Response;
+using Printly.Services;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -14,10 +15,14 @@ namespace Printly.Printers
     [ApiController]
     public class PrintersController : ControllerBase
     {
+        private readonly IIdValidator _idValidator;
         private readonly IMediator _mediator;
 
-        public PrintersController(IMediator mediator)
+        public PrintersController(
+            IIdValidator idValidator,
+            IMediator mediator)
         {
+            _idValidator = idValidator;
             _mediator = mediator;
         }
 
@@ -43,7 +48,7 @@ namespace Printly.Printers
             string id,
             CancellationToken cancellationToken)
         {
-            var idValidationResultError = ValidateId(id);
+            var idValidationResultError = _idValidator.Validate(id);
             if (idValidationResultError != null)
             {
                 return new ObjectResponse<Printer>
@@ -100,7 +105,7 @@ namespace Printly.Printers
             [FromBody] Dto.Request.Printer printer,
             CancellationToken cancellationToken)
         {
-            var idValidationResultError = ValidateId(id);
+            var idValidationResultError = _idValidator.Validate(id);
             if (idValidationResultError != null)
             {
                 return new Response
@@ -137,7 +142,7 @@ namespace Printly.Printers
             string id,
             CancellationToken cancellationToken)
         {
-            var idValidationResultError = ValidateId(id);
+            var idValidationResultError = _idValidator.Validate(id);
             if (idValidationResultError != null)
             {
                 return new Response
@@ -157,35 +162,6 @@ namespace Printly.Printers
             {
                 Error = response.Error
             };
-        }
-
-        private static Error ValidateId(string id)
-        {
-            if (String.IsNullOrWhiteSpace(id))
-            {
-                return new Error
-                {
-                    HttpStatusCode = HttpStatusCode.BadRequest,
-                    Message = "Missing id."
-                };
-            }
-            else
-            {
-                try
-                {
-                    var objectId = ObjectId.Parse(id);
-                }
-                catch (Exception ex)
-                {
-                    return new Error
-                    {
-                        HttpStatusCode = HttpStatusCode.BadRequest,
-                        Message = $"Id format incorrect. {ex.Message}"
-                    };
-                }
-            }
-
-            return null;
         }
     }
 }
