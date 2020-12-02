@@ -9,5 +9,6 @@ namespace Printly
     {
         public string MongoDbStorageConnectionString { get; set; }
         public string MongoDbStorageDatabaseName { get; set; }
+        public int SerialPortPollPauseMilliseconds { get; set; }
     }
 }

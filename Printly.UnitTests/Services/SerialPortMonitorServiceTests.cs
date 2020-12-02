@@ -15,9 +15,14 @@ namespace Printly.UnitTests.Services
         public async Task Given2PortsConnected_WhenStart_ThenPortConnectedEventsRaised()
         {
             // Arrange
+            var serialPortMonitorServiceConfiguration = new SerialPortMonitorServiceConfiguration
+            {
+                PollPauseMilliseconds = 100
+            };
             var mockSerialPortDiscoveryService = new Mock<ISerialPortDiscoveryService>();
             var mockDateTimeService = new Mock<IDateTimeService>();
             var sut = new SerialPortMonitorService(
+                serialPortMonitorServiceConfiguration,
                 mockSerialPortDiscoveryService.Object,
                 mockDateTimeService.Object);
 
@@ -33,17 +38,9 @@ namespace Printly.UnitTests.Services
                 currentlyConnectedPorts.AddRange(e.SerialPorts);
             };
 
-            sut.PortsDisconnected += (sender, e) =>
-            {
-                foreach(var curPort in e.SerialPorts)
-                {
-                    currentlyConnectedPorts.Remove(curPort);
-                }
-            };
-
             // Act
             sut.Start();
-            await Task.Delay(5000).ConfigureAwait(false);
+            await Task.Delay(1000).ConfigureAwait(false);
 
             // Assert
             Assert.Equal(2, currentlyConnectedPorts.Count);
@@ -55,9 +52,14 @@ namespace Printly.UnitTests.Services
         public async Task GivenPortConnectionActivity_WhenRunning_ThenCorrectListOfConnectedPortsMaintained()
         {
             // Arrange
+            var serialPortMonitorServiceConfiguration = new SerialPortMonitorServiceConfiguration
+            {
+                PollPauseMilliseconds = 100
+            };
             var mockSerialPortDiscoveryService = new Mock<ISerialPortDiscoveryService>();
             var mockDateTimeService = new Mock<IDateTimeService>();
             var sut = new SerialPortMonitorService(
+                serialPortMonitorServiceConfiguration,
                 mockSerialPortDiscoveryService.Object,
                 mockDateTimeService.Object);
 

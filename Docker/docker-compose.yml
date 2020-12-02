@@ -29,6 +29,7 @@ services:
       -  PRINTLY_ServiceId=2E910612-CB54-4436-BCD7-890698BC4B2E
       -  PRINTLY_MongoDbStorageConnectionString=mongodb://mongo:27017
       -  PRINTLY_MongoDbStorageDatabaseName=Printly
+      -  PRINTLY_SerialPortPollPauseMilliseconds=1000
     ports:
       - "5000:5000"
     depends_on:

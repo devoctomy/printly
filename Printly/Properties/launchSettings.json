@@ -16,6 +16,7 @@
       "environmentVariables": {
         "PRINTLY_MongoDbStorageConnectionString": "mongodb://localhost:27017",
         "PRINTLY_MongoDbStorageDatabaseName": "Printly",
+        "PRINTLY_SerialPortPollPauseMilliseconds": "1000",
         "ASPNETCORE_URLS": "http://0.0.0.0:5000",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -27,6 +28,7 @@
       "environmentVariables": {
         "PRINTLY_MongoDbStorageConnectionString": "mongodb://localhost:27017",
         "PRINTLY_MongoDbStorageDatabaseName": "Printly",
+        "PRINTLY_SerialPortPollPauseMilliseconds": "1000",
         "ASPNETCORE_URLS": "http://0.0.0.0:5000",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -39,6 +41,7 @@
       "environmentVariables": {
         "PRINTLY_MongoDbStorageConnectionString": "mongodb://localhost:27017",
         "PRINTLY_MongoDbStorageDatabaseName": "Printly",
+        "PRINTLY_SerialPortPollPauseMilliseconds": "1000",
         "ASPNETCORE_URLS": "http://0.0.0.0:5000"
       },
       "publishAllPorts": true,

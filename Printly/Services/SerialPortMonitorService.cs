@@ -11,6 +11,7 @@ namespace Printly.Services
         public event EventHandler<PortsConnectedEventArgs> PortsConnected;
         public event EventHandler<PortsDisconnectedEventArgs> PortsDisconnected;
 
+        private readonly SerialPortMonitorServiceConfiguration _serialPortMonitorServiceConfiguration;
         private readonly ISerialPortDiscoveryService _serialPortDiscoveryService;
         private readonly IDateTimeService _dateTimeService;
         private readonly CancellationTokenSource _cancellationTokenSource;
@@ -19,9 +20,11 @@ namespace Printly.Services
         private bool _disposed;
 
         public SerialPortMonitorService(
+            SerialPortMonitorServiceConfiguration serialPortMonitorServiceConfiguration,
             ISerialPortDiscoveryService serialPortDiscoveryService,
             IDateTimeService dateTimeService)
         {
+            _serialPortMonitorServiceConfiguration = serialPortMonitorServiceConfiguration;
             _serialPortDiscoveryService = serialPortDiscoveryService;
             _dateTimeService = dateTimeService;
             _cancellationTokenSource = new CancellationTokenSource();
@@ -89,7 +92,7 @@ namespace Printly.Services
                 }
 
                 await Task.Delay(
-                    1000,
+                    _serialPortMonitorServiceConfiguration.PollPauseMilliseconds,
                     cancellationToken).ConfigureAwait(false);
             }
         }

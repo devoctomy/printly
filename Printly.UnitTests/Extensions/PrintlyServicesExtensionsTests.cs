@@ -13,10 +13,14 @@ namespace Printly.UnitTests.Extensions
         public void GivenConfig_WhenAddPrintlyServices_ThenServicesAddedForInjection()
         {
             // Arrange
+            var appSettings = new AppSettings
+            {
+                SerialPortPollPauseMilliseconds = 100
+            };
             var sut = new ServiceCollection();
 
             // Act
-            sut.AddPrintlyServices();
+            sut.AddPrintlyServices(appSettings);
             sut.AddPrintlyDomainServices(new Domain.Services.MongoDbConfiguration
             {
                 ConnectionString = "mongodb://localhost:27017",
@@ -25,12 +29,17 @@ namespace Printly.UnitTests.Extensions
             var serviceProvider = sut.BuildServiceProvider();
 
             // Assert
-            Assert.NotNull(serviceProvider.GetServices<IDateTimeService>());
-            Assert.NotNull(serviceProvider.GetServices<ISystemStateService>());
-            Assert.NotNull(serviceProvider.GetServices<ISerialPortDiscoveryService>());
-            Assert.NotNull(serviceProvider.GetServices<ISerialPortCommunicationService>());
-            Assert.NotNull(serviceProvider.GetServices<ISerialPortConnectionManager>());
-            Assert.NotNull(serviceProvider.GetServices<ISerialPortMonitorService>());
+            var serialPortMonitorServiceConfiguration = serviceProvider.GetService<SerialPortMonitorServiceConfiguration>();
+            Assert.NotNull(serialPortMonitorServiceConfiguration);
+            Assert.Equal(appSettings.SerialPortPollPauseMilliseconds, serialPortMonitorServiceConfiguration.PollPauseMilliseconds);
+            Assert.NotNull(serviceProvider.GetService<IExceptionHandlerService>());
+            Assert.NotNull(serviceProvider.GetService<IDateTimeService>());
+            Assert.NotNull(serviceProvider.GetService<ISystemStateService>());
+            Assert.NotNull(serviceProvider.GetService<ISerialPortFactory>());
+            Assert.NotNull(serviceProvider.GetService<ISerialPortDiscoveryService>());
+            Assert.NotNull(serviceProvider.GetService<ISerialPortCommunicationService>());
+            Assert.NotNull(serviceProvider.GetService<ISerialPortConnectionManager>());
+            Assert.NotNull(serviceProvider.GetService<ISerialPortMonitorService>());
         }
     }
 }

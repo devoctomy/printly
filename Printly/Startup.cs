@@ -36,7 +36,7 @@ namespace Printly
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<AppSettings>(_appSettings);
-            services.AddPrintlyServices();
+            services.AddPrintlyServices(_appSettings);
             services.AddPrintlyDomainServices(new Domain.Services.MongoDbConfiguration
             {
                 ConnectionString = _appSettings.MongoDbStorageConnectionString,
