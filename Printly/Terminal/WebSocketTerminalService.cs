@@ -8,14 +8,12 @@ namespace Printly.Terminal
 {
     public class WebSocketTerminalService : IWebSocketTerminalService
     {
-        private readonly WebSocket _webSocket;
         private readonly WebSocketTerminalServiceConfiguration _webSocketTerminalServiceConfiguration;
 
-        public WebSocketTerminalService(
-            WebSocket webSocket,
-            WebSocketTerminalServiceConfiguration webSocketTerminalServiceConfiguration)
+        public WebSocket WebSocket { get; set; }
+
+        public WebSocketTerminalService(WebSocketTerminalServiceConfiguration webSocketTerminalServiceConfiguration)
         {
-            _webSocket = webSocket;
             _webSocketTerminalServiceConfiguration = webSocketTerminalServiceConfiguration;
         }
 
@@ -26,14 +24,14 @@ namespace Printly.Terminal
             try
             {
                 var buffer = new byte[_webSocketTerminalServiceConfiguration.ReceiveBufferSize];
-                WebSocketReceiveResult result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cancellationToken);
+                WebSocketReceiveResult result = await WebSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cancellationToken);
                 while (!result.CloseStatus.HasValue)
                 {
                     serialPortCommunicationService.Write(
                         buffer,
                         0,
                         result.Count);
-                    result = await _webSocket.ReceiveAsync(
+                    result = await WebSocket.ReceiveAsync(
                         new ArraySegment<byte>(buffer),
                         cancellationToken);
                 }
@@ -43,10 +41,10 @@ namespace Printly.Terminal
                 //Gracefully shut down
             }
 
-            if (_webSocket.State == WebSocketState.Open ||
-                _webSocket.State == WebSocketState.CloseReceived)
+            if (WebSocket.State == WebSocketState.Open ||
+                WebSocket.State == WebSocketState.CloseReceived)
             {
-                await _webSocket.CloseAsync(
+                await WebSocket.CloseAsync(
                     WebSocketCloseStatus.NormalClosure,
                     "Connection forcefully closed from server side.",
                     CancellationToken.None);

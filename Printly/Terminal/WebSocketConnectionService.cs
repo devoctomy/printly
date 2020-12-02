@@ -17,9 +17,11 @@ namespace Printly.Terminal
             if (httpContext.WebSockets.IsWebSocketRequest)
             {
                 var webSocket = await httpContext.WebSockets.AcceptWebSocketAsync();
-                return new WebSocketTerminalService(
-                    webSocket,
-                    _webSocketTerminalServiceConfiguration);
+                var webSocketTerminalService = new WebSocketTerminalService(_webSocketTerminalServiceConfiguration)
+                {
+                    WebSocket = webSocket
+                };
+                return webSocketTerminalService;
             }
             else
             {
