@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/devoctomy/printly.svg?branch=main)](https://travis-ci.org/devoctomy/printly)
+[![Build Status](https://travis-ci.com/devoctomy/MarlinToolset.svg?branch=master)](https://travis-ci.com/devoctomy/MarlinToolset)
 [![codecov](https://codecov.io/gh/devoctomy/printly/branch/main/graph/badge.svg?token=1HHMS22045)](https://codecov.io/gh/devoctomy/printly)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b20623c3dd714df698a87f4cd1020f5a)](https://www.codacy.com/gh/devoctomy/printly/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=devoctomy/printly&amp;utm_campaign=Badge_Grade)
 
