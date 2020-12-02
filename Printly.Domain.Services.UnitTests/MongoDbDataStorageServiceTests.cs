@@ -16,7 +16,7 @@ namespace Printly.Domain.Services.UnitTests
 
         public MongoDbDataStorageServiceTests()
         {
-            _configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>()
+            _configuration = new MongoDbStorageServiceConfiguration<TestableStorageEntity>
             {
                 DatabaseName = "Hello",
                 CollectionName = "World"
