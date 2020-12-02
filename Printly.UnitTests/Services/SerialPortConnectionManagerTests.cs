@@ -9,7 +9,6 @@ namespace Printly.UnitTests.Services
 {
     public class SerialPortConnectionManagerTests
     {
-        private readonly Mock<ISerialPortCommunicationServiceFactory>  _mockSerialPortCommunicationServiceFactory;
         private readonly Mock<ISerialPortCommunicationService> _mockSerialPortCommunicationService;
         private readonly SerialPortConnectionManager _sut;
         private readonly string _portName = "Bob";
@@ -23,11 +22,11 @@ namespace Printly.UnitTests.Services
 
         public SerialPortConnectionManagerTests()
         {
-            _mockSerialPortCommunicationServiceFactory = new Mock<ISerialPortCommunicationServiceFactory>();
+            var mockSerialPortCommunicationServiceFactory = new Mock<ISerialPortCommunicationServiceFactory>();
             _mockSerialPortCommunicationService = new Mock<ISerialPortCommunicationService>();
-            _sut = new SerialPortConnectionManager(_mockSerialPortCommunicationServiceFactory.Object);
+            _sut = new SerialPortConnectionManager(mockSerialPortCommunicationServiceFactory.Object);
 
-            _mockSerialPortCommunicationServiceFactory.Setup(x => x.Create())
+            mockSerialPortCommunicationServiceFactory.Setup(x => x.Create())
                 .Returns(_mockSerialPortCommunicationService.Object);
         }
 
