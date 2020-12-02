@@ -9,11 +9,15 @@ namespace Printly.Services
     public class SerialPortConnectionManager : ISerialPortConnectionManager
     {
         private readonly ISerialPortCommunicationServiceFactory _serialPortCommunicationServiceFactory;
+        private readonly SerialPortConnectionManagerConfiguration _serialPortConnectionManagerConfiguration;
         private readonly Dictionary<string, ISerialPortCommunicationService> _connectionCache;
 
-        public SerialPortConnectionManager(ISerialPortCommunicationServiceFactory serialPortCommunicationServiceFactory)
+        public SerialPortConnectionManager(
+            ISerialPortCommunicationServiceFactory serialPortCommunicationServiceFactory,
+            SerialPortConnectionManagerConfiguration serialPortConnectionManagerConfiguration)
         {
             _serialPortCommunicationServiceFactory = serialPortCommunicationServiceFactory;
+            _serialPortConnectionManagerConfiguration = serialPortConnectionManagerConfiguration;
             _connectionCache = new Dictionary<string, ISerialPortCommunicationService>();
         }
 
@@ -72,13 +76,13 @@ namespace Printly.Services
 
             return GetOrOpen(
                 portName,
-                int.Parse(GetQueryValueOrDefault(httpRequest.Query, "baudrate", "9600")),
-                Enum.Parse<Parity>(GetQueryValueOrDefault(httpRequest.Query, "parity", Parity.None.ToString()), true),
-                int.Parse(GetQueryValueOrDefault(httpRequest.Query, "databits", "8")),
-                Enum.Parse<StopBits>(GetQueryValueOrDefault(httpRequest.Query, "stopbits", StopBits.One.ToString()), true),
-                Enum.Parse<Handshake>(GetQueryValueOrDefault(httpRequest.Query, "handshake", Handshake.None.ToString()), true),
-                new TimeSpan(1, 0, 0),
-                new TimeSpan(1, 0, 0));
+                int.Parse(GetQueryValueOrDefault(httpRequest.Query, "baudrate", _serialPortConnectionManagerConfiguration.DefaultBaudRate.ToString())),
+                Enum.Parse<Parity>(GetQueryValueOrDefault(httpRequest.Query, "parity", _serialPortConnectionManagerConfiguration.DefaultParity.ToString()), true),
+                int.Parse(GetQueryValueOrDefault(httpRequest.Query, "databits", _serialPortConnectionManagerConfiguration.DefaultDataBits.ToString())),
+                Enum.Parse<StopBits>(GetQueryValueOrDefault(httpRequest.Query, "stopbits", _serialPortConnectionManagerConfiguration.DefaultStopBits.ToString()), true),
+                Enum.Parse<Handshake>(GetQueryValueOrDefault(httpRequest.Query, "handshake", _serialPortConnectionManagerConfiguration.DefaultHandshake.ToString()), true),
+                _serialPortConnectionManagerConfiguration.DefaultReadTimeout,
+                _serialPortConnectionManagerConfiguration.DefaultWriteTimeout);
         }
 
         public bool Close(string portName)

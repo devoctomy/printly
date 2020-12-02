@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.AspNetCore.Http;
+using Moq;
 using Printly.Exceptions;
 using Printly.Services;
 using System;
@@ -22,9 +23,15 @@ namespace Printly.UnitTests.Services
 
         public SerialPortConnectionManagerTests()
         {
+            var serialPortConnectionManagerConfiguration = new SerialPortConnectionManagerConfiguration
+            {
+
+            };
             var mockSerialPortCommunicationServiceFactory = new Mock<ISerialPortCommunicationServiceFactory>();
             _mockSerialPortCommunicationService = new Mock<ISerialPortCommunicationService>();
-            _sut = new SerialPortConnectionManager(mockSerialPortCommunicationServiceFactory.Object);
+            _sut = new SerialPortConnectionManager(
+                mockSerialPortCommunicationServiceFactory.Object,
+                serialPortConnectionManagerConfiguration);
 
             mockSerialPortCommunicationServiceFactory.Setup(x => x.Create())
                 .Returns(_mockSerialPortCommunicationService.Object);
@@ -57,6 +64,13 @@ namespace Printly.UnitTests.Services
                 _writeTimeout);
         }
 
+        private ISerialPortCommunicationService GetOrOpenViaRequest()
+        {
+            var request = new DefaultHttpContext().Request;
+            request.Path = "//terminal?portName=COM1&baudRate=9600&parity=None&dataBits=8&stopBits=One&Handshake=None";
+            return _sut.GetOrOpen(request);
+        }
+
         [Fact]
         public void GivenPortName_AndConnectionNotCached_AndConnectionAvailable_WhenGetOrOpen_ThenConnectionOpenedAndReturned()
         {
@@ -65,6 +79,19 @@ namespace Printly.UnitTests.Services
 
             // Act
             var result = GetOrOpen();
+
+            // Assert
+            Assert.Equal(_mockSerialPortCommunicationService.Object, result);
+        }
+
+        [Fact]
+        public void GivenPortSettingsAsReqyest_WhenOpen_ThenPortCreated_AndPortOpened_AndOpenStateReturned()
+        {
+            // Arrange
+            MockPortOpen(true);
+
+            // Act
+            var result = GetOrOpenViaRequest();
 
             // Assert
             Assert.Equal(_mockSerialPortCommunicationService.Object, result);
