@@ -8,6 +8,7 @@ namespace Printly.Extensions
     {
         public static IServiceCollection AddPrintlyServices(this IServiceCollection services)
         {
+            services.AddSingleton<IExceptionHandlerService, ExceptionHandlerService>();
             services.AddSingleton<IDateTimeService, DateTimeService>();
             services.AddSingleton<ISystemStateService, SystemStateService>();
             services.AddSingleton<ISerialPortFactory, SerialPortFactory>();

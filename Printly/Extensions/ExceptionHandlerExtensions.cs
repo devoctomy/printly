@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using Printly.Dto.Response;
-using System.Net;
+using Printly.Services;
+using System.Threading;
 
 namespace Printly.Extensions
 {
@@ -11,24 +8,16 @@ namespace Printly.Extensions
     {
         public static void ConfigureExceptionHandler(this IApplicationBuilder app)
         {
-            app.UseExceptionHandler(appError =>
+            app.UseExceptionHandler(appBuilder =>
             {
-                appError.Run(async context =>
+                appBuilder.Run(async context =>
                 {
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    context.Response.ContentType = "application/json";
-                    var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
-                    if(exceptionHandlerFeature != null)
+                    var exceptionHandler = (IExceptionHandlerService)appBuilder.ApplicationServices.GetService(typeof(IExceptionHandlerService));
+                    if (exceptionHandler != null)
                     {
-                        await context.Response.WriteAsync(JsonConvert.SerializeObject(new Response
-                        {
-                            Success = false,
-                            Error = new Error
-                            {
-                                HttpStatusCode = (HttpStatusCode)context.Response.StatusCode,
-                                Message = exceptionHandlerFeature.Error.Message
-                            }
-                        }));
+                        await exceptionHandler.HandleAsync(
+                            context,
+                            CancellationToken.None);
                     }
                 });
             });

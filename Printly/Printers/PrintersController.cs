@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Printly.Dto.Response;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
@@ -29,6 +30,8 @@ namespace Printly.Printers
                     HttpStatusCode.BadRequest,
                     "Model state is invalid.");
             }
+
+            throw new Exception("Balls!");
 
             var request = new GetAllPrintersQuery();
             var response = await _mediator.Send(
