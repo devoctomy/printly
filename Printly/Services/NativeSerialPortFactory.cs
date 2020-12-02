@@ -3,7 +3,7 @@ using System.IO.Ports;
 
 namespace Printly.Services
 {
-    public class SerialPortFactory : ISerialPortFactory
+    public class NativeSerialPortFactory : ISerialPortFactory
     {
         public ISerialPort Create(
             string portName,
