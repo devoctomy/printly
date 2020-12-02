@@ -2,8 +2,6 @@
 using Printly.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -69,14 +67,23 @@ namespace Printly.UnitTests.Services
 
             sut.PortsConnected += (sender, e) =>
             {
-                currentlyConnectedPorts.AddRange(e.SerialPorts);
+                foreach(var curPort in e.SerialPorts)
+                {
+                    lock (currentlyConnectedPorts)
+                    {
+                        currentlyConnectedPorts.Add(curPort);
+                    }
+                }
             };
 
             sut.PortsDisconnected += (sender, e) =>
             {
                 foreach (var curPort in e.SerialPorts)
                 {
-                    currentlyConnectedPorts.Remove(curPort);
+                    lock(currentlyConnectedPorts)
+                    {
+                        currentlyConnectedPorts.Remove(curPort);
+                    }
                 }
             };
 
