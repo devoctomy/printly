@@ -1,4 +1,5 @@
-﻿using Printly.Exceptions;
+﻿using Microsoft.AspNetCore.Http;
+using Printly.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -64,6 +65,22 @@ namespace Printly.Services
             return connection;
         }
 
+        public ISerialPortCommunicationService GetOrOpen(HttpRequest httpRequest)
+        {
+            var pathParts = httpRequest.Path.ToString()[1..].Split("/");
+            var portName = pathParts[1];
+
+            return GetOrOpen(
+                portName,
+                int.Parse(GetQueryValueOrDefault(httpRequest.Query, "baudrate", "9600")),
+                Enum.Parse<Parity>(GetQueryValueOrDefault(httpRequest.Query, "parity", Parity.None.ToString()), true),
+                int.Parse(GetQueryValueOrDefault(httpRequest.Query, "databits", "8")),
+                Enum.Parse<StopBits>(GetQueryValueOrDefault(httpRequest.Query, "stopbits", StopBits.One.ToString()), true),
+                Enum.Parse<Handshake>(GetQueryValueOrDefault(httpRequest.Query, "handshake", Handshake.None.ToString()), true),
+                new TimeSpan(1, 0, 0),
+                new TimeSpan(1, 0, 0));
+        }
+
         public bool Close(string portName)
         {
             if (_connectionCache.ContainsKey(portName))
@@ -75,6 +92,21 @@ namespace Printly.Services
             else
             {
                 return false;
+            }
+        }
+
+        private static string GetQueryValueOrDefault(
+            IQueryCollection queryCollection,
+            string name,
+            string defaultValue)
+        {
+            if (queryCollection.TryGetValue(name, out var values))
+            {
+                return values[0];
+            }
+            else
+            {
+                return defaultValue;
             }
         }
     }

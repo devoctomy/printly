@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Printly.Services;
+using Printly.Terminal;
 using System;
 using System.IO.Ports;
 using System.Linq;
 using System.Net;
 using System.Net.WebSockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,13 +15,16 @@ namespace Printly.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ISerialPortConnectionManager _serialPortConnectionManager;
+        private readonly IWebSocketConnectionService _webSocketConnectionService;
 
         public TerminalMiddleware(
             RequestDelegate next,
-            ISerialPortConnectionManager serialPortConnectionManager)
+            ISerialPortConnectionManager serialPortConnectionManager,
+            IWebSocketConnectionService webSocketConnectionService)
         {
             _next = next;
             _serialPortConnectionManager = serialPortConnectionManager;
+            _webSocketConnectionService = webSocketConnectionService;
         }
 
         public async Task Invoke(
@@ -30,25 +33,32 @@ namespace Printly.Middleware
         {
             if (httpContext.Request.Path.StartsWithSegments(new PathString("/terminal")))
             {
-                if (httpContext.WebSockets.IsWebSocketRequest)
+                var connection = await _webSocketConnectionService.Create(httpContext);
+                if(connection != null)
                 {
-                    var pathParts = httpContext.Request.Path.ToString()[1..].Split("/");
-                    var portName = pathParts[1];
+                    var serialPortCommunicationService = _serialPortConnectionManager.GetOrOpen(httpContext.Request);
 
-                    var connection = _serialPortConnectionManager.GetOrOpen(
-                        portName,
-                        int.Parse(GetQueryValueOrDefault(httpContext.Request.Query, "baudrate", "9600")),
-                        Enum.Parse<Parity>(GetQueryValueOrDefault(httpContext.Request.Query, "parity", Parity.None.ToString()), true),
-                        int.Parse(GetQueryValueOrDefault(httpContext.Request.Query, "databits", "8")),
-                        Enum.Parse<StopBits>(GetQueryValueOrDefault(httpContext.Request.Query, "stopbits", StopBits.One.ToString()), true),
-                        Enum.Parse<Handshake>(GetQueryValueOrDefault(httpContext.Request.Query, "handshake", Handshake.None.ToString()), true),
-                        new TimeSpan(1, 0, 0),
-                        new TimeSpan(1, 0, 0));
                     using WebSocket webSocket = await httpContext.WebSockets.AcceptWebSocketAsync();
-                    await CommsLoop(
-                        webSocket,
-                        connection,
-                        serialPortMonitorService).ConfigureAwait(false);
+                    var cancellationTokenSource = new CancellationTokenSource();
+                    serialPortCommunicationService.State = webSocket;
+                    serialPortCommunicationService.DataReceived += SerialPortCommunicationService_DataReceived;
+
+                    serialPortMonitorService.PortsDisconnected += (object sender, PortsDisconnectedEventArgs e) =>
+                    {
+                        if (e.SerialPorts.Any(x => x.ToLower() == serialPortCommunicationService.PortName.ToLower()))
+                        {
+                            serialPortCommunicationService.Close();
+                            cancellationTokenSource.Cancel();
+                        }
+                    };
+                    serialPortMonitorService.Start();
+
+                    await connection.RunCommsLoopAsync(
+                        serialPortCommunicationService,
+                        cancellationTokenSource.Token);
+
+                    await serialPortMonitorService.Stop();
+                    _serialPortConnectionManager.Close(serialPortCommunicationService.PortName);
                 }
                 else
                 {
@@ -61,99 +71,29 @@ namespace Printly.Middleware
             }
         }
 
-        private static string GetQueryValueOrDefault(
-            IQueryCollection queryCollection,
-            string name,
-            string defaultValue)
+        private async void SerialPortCommunicationService_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            if(queryCollection.TryGetValue(name, out var values))
+            switch (e.EventType)
             {
-                return values[0];
+                case SerialData.Chars:
+                    {
+                        var webSocket = (WebSocket)((SerialPortCommunicationService)sender).State;
+                        var serialPort = (SerialPort)sender;
+                        var data = serialPort.ReadExisting();
+                        var dataBytes = serialPort.Encoding.GetBytes(data);
+                        await webSocket.SendAsync(
+                            new ArraySegment<byte>(dataBytes, 0, dataBytes.Length),
+                            WebSocketMessageType.Text,
+                            true,
+                            CancellationToken.None);
+                        break;
+                    }
+                default:
+                    {
+                        // Do nothing
+                        break;
+                    }
             }
-            else
-            {
-                return defaultValue;
-            }
-        }
-
-        private async Task CommsLoop(
-            WebSocket webSocket,
-            ISerialPortCommunicationService serialPortCommunicationService,
-            ISerialPortMonitorService serialPortMonitorService)
-        {
-            var cancellationTokenSource = new CancellationTokenSource();
-            var buffer = new byte[1024 * 4];
-
-            serialPortCommunicationService.DataReceived += async (object sender, SerialDataReceivedEventArgs e) =>
-            {
-                switch(e.EventType)
-                {
-                    case SerialData.Chars:
-                        {
-                            var serialPort = (SerialPort)sender;
-                            var data = serialPort.ReadExisting();
-                            var dataBytes = serialPort.Encoding.GetBytes(data);
-                            await webSocket.SendAsync(
-                                new ArraySegment<byte>(dataBytes, 0, dataBytes.Length),
-                                WebSocketMessageType.Text,
-                                true,
-                                CancellationToken.None);
-                            break;
-                        }
-                    default:
-                        {
-                            // Do nothing
-                            break;
-                        }
-                }
-            };
-
-            serialPortMonitorService.PortsDisconnected += async (object sender, PortsDisconnectedEventArgs e) =>
-            {
-                if (e.SerialPorts.Any(x => x.ToLower() == serialPortCommunicationService.PortName.ToLower()))
-                {
-                    var dataBytes = Encoding.ASCII.GetBytes($"Serial port '{serialPortCommunicationService.PortName}' no longer available.");
-                    await webSocket.SendAsync(
-                        new ArraySegment<byte>(dataBytes, 0, dataBytes.Length),
-                        WebSocketMessageType.Text,
-                        true,
-                        CancellationToken.None);
-                    serialPortCommunicationService.Close();
-                    cancellationTokenSource.Cancel();
-                }
-            };
-            serialPortMonitorService.Start();
-
-            WebSocketReceiveResult result = null;
-            try
-            {
-                result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cancellationTokenSource.Token);
-                while (!result.CloseStatus.HasValue)
-                {
-                    serialPortCommunicationService.Write(
-                        buffer,
-                        0,
-                        result.Count);
-                    result = await webSocket.ReceiveAsync(
-                        new ArraySegment<byte>(buffer),
-                        cancellationTokenSource.Token);
-                }
-            }
-            catch(OperationCanceledException)
-            {
-                //Gracefully shut down
-            }
-
-            if(webSocket.State == WebSocketState.Open ||
-                webSocket.State == WebSocketState.CloseReceived)
-            {
-                await webSocket.CloseAsync(
-                    WebSocketCloseStatus.NormalClosure,
-                    "Connection forcefully closed from server side.",
-                    CancellationToken.None);
-            }
-            await serialPortMonitorService.Stop();
-            _serialPortConnectionManager.Close(serialPortCommunicationService.PortName);
         }
     }
 }

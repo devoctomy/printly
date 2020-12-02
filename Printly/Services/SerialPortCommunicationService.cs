@@ -14,6 +14,8 @@ namespace Printly.Services
 
         public string PortName => _portName;
 
+        public object State { get; set; }
+
         public SerialPortCommunicationService(ISerialPortFactory serialPortFactory)
         {
             _serialPortFactory = serialPortFactory;
@@ -58,14 +60,14 @@ namespace Printly.Services
             SerialDataReceivedEventArgs e)
         {
             DataReceived?.Invoke(
-                _serialPort,
+                this,
                 e);
         }
 
         private void SerialPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
             ErrorReceived?.Invoke(
-                sender,
+                this,
                 e);
         }
 
