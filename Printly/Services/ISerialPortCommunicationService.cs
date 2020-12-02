@@ -7,6 +7,7 @@ namespace Printly.Services
     {
         event EventHandler<SerialDataReceivedEventArgs> DataReceived;
 
+        public ISerialPort SerialPort { get; }
         string PortName { get; }
         object State { get; set; }
 

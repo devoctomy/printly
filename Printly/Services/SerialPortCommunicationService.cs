@@ -9,11 +9,10 @@ namespace Printly.Services
         public event EventHandler<SerialErrorReceivedEventArgs> ErrorReceived;
 
         private readonly ISerialPortFactory _serialPortFactory;
-        private ISerialPort _serialPort;
         private string _portName = string.Empty;
 
+        public ISerialPort SerialPort { get; private set; }
         public string PortName => _portName;
-
         public object State { get; set; }
 
         public SerialPortCommunicationService(ISerialPortFactory serialPortFactory)
@@ -31,7 +30,7 @@ namespace Printly.Services
             TimeSpan readTimeout,
             TimeSpan writeTimeout)
         {
-            _serialPort = _serialPortFactory.Create(
+            SerialPort = _serialPortFactory.Create(
                 portName,
                 baudRate,
                 parity,
@@ -40,18 +39,18 @@ namespace Printly.Services
                 handshake,
                 readTimeout,
                 writeTimeout);
-            _serialPort.DataReceived += SerialPort_DataReceived;
-            _serialPort.ErrorReceived += SerialPort_ErrorReceived;
-            _serialPort.Open();
+            SerialPort.DataReceived += SerialPort_DataReceived;
+            SerialPort.ErrorReceived += SerialPort_ErrorReceived;
+            SerialPort.Open();
             _portName = portName;
-            return _serialPort.IsOpen;
+            return SerialPort.IsOpen;
         }
 
         public void Close()
         {
-            if(_serialPort != null && _serialPort.IsOpen)
+            if(SerialPort != null && SerialPort.IsOpen)
             {
-                _serialPort.Close();
+                SerialPort.Close();
             }
         }
 
@@ -76,7 +75,7 @@ namespace Printly.Services
             int offset,
             int count)
         {
-            _serialPort.Write(
+            SerialPort.Write(
                 buffer,
                 offset,
                 count);

@@ -25,7 +25,13 @@ namespace Printly.UnitTests.Services
         {
             var serialPortConnectionManagerConfiguration = new SerialPortConnectionManagerConfiguration
             {
-
+                DefaultBaudRate = 9600,
+                DefaultDataBits = 8,
+                DefaultParity = Parity.None,
+                DefaultStopBits = StopBits.One,
+                DefaultHandshake = Handshake.None,
+                DefaultReadTimeout = new TimeSpan(0, 0, 1),
+                DefaultWriteTimeout = new TimeSpan(0, 0, 1)
             };
             var mockSerialPortCommunicationServiceFactory = new Mock<ISerialPortCommunicationServiceFactory>();
             _mockSerialPortCommunicationService = new Mock<ISerialPortCommunicationService>();
