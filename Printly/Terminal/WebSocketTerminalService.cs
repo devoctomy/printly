@@ -24,7 +24,9 @@ namespace Printly.Terminal
             try
             {
                 var buffer = new byte[_webSocketTerminalServiceConfiguration.ReceiveBufferSize];
-                WebSocketReceiveResult result = await WebSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cancellationToken);
+                WebSocketReceiveResult result = await WebSocket.ReceiveAsync(
+                    new ArraySegment<byte>(buffer),
+                    cancellationToken);
                 while (!result.CloseStatus.HasValue)
                 {
                     serialPortCommunicationService.Write(
