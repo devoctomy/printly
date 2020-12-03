@@ -6,6 +6,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Net;
 using System.Net.WebSockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -77,8 +78,9 @@ namespace Printly.Middleware
             {
                 case SerialData.Chars:
                     {
-                        var webSocket = (WebSocket)((SerialPortCommunicationService)sender).State;
-                        var serialPort = (SerialPort)sender;
+                        var communicationService = ((ISerialPortCommunicationService)sender);
+                        var webSocket = (WebSocket)communicationService.State;
+                        var serialPort = (ISerialPort)communicationService.SerialPort;
                         var data = serialPort.ReadExisting();
                         var dataBytes = serialPort.Encoding.GetBytes(data);
                         await webSocket.SendAsync(

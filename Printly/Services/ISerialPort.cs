@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO.Ports;
+using System.Text;
 
 namespace Printly.Services
 {
@@ -16,6 +17,7 @@ namespace Printly.Services
         Handshake Handshake { get; }
         int ReadTimeout { get; }
         int WriteTimeout { get; }
+        Encoding Encoding { get; }
         void Open();
         void Close();
         void Write(

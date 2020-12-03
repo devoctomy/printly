@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Ports;
+using System.Text;
 
 namespace Printly.Services
 {
@@ -19,6 +20,7 @@ namespace Printly.Services
         public int ReadTimeout => InnerPort.ReadTimeout;
         public int WriteTimeout => InnerPort.WriteTimeout;
         public SerialPort InnerPort { get; private set; }
+        public Encoding Encoding => InnerPort.Encoding;
 
         private bool _disposed;
 

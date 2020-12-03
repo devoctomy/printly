@@ -1,6 +1,7 @@
 ﻿using Printly.Services;
 using System;
 using System.IO.Ports;
+using System.Text;
 
 namespace Printly.UnitTests.Services
 {
@@ -26,6 +27,7 @@ namespace Printly.UnitTests.Services
         public int ReadTimeout { get; }
 
         public int WriteTimeout { get; }
+        public Encoding Encoding { get; }
 
         public void Close()
         {

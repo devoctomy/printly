@@ -4,8 +4,11 @@ using Printly.Middleware;
 using Printly.Services;
 using Printly.Terminal;
 using System;
+using System.IO.Ports;
 using System.Net;
 using System.Net.WebSockets;
+using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -160,9 +163,9 @@ namespace Printly.UnitTests.Middleware
         }
 
         [Fact]
-        public async Task GivenHttpContext_AndSerialPortMonitorService_AndRequestCorrect_AndPortDisconnectedDuringCommsLoop_WhenInvoke_ThenPortDisconnected_AndFunctionReturns()
+        public async Task GivenHttpContext_AndSerialPortMonitorService_AndRequestCorrect_AndPortDisconnectedDuringCommsLoop_WhenInvoke_ThenRXData_ThenPortDisconnected_AndFunctionReturns()
         {
-            // Arrange
+            //Arrange
             var mockSerialPortConnectionManager = new Mock<ISerialPortConnectionManager>();
             var mockSerialPortCommunicationService = new Mock<ISerialPortCommunicationService>();
             var mockWebSocketConnectionService = new Mock<IWebSocketConnectionService>();
@@ -173,6 +176,7 @@ namespace Printly.UnitTests.Middleware
             var mockWebSocket = new Mock<WebSocket>();
             var mockWebSocketManager = new Mock<WebSocketManager>();
             var mockHttpRequest = new Mock<HttpRequest>();
+            var mockSerialPort = new Mock<ISerialPort>();
             var sut = new TerminalMiddleware(
                 mockRequestDelegate.Object,
                 mockSerialPortConnectionManager.Object,
@@ -214,11 +218,36 @@ namespace Printly.UnitTests.Middleware
                     return Task.Delay(50000, ct);
                 });
 
+            mockSerialPortCommunicationService.SetupGet(x => x.State)
+                .Returns(mockWebSocket.Object);
+
+            mockSerialPortCommunicationService.SetupGet(x => x.SerialPort)
+                .Returns(mockSerialPort.Object);
+
+            mockSerialPort.SetupGet(x => x.Encoding)
+                .Returns(Encoding.ASCII);
+
+            var dataString = "Hello World!";
+            var dataBytes = Encoding.ASCII.GetBytes(dataString);
+            var dataBuffer = new ArraySegment<byte>(dataBytes, 0, dataBytes.Length);
+            mockSerialPort.Setup(x => x.ReadExisting())
+                .Returns(dataString);
+
+            var constructor = typeof(SerialDataReceivedEventArgs).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(SerialData) }, null);
+            var eventArgs = (SerialDataReceivedEventArgs)constructor.Invoke(new object[] { SerialData.Chars });
+
             // Act
             var invokeTask = sut.Invoke(
                 mockHttpContext.Object,
                 mockSerialPortMonitorService.Object);
             await Task.Delay(500).ConfigureAwait(false);
+            mockSerialPortCommunicationService.Raise(x => x.DataReceived += null, new object[] { mockSerialPortCommunicationService.Object, eventArgs });
+            await Task.Delay(500).ConfigureAwait(false);
+            mockWebSocket.Verify(x => x.SendAsync(
+                It.Is<ArraySegment<byte>>(y => Convert.ToBase64String(y.Array) == Convert.ToBase64String(dataBuffer.Array)),
+                It.Is<WebSocketMessageType>(y => y == WebSocketMessageType.Text),
+                It.Is<bool>(y => y == true),
+                It.Is<CancellationToken>(y => y == CancellationToken.None)), Times.Once);
             mockSerialPortMonitorService.Raise(x => x.PortsDisconnected += null, new PortsDisconnectedEventArgs() { SerialPorts = new string[] { "COM1" } });
             await Task.Delay(500).ConfigureAwait(false);
         }
