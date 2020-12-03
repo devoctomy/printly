@@ -108,7 +108,10 @@ namespace Printly.Services
 
             if(disposing)
             {
-                _cancellationTokenSource.Dispose();
+                if(_cancellationTokenSource != null)
+                {
+                    _cancellationTokenSource.Dispose();
+                }
             }
 
             _disposed = true;
