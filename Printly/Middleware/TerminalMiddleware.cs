@@ -38,10 +38,8 @@ namespace Printly.Middleware
                 if(connection != null)
                 {
                     var serialPortCommunicationService = _serialPortConnectionManager.GetOrOpen(httpContext.Request);
-
-                    using WebSocket webSocket = await httpContext.WebSockets.AcceptWebSocketAsync();
                     var cancellationTokenSource = new CancellationTokenSource();
-                    serialPortCommunicationService.State = webSocket;
+                    serialPortCommunicationService.State = connection.WebSocket;
                     serialPortCommunicationService.DataReceived += SerialPortCommunicationService_DataReceived;
 
                     serialPortMonitorService.PortsDisconnected += (object sender, PortsDisconnectedEventArgs e) =>
