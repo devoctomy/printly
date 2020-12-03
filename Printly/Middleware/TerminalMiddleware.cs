@@ -31,7 +31,7 @@ namespace Printly.Middleware
             HttpContext httpContext,
             ISerialPortMonitorService serialPortMonitorService)
         {
-            if (httpContext.Request.Path.StartsWithSegments(new PathString("/terminal")))
+            if (httpContext.Request.Path.ToString().StartsWith("/terminal"))
             {
                 var connection = await _webSocketConnectionService.Create(httpContext);
                 if(connection != null)
