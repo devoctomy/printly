@@ -163,7 +163,7 @@ namespace Printly.UnitTests.Middleware
         }
 
         [Fact]
-        public async Task GivenHttpContext_AndSerialPortMonitorService_AndRequestCorrect_AndPortDisconnectedDuringCommsLoop_WhenInvoke_ThenRXData_ThenPortDisconnected_AndFunctionReturns()
+        public async Task GivenHttpContext_AndSerialPortMonitorService_AndRequestCorrect_AndPortDisconnectedDuringCommsLoop_WhenInvoke_ThenRXData_ThenPortDisconnected_AndTaskCancelled()
         {
             //Arrange
             var mockSerialPortConnectionManager = new Mock<ISerialPortConnectionManager>();
@@ -250,6 +250,7 @@ namespace Printly.UnitTests.Middleware
                 It.Is<CancellationToken>(y => y == CancellationToken.None)), Times.Once);
             mockSerialPortMonitorService.Raise(x => x.PortsDisconnected += null, new PortsDisconnectedEventArgs() { SerialPorts = new string[] { "COM1" } });
             await Task.Delay(500).ConfigureAwait(false);
+            Assert.True(invokeTask.IsCanceled);
         }
     }
 }
