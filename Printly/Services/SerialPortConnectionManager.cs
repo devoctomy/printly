@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Printly.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -10,14 +11,17 @@ namespace Printly.Services
     {
         private readonly ISerialPortCommunicationServiceFactory _serialPortCommunicationServiceFactory;
         private readonly SerialPortConnectionManagerConfiguration _serialPortConnectionManagerConfiguration;
+        private readonly ILogger<SerialPortConnectionManager> _logger;
         private readonly Dictionary<string, ISerialPortCommunicationService> _connectionCache;
 
         public SerialPortConnectionManager(
             ISerialPortCommunicationServiceFactory serialPortCommunicationServiceFactory,
-            SerialPortConnectionManagerConfiguration serialPortConnectionManagerConfiguration)
+            SerialPortConnectionManagerConfiguration serialPortConnectionManagerConfiguration,
+            ILogger<SerialPortConnectionManager> logger)
         {
             _serialPortCommunicationServiceFactory = serialPortCommunicationServiceFactory;
             _serialPortConnectionManagerConfiguration = serialPortConnectionManagerConfiguration;
+            _logger = logger;
             _connectionCache = new Dictionary<string, ISerialPortCommunicationService>();
         }
 
@@ -79,6 +83,7 @@ namespace Printly.Services
                 portName = $"/dev/{portName}";
             }
 
+            _logger.LogInformation($"Attempting to establish connection to port '{portName}', from request url '{httpRequest.QueryString.Value}'.");
             return GetOrOpen(
                 portName,
                 int.Parse(GetQueryValueOrDefault(httpRequest.Query, "baudrate", _serialPortConnectionManagerConfiguration.DefaultBaudRate.ToString())),

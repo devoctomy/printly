@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Printly.Exceptions;
 using Printly.Services;
@@ -37,7 +38,8 @@ namespace Printly.UnitTests.Services
             _mockSerialPortCommunicationService = new Mock<ISerialPortCommunicationService>();
             _sut = new SerialPortConnectionManager(
                 mockSerialPortCommunicationServiceFactory.Object,
-                serialPortConnectionManagerConfiguration);
+                serialPortConnectionManagerConfiguration,
+                Mock.Of<ILogger<SerialPortConnectionManager>>());
 
             mockSerialPortCommunicationServiceFactory.Setup(x => x.Create())
                 .Returns(_mockSerialPortCommunicationService.Object);
