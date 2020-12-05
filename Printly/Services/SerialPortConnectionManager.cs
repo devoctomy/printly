@@ -83,7 +83,7 @@ namespace Printly.Services
                 portName = $"/dev/{portName}";
             }
 
-            _logger.LogInformation($"Attempting to establish connection to port '{portName}', from request url '{httpRequest.QueryString.Value}'.");
+            _logger.LogInformation($"Attempting to establish connection to serial port '{portName}', from request url '{httpRequest.Path.Value}{httpRequest.QueryString.Value}'.");
             return GetOrOpen(
                 portName,
                 int.Parse(GetQueryValueOrDefault(httpRequest.Query, "baudrate", _serialPortConnectionManagerConfiguration.DefaultBaudRate.ToString())),
