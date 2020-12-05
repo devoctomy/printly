@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO.Ports;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Printly.Services
 {
@@ -20,7 +21,7 @@ namespace Printly.Services
         Encoding Encoding { get; }
         void Open();
         void Close();
-        void Write(
+        Task Write(
             byte[] data,
             int offset,
             int count);

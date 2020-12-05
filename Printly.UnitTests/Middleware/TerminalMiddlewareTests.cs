@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Printly.Middleware;
 using Printly.Services;
@@ -28,7 +29,8 @@ namespace Printly.UnitTests.Middleware
             var sut = new TerminalMiddleware(
                 mockRequestDelegate.Object,
                 mockSerialPortConnectionManager.Object,
-                mockWebSocketConnectionService.Object);
+                mockWebSocketConnectionService.Object,
+                Mock.Of<ILogger<TerminalMiddleware>>());
             var mockSerialPortMonitorService = new Mock<ISerialPortMonitorService>();
             var mockHttpContext = new Mock<HttpContext>();
             var mockHttpRequest = new Mock<HttpRequest>();
@@ -69,7 +71,8 @@ namespace Printly.UnitTests.Middleware
             var sut = new TerminalMiddleware(
                 mockRequestDelegate.Object,
                 mockSerialPortConnectionManager.Object,
-                mockWebSocketConnectionService.Object);
+                mockWebSocketConnectionService.Object,
+                Mock.Of<ILogger<TerminalMiddleware>>());
             mockWebSocket.Setup(x => x.SendAsync(
                 It.IsAny<ArraySegment<byte>>(),
                 It.IsAny<WebSocketMessageType>(),
@@ -136,7 +139,8 @@ namespace Printly.UnitTests.Middleware
             var sut = new TerminalMiddleware(
                 mockRequestDelegate.Object,
                 mockSerialPortConnectionManager.Object,
-                mockWebSocketConnectionService.Object);
+                mockWebSocketConnectionService.Object,
+                Mock.Of<ILogger<TerminalMiddleware>>());
             mockWebSocketManager.SetupGet(x => x.IsWebSocketRequest)
                 .Returns(true);
             mockHttpContext.SetupGet(x => x.WebSockets)
@@ -180,7 +184,8 @@ namespace Printly.UnitTests.Middleware
             var sut = new TerminalMiddleware(
                 mockRequestDelegate.Object,
                 mockSerialPortConnectionManager.Object,
-                mockWebSocketConnectionService.Object);
+                mockWebSocketConnectionService.Object,
+                Mock.Of<ILogger<TerminalMiddleware>>());
             mockWebSocket.Setup(x => x.SendAsync(
                 It.IsAny<ArraySegment<byte>>(),
                 It.IsAny<WebSocketMessageType>(),

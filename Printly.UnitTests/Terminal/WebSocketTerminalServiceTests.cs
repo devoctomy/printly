@@ -1,8 +1,10 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
 using Printly.Services;
 using Printly.Terminal;
 using System;
 using System.Net.WebSockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -19,9 +21,12 @@ namespace Printly.UnitTests.Terminal
             {
                 ReceiveBufferSize = 1024
             };
-            var sut = new WebSocketTerminalService(webSocketTerminalServiceConfiguration);
+            var sut = new WebSocketTerminalService(
+                webSocketTerminalServiceConfiguration,
+                Mock.Of<ILogger<WebSocketTerminalService>>());
             var mockSerialPortCommunicationService = new Mock<ISerialPortCommunicationService>();
             var mockWebSocket = new Mock<WebSocket>();
+            var mockSerialPort = new Mock<ISerialPort>();
             var cancellationTokenSource = new CancellationTokenSource();
 
             var readFromSocket = false;
@@ -44,6 +49,12 @@ namespace Printly.UnitTests.Terminal
                 It.IsAny<byte[]>(),
                 It.IsAny<int>(),
                 It.IsAny<int>()));
+
+            mockSerialPortCommunicationService.SetupGet(x => x.SerialPort)
+                .Returns(mockSerialPort.Object);
+
+            mockSerialPort.SetupGet(x => x.Encoding)
+                .Returns(Encoding.ASCII);
 
             sut.WebSocket = mockWebSocket.Object;
 

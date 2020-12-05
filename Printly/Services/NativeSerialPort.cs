@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Ports;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Printly.Services
 {
@@ -113,7 +114,7 @@ namespace Printly.Services
         }
 
         [ExcludeFromCodeCoverage]
-        public void Write(
+        public async Task Write(
             byte[] data,
             int offset,
             int count)
@@ -122,6 +123,7 @@ namespace Printly.Services
                 data,
                 offset,
                 count);
+            await InnerPort.BaseStream.FlushAsync();
         }
     }
 }

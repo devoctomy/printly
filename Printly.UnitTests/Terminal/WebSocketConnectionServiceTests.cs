@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Printly.Terminal;
 using System;
@@ -21,7 +22,9 @@ namespace Printly.UnitTests.Terminal
             {
                 ReceiveBufferSize = 1024
             };
-            var sut = new WebSocketConnectionService(webSocketTerminalServiceConfiguration);
+            var sut = new WebSocketConnectionService(
+                webSocketTerminalServiceConfiguration,
+                Mock.Of<ILogger<WebSocketTerminalService>>());
             var mockHttpContext = new Mock<HttpContext>();
             var mockWebSocket = new Mock<WebSocket>();
             mockWebSocket.Setup(x => x.SendAsync(
@@ -54,7 +57,9 @@ namespace Printly.UnitTests.Terminal
             {
                 ReceiveBufferSize = 1024
             };
-            var sut = new WebSocketConnectionService(webSocketTerminalServiceConfiguration);
+            var sut = new WebSocketConnectionService(
+                webSocketTerminalServiceConfiguration,
+                Mock.Of<ILogger<WebSocketTerminalService>>());
             var mockHttpContext = new Mock<HttpContext>();
             var mockWebSocketManager = new Mock<WebSocketManager>();
             mockWebSocketManager.SetupGet(x => x.IsWebSocketRequest)

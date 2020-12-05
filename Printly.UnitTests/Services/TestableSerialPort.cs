@@ -2,6 +2,7 @@
 using System;
 using System.IO.Ports;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Printly.UnitTests.Services
 {
@@ -49,12 +50,12 @@ namespace Printly.UnitTests.Services
             return string.Empty;
         }
 
-        public void Write(
+        public async Task Write(
             byte[] data,
             int offset,
             int count)
         {
-            // Do nothing
+            await Task.Yield();
         }
 
         public void TestDataReceived(SerialDataReceivedEventArgs args)
