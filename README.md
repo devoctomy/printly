@@ -68,6 +68,12 @@ I found that I was able to install this using apt-get,
 sudo apt-get install docker-compose
 ```
 
+You may also need to create an external network using the following command (required for docker-compose deployment),
+
+```bash
+docker network create -d bridge my-network
+```
+
 ## dotnet 5 SDK (Installation on Raspberry Pi 4 Arm64)
 
 Please refer to the following page from Microsoft,
@@ -79,6 +85,30 @@ You may find that upon rebooting, the system forgets where dotnet is, you can re
 ```bash
 export DOTNET_ROOT=$HOME/dotnet
 export PATH=$PATH:$HOME/dotnet
+```
+
+## Deploying via Docker Compose
+
+Once you have the docker engine, docker compose, and dotnet 5 successfull installed (verify using the following commands, each command should return their respective version number, dotnet should be >= 5)
+
+```bash
+docker --version
+docker-compose --version
+dotnet --version
+```
+
+Clone the printly source code,
+
+```bash
+cd ~/
+git clone https://github.com/devoctomy/printly
+```
+
+Build and deploy printly
+
+```bash
+cd ~/printly/Docker
+docker-compose up
 ```
 
 ## Debugging Printly
