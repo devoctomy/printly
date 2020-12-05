@@ -43,8 +43,8 @@
         "PRINTLY_DefaultTerminalStopBits": "1",
         "PRINTLY_DefaultTerminalParity": "None",
         "PRINTLY_DefaultTerminalHandshake": "None",
-        "PRINTLY_DefaultReadTimeoutMilliseconds": "10000",
-        "PRINTLY_DefaultWriteTimeoutMilliseconds": "10000",
+        "PRINTLY_DefaultReadTimeoutMilliseconds": "2000",
+        "PRINTLY_DefaultWriteTimeoutMilliseconds": "2000",
         "ASPNETCORE_URLS": "http://0.0.0.0:5000",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
