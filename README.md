@@ -149,6 +149,16 @@ You should see something like,
 
 As you can see, 2 serial ports have been discovered.
 
+### Rebuilding / Deploying via Docker Compose
+
+At some point you may want to remove everything from docker, rebuild and redeploy, you can do this via the following command
+
+```bash
+docker system prune -a
+```
+
+> Please note, after doing so you will need to recreate the network.
+
 ## Debugging Printly
 
 To debug just Printly service within Visual Studio, you will need to have a running instance of Mongo.
