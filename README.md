@@ -111,6 +111,44 @@ cd ~/printly/Docker
 docker-compose up
 ```
 
+Printly requires access to the host systems serial ports, and as it is being run in a container, you will need to add additional priviledges for it to be able to access them, please refer to the following article,
+
+[How to access serial devices in docker](https://www.losant.com/blog/how-to-access-serial-devices-in-docker)
+
+At the time of writing, I done the following,
+
+```bash
+sudo nano /etc/udev/rules.d/99-serial.rules
+```
+
+And added following line
+
+```bash
+KERNEL=="ttyUSB[0-9]*",MODE="0666"
+```
+
+The printly service has already been configured for everything else.  To verify that the service has access to the serial ports, after running 'docker-compose up', access the System Info API in a browser,
+
+```bash
+http://{IP Address of host}:5000/api/System/Info
+```
+
+You should see something like,
+
+```javascript
+{
+    "success": true,
+    "value": {
+        "systemId": "2a136ad2-f1b9-4df3-8e02-74b69641a134",
+        "startedAt": "2020-12-05T10:02:13.7967741Z",
+        "serialPorts": ["/dev/ttyS0", "/dev/ttyAMA0"]
+    },
+    "error": null
+}
+```
+
+As you can see, 2 serial ports have been discovered.
+
 ## Debugging Printly
 
 To debug just Printly service within Visual Studio, you will need to have a running instance of Mongo.
