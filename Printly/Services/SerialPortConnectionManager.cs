@@ -74,6 +74,11 @@ namespace Printly.Services
             var pathParts = httpRequest.Path.ToString()[1..].Split("/");
             var portName = pathParts[1];
 
+            if(OperatingSystem.IsLinux())
+            {
+                portName = $"/dev/{portName}";
+            }
+
             return GetOrOpen(
                 portName,
                 int.Parse(GetQueryValueOrDefault(httpRequest.Query, "baudrate", _serialPortConnectionManagerConfiguration.DefaultBaudRate.ToString())),
