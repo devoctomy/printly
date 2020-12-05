@@ -30,6 +30,7 @@ namespace Printly.UnitTests.Extensions
 
             // Act
             sut.AddPrintlyServices(appSettings);
+            sut.AddLogging();
             sut.AddPrintlyDomainServices(new Domain.Services.MongoDbConfiguration
             {
                 ConnectionString = "mongodb://localhost:27017",
