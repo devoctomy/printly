@@ -80,7 +80,14 @@ namespace Printly.Services
 
             if(OperatingSystem.IsLinux())
             {
-                portName = $"/dev/{portName}";
+                if(QueryParamIsPresent(httpRequest.Query, "by-id"))
+                {
+                    portName = $"/dev/serial/by-id/{portName}";
+                }
+                else
+                {
+                    portName = $"/dev/{portName}";
+                }
             }
 
             _logger.LogInformation($"Attempting to establish connection to serial port '{portName}', from request url '{httpRequest.Path.Value}{httpRequest.QueryString.Value}'.");
@@ -107,6 +114,13 @@ namespace Printly.Services
             {
                 return false;
             }
+        }
+
+        private static bool QueryParamIsPresent(
+            IQueryCollection queryCollection,
+            string name)
+        {
+            return queryCollection.ContainsKey(name);
         }
 
         private static string GetQueryValueOrDefault(
