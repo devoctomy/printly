@@ -5,9 +5,81 @@
 # printly
 Simple print-farm POC.
 
+## Ubuntu on Raspberry Pi 4
+
+Most of my testing has been done using a Raspberry Pi 4 and Ubuntu 20.04.1 Raspberry Pi image.  I found that occasionally the device would just stop booting, getting stuck on the rainbow screen, I understand only 2 things can cause this.
+
+1. Dodgy SD card
+2. Dodgy installation
+
+In my circumstance I'm pretty sure that the SD card is fine, as reformatting it and flashing Ubuntu to it again would get everything back to scratch, so something was happening to my installation.  I believe this may be caused by Automatic Updates running on the Pi whilst I pull the plug on it. As I want to be able to pull the plug and have it recover every time, I have disabled Automatic Updates in Ubuntu via information on the following page,
+
+[How to Handle Automatic Updates in Ubuntu](https://itsfoss.com/auto-updates-ubuntu/#:~:text=The%20reason%20is%20that%20Ubuntu,via%20the%20Software%20Updater%20tool.)
+
+> DO THIS AT YOUR OWN RISK
+
+## Installing Docker (Ubuntu)
+
+Please refer to the following page from Docker,
+
+[Official Docker instructions on installation of Docker](https://docs.docker.com/engine/install/ubuntu/)
+
+> Please note that when adding the repository, there are several to choose from, you want "arm64" for the Raspberry Pi 4 and az 64 bit os.
+
+At the time of writing, my installation went as follows,
+
+```bash
+sudo apt-get update
+sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo apt-key fingerprint 0EBFCD88
+sudo add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+```
+
+To verify the installation
+
+```bash
+docker --version
+```
+
+> Docker version 19.03.14, build 5eb3275
+
+The following command allows docker to be run as non-administrator,
+
+```bash
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
+
+> DO THIS AT YOUR OWN RISK
+> Please note, you may need to restart your Pi for user groups to be applied.
+
+## Installing Docker Compose
+
+Please refer to the following page from Docker,
+
+[Official Docker instructions on installation of Docker Compose](https://docs.docker.com/compose/install/)
+
+I found that I was able to install this using apt-get,
+
+```bash
+sudo apt-get install docker-compose
+```
+
 ## dotnet 5 SDK (Installation on Raspberry Pi 4 Arm64)
 
-https://dotnet.microsoft.com/download/dotnet/thank-you/sdk-5.0.100-linux-arm64-binaries
+Please refer to the following page from Microsoft,
+
+[Official Microsoft instructions on manual instalation of dotnet 5](https://dotnet.microsoft.com/download/dotnet/thank-you/sdk-5.0.100-linux-arm64-binaries)
+
+You may find that upon rebooting, the system forgets where dotnet is, you can resolve this by adding the path upon system startup by adding the following lines to the bottom of '~/.bashrc',
+
+```bash
+export DOTNET_ROOT=$HOME/dotnet
+export PATH=$PATH:$HOME/dotnet
+```
 
 ## Debugging Printly
 
