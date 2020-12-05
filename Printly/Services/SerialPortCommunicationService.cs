@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.IO.Ports;
 
 namespace Printly.Services
@@ -9,15 +10,19 @@ namespace Printly.Services
         public event EventHandler<SerialErrorReceivedEventArgs> ErrorReceived;
 
         private readonly ISerialPortFactory _serialPortFactory;
+        private readonly ILogger<SerialPortCommunicationService> _logger;
         private string _portName = string.Empty;
 
         public ISerialPort SerialPort { get; private set; }
         public string PortName => _portName;
         public object State { get; set; }
 
-        public SerialPortCommunicationService(ISerialPortFactory serialPortFactory)
+        public SerialPortCommunicationService(
+            ISerialPortFactory serialPortFactory,
+            ILogger<SerialPortCommunicationService> logger)
         {
             _serialPortFactory = serialPortFactory;
+            _logger = logger;
         }
 
         public bool Open(
@@ -30,6 +35,7 @@ namespace Printly.Services
             TimeSpan readTimeout,
             TimeSpan writeTimeout)
         {
+            _logger.LogInformation($"Opening serial port '{portName}', using {baudRate} {dataBits} {parity} {stopBits}.");
             SerialPort = _serialPortFactory.Create(
                 portName,
                 baudRate,
@@ -50,6 +56,7 @@ namespace Printly.Services
         {
             if(SerialPort != null && SerialPort.IsOpen)
             {
+                _logger.LogInformation($"Closing serial port '{SerialPort.PortName}'.");
                 SerialPort.Close();
             }
         }
@@ -58,6 +65,7 @@ namespace Printly.Services
             object sender,
             SerialDataReceivedEventArgs e)
         {
+            _logger.LogDebug($"Received data on serial port '{SerialPort.PortName}'.");
             DataReceived?.Invoke(
                 this,
                 e);
@@ -65,6 +73,7 @@ namespace Printly.Services
 
         private void SerialPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
+            _logger.LogDebug($"Received error on serial port '{SerialPort.PortName}'.");
             ErrorReceived?.Invoke(
                 this,
                 e);
@@ -75,6 +84,7 @@ namespace Printly.Services
             int offset,
             int count)
         {
+            _logger.LogInformation($"Writing {count} bytes serial port '{SerialPort.PortName}'.");
             SerialPort.Write(
                 buffer,
                 offset,

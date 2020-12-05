@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
 using Printly.Services;
 using Xunit;
 
@@ -11,7 +12,9 @@ namespace Printly.UnitTests.Services
         {
             // Arrange
             var mockSerialPortFactory = new Mock<ISerialPortFactory>();
-            var sut = new SerialPortCommunicationServiceFactory(mockSerialPortFactory.Object);
+            var sut = new SerialPortCommunicationServiceFactory(
+                mockSerialPortFactory.Object,
+                Mock.Of<ILogger<SerialPortCommunicationService>>());
 
             // Act
             var result = sut.Create();

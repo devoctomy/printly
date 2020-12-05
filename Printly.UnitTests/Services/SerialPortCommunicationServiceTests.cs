@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
 using Printly.Services;
 using System;
 using System.IO.Ports;
@@ -25,7 +26,9 @@ namespace Printly.UnitTests.Services
         {
             _mockSerialPortFactory = new Mock<ISerialPortFactory>();
             _mockSerialPort = new Mock<ISerialPort>();
-            _sut = new SerialPortCommunicationService(_mockSerialPortFactory.Object);
+            _sut = new SerialPortCommunicationService(
+                _mockSerialPortFactory.Object,
+                Mock.Of<ILogger<SerialPortCommunicationService>>());
 
             _mockSerialPortFactory.Setup(x => x.Create(
                 It.IsAny<string>(),
@@ -43,7 +46,9 @@ namespace Printly.UnitTests.Services
         {
             _mockSerialPortFactory = new Mock<ISerialPortFactory>();
             _testableSerialPort = new TestableSerialPort();
-            _sut = new SerialPortCommunicationService(_mockSerialPortFactory.Object);
+            _sut = new SerialPortCommunicationService(
+                _mockSerialPortFactory.Object,
+                Mock.Of<ILogger<SerialPortCommunicationService>>());
 
             _mockSerialPortFactory.Setup(x => x.Create(
                 It.IsAny<string>(),
