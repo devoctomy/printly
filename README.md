@@ -154,6 +154,8 @@ As you can see, 2 serial ports have been discovered.
 At some point you may want to remove everything from docker, rebuild and redeploy, you can do this via the following command
 
 ```bash
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
 docker system prune -a
 ```
 
