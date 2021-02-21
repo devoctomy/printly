@@ -178,7 +178,7 @@ namespace Printly.UnitTests.Services
                 _writeTimeout);
 
             var eventRaised = false;
-            _sut.DataReceived += (object sender, SerialDataReceivedEventArgs e) =>
+            _sut.DataReceived += (object sender, SerialPortDataReceivedEventArgs e) =>
             {
                 eventRaised = true;
             };

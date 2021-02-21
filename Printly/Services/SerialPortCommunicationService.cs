@@ -6,7 +6,7 @@ namespace Printly.Services
 {
     public class SerialPortCommunicationService : ISerialPortCommunicationService
     {
-        public event EventHandler<SerialDataReceivedEventArgs> DataReceived;
+        public event EventHandler<SerialPortDataReceivedEventArgs> DataReceived;
         public event EventHandler<SerialErrorReceivedEventArgs> ErrorReceived;
 
         private readonly ISerialPortFactory _serialPortFactory;
@@ -63,7 +63,7 @@ namespace Printly.Services
 
         private void SerialPort_DataReceived(
             object sender,
-            SerialDataReceivedEventArgs e)
+            SerialPortDataReceivedEventArgs e)
         {
             _logger.LogDebug($"Received data on serial port '{SerialPort.PortName}'.");
             DataReceived?.Invoke(
@@ -71,7 +71,9 @@ namespace Printly.Services
                 e);
         }
 
-        private void SerialPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
+        private void SerialPort_ErrorReceived(
+            object sender,
+            SerialErrorReceivedEventArgs e)
         {
             _logger.LogDebug($"Received error on serial port '{SerialPort.PortName}'.");
             ErrorReceived?.Invoke(

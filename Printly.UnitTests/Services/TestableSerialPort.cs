@@ -8,7 +8,7 @@ namespace Printly.UnitTests.Services
 {
     public class TestableSerialPort : ISerialPort
     {
-        public event SerialDataReceivedEventHandler DataReceived;
+        public event EventHandler<SerialPortDataReceivedEventArgs> DataReceived;
         public event SerialErrorReceivedEventHandler ErrorReceived;
 
         public bool IsOpen { get; private set; }
@@ -58,7 +58,7 @@ namespace Printly.UnitTests.Services
             await Task.Yield();
         }
 
-        public void TestDataReceived(SerialDataReceivedEventArgs args)
+        public void TestDataReceived(SerialPortDataReceivedEventArgs args)
         {
             DataReceived?.Invoke(
                 this,

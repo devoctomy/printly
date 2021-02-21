@@ -7,7 +7,7 @@ namespace Printly.Services
 {
     public interface ISerialPort : IDisposable
     {
-        event SerialDataReceivedEventHandler DataReceived;
+        event EventHandler<SerialPortDataReceivedEventArgs> DataReceived;
         event SerialErrorReceivedEventHandler ErrorReceived;
         bool IsOpen { get; }
         string PortName { get; }
@@ -25,6 +25,5 @@ namespace Printly.Services
             byte[] data,
             int offset,
             int count);
-        string ReadExisting();
     }
 }

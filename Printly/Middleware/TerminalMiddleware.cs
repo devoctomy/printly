@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Printly.Services;
 using Printly.Terminal;
 using System;
-using System.IO.Ports;
 using System.Linq;
 using System.Net;
 using System.Net.WebSockets;
@@ -81,30 +80,17 @@ namespace Printly.Middleware
             }
         }
 
-        private async void SerialPortCommunicationService_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private async void SerialPortCommunicationService_DataReceived(
+            object sender,
+            SerialPortDataReceivedEventArgs e)
         {
-            switch (e.EventType)
-            {
-                case SerialData.Chars:
-                    {
-                        var communicationService = ((ISerialPortCommunicationService)sender);
-                        var webSocket = (WebSocket)communicationService.State;
-                        var serialPort = (ISerialPort)communicationService.SerialPort;
-                        var data = serialPort.ReadExisting();
-                        var dataBytes = serialPort.Encoding.GetBytes(data);
-                        await webSocket.SendAsync(
-                            new ArraySegment<byte>(dataBytes, 0, dataBytes.Length),
-                            WebSocketMessageType.Text,
-                            true,
-                            CancellationToken.None);
-                        break;
-                    }
-                default:
-                    {
-                        // Do nothing
-                        break;
-                    }
-            }
+            var communicationService = ((ISerialPortCommunicationService)sender);
+            var webSocket = (WebSocket)communicationService.State;
+            await webSocket.SendAsync(
+                new ArraySegment<byte>(e.Data, 0, e.Data.Length),
+                WebSocketMessageType.Text,
+                true,
+                CancellationToken.None);
         }
     }
 }

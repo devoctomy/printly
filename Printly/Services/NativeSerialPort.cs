@@ -2,13 +2,14 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Ports;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Printly.Services
 {
     public class NativeSerialPort : ISerialPort
     {
-        public event SerialDataReceivedEventHandler DataReceived;
+        public event EventHandler<SerialPortDataReceivedEventArgs> DataReceived;
         public event SerialErrorReceivedEventHandler ErrorReceived;
 
         public bool IsOpen { get; private set; }
@@ -24,6 +25,7 @@ namespace Printly.Services
         public Encoding Encoding => InnerPort.Encoding;
 
         private bool _disposed;
+        private Task _reading;
 
         public NativeSerialPort(
             string portName,
@@ -46,7 +48,7 @@ namespace Printly.Services
                 ReadTimeout = (int)readTimeout.TotalMilliseconds,
                 WriteTimeout = (int)writeTimeout.TotalMilliseconds
             };
-            InnerPort.DataReceived += InnerPort_DataReceived;
+            InnerPort.DtrEnable = true;
             InnerPort.ErrorReceived += InnerPort_ErrorReceived;
         }
 
@@ -54,14 +56,6 @@ namespace Printly.Services
         ~NativeSerialPort()
         {
             Dispose(false);
-        }
-
-        [ExcludeFromCodeCoverage]
-        private void InnerPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            DataReceived?.Invoke(
-                this,
-                e);
         }
 
         [ExcludeFromCodeCoverage]
@@ -105,12 +99,7 @@ namespace Printly.Services
         {
             InnerPort.Open();
             IsOpen = true;
-        }
-
-        [ExcludeFromCodeCoverage]
-        public string ReadExisting()
-        {
-            return InnerPort.ReadExisting();
+            _reading = BeginReadingAsync(InnerPort);
         }
 
         [ExcludeFromCodeCoverage]
@@ -124,6 +113,34 @@ namespace Printly.Services
                 offset,
                 count);
             await InnerPort.BaseStream.FlushAsync();
+        }
+
+        private async Task BeginReadingAsync(SerialPort port)
+        {
+            await Task.Yield();
+            Console.WriteLine("Started async reading from serial port.");
+
+            var rxBuffer = new byte[1024];
+            while (true)
+            {
+                var bytesRead = await port.BaseStream.ReadAsync(
+                    rxBuffer,
+                    0,
+                    rxBuffer.Length,
+                    CancellationToken.None);
+                if (bytesRead > 0)
+                {
+                    var destBuffer = new byte[bytesRead];
+                    Array.Copy(rxBuffer, destBuffer, bytesRead);
+                    DataReceived?.Invoke(
+                        this,
+                        new SerialPortDataReceivedEventArgs
+                        {
+                            SerialPort = this,
+                            Data = destBuffer
+                        });
+                }
+            }
         }
     }
 }
