@@ -53,6 +53,7 @@ namespace Printly.Extensions
             services.AddScoped<ISerialPortMonitorService, SerialPortMonitorService>();
             services.AddSingleton<IWebSocketConnectionService, WebSocketConnectionService>();
             services.AddSingleton<IWebSocketTerminalService, WebSocketTerminalService>();
+            services.AddScoped<IIdValidator, PrinterIdValidator>();
             return services;
         }
     }
