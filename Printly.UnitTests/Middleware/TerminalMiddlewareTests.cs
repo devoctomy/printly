@@ -164,7 +164,6 @@ namespace Printly.UnitTests.Middleware
             Assert.Equal((int)HttpStatusCode.BadRequest, httpStatsCode);
         }
 
-        //!!!TODO: Fix this test, I don't have the brain capacity at the moment.
         [Fact]
         public async Task GivenHttpContext_AndSerialPortMonitorService_AndRequestCorrect_AndPortDisconnectedDuringCommsLoop_WhenInvoke_ThenRXData_ThenPortDisconnected_AndTaskCancelled()
         {
